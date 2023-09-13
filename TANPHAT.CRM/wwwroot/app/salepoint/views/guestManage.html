@@ -1,0 +1,121 @@
+﻿<div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing p-0">
+    <div class="pt-10 mb-0 px-2 header-sales-activity">
+        <div class="row">
+            <div class="col-md-3 col-xs-6 col-lg-2">
+                <label>Chọn điểm bán</label>
+                <ui-select ng-model="$vm.params.salePointId" ng-change="$vm.loadData()"
+                           theme="select2" search-enabled="false">
+                    <ui-select-match placeholder="Chọn điểm bán" allow-clear="false">
+                        {{$select.selected.Name}}
+                    </ui-select-match>
+                    <ui-select-choices position="down" repeat="ele.Id.toString() as ele in $vm.listSalePoint">
+                        {{ele.Name}}
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </div>
+        <!--        <ul class="nav nav-tabs mt-2 " id="iconTab" role="tablist">-->
+        <!--            <li class="nav-item cursor" ng-click="$vm.changeTab(1)">-->
+        <!--                <a class="nav-link active py-2" id="debtManage_tab" data-toggle="tab" role="tab"-->
+        <!--                   aria-controls="icon-home" aria-selected="true">-->
+        <!--                    Khách sỉ-->
+        <!--                </a>-->
+        <!--            </li>-->
+        <!--            <li class="nav-item cursor" ng-click="$vm.changeTab(2)">-->
+        <!--                <a class="nav-link pt8px " id="manageCommission_tab" data-toggle="tab" role="tab"-->
+        <!--                   aria-controls="icon-home" aria-selected="true">-->
+        <!--                    Khách nợ-->
+        <!--                </a>-->
+        <!--            </li>-->
+        <!--        </ul>-->
+    </div>
+    <div class="wh-bg px-2 pt-3">
+        <div class="table-responsive resize-tb">
+            <button class="btn btn-success mb-3 float-right" ng-if="$vm.tabId != 2" ng-click="$vm.addNewGuest(1)">Tạo khách sỉ</button>
+            <button class="btn btn-success mb-3 float-right" ng-if="$vm.tabId == 2" ng-click="$vm.addNewGuest(2)">Tạo khách nợ</button>
+            <table class="table" ng-if="$vm.tabId != 2">
+                <thead class="fix-scroll">
+                <tr>
+                    <th class="theader first-col-sticky text-center">No.</th>
+                    <th class="theader text-center">Họ và tên</th>
+                    <th class="theader text-center">Số điện thoại</th>
+                    <th class="theader text-center">Giá vé cào</th>
+                    <th class="theader text-center">Giá vé sỉ</th>
+                    <th class="theader text-center">Điểm bán</th>
+                    <th class="theader text-center">Hành động</th>
+                </tr>
+                </thead>
+                <tbody class="">
+                <tr ng-repeat="ele in $vm.listWholesaleGuest">
+                    <td class="first-col-sticky">
+                        {{$index + 1}}
+                    </td>
+                    <td class="text-left">
+                        {{ele.FullName}}
+                    </td>
+                    <td>
+                        {{ele.Phone}}
+                    </td>
+                    <td class="text-right">
+                        {{ele.ScratchPrice | formatCurrency}}
+                    </td>
+                    <td class="text-right">
+                        {{ele.WholesalePrice | formatCurrency}}
+                    </td>
+                    <td>
+                        {{ele.SalePointName}}
+                    </td>
+                    <td>
+                        <i class="fa fa-edit cursor" aria-hidden="true" style="color: blue;" ng-click="$vm.openModalEdit(ele, 1)"></i>
+                        <!--<i class="fa fa-trash cursor" aria-hidden="true" style="color: red;" ng-click="$vm.delete(ele)"></i>-->
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="99" ng-if="!$vm.listWholesaleGuest || $vm.listWholesaleGuest.length == 0">
+                        Chưa có khách sỉ tại điểm bán
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <!--            <table class="table" ng-if="$vm.tabId == 2">-->
+            <!--                <thead class="fix-scroll">-->
+            <!--                    <tr>-->
+            <!--                        <th class="theader first-col-sticky">No.</th>-->
+            <!--                        <th class="theader">Họ và tên</th>-->
+            <!--                        <th class="theader text-center">Số điện thoại</th>-->
+            <!--                        <th class="theader text-center">Điểm bán</th>-->
+            <!--                        <th class="theader text-center">Hành động</th>-->
+            <!--                    </tr>-->
+            <!--                </thead>-->
+            <!--                <tbody class="">-->
+            <!--                    <tr ng-repeat="ele in $vm.listDebtGuest">-->
+            <!--                        <td class="first-col-sticky link ">-->
+            <!--                            {{$index + 1}}-->
+            <!--                        </td>-->
+            <!--                        <td class="text-left">-->
+            <!--                            {{ele.FullName}}-->
+            <!--                        </td>-->
+            <!--                        <td>-->
+            <!--                            {{ele.Phone}}-->
+            <!--                        </td>-->
+            <!--                        <td>-->
+            <!--                            {{ele.SalePointName}}-->
+            <!--                        </td>-->
+            <!--                        <td>-->
+            <!--                            <i class="fa fa-edit cursor" aria-hidden="true" style="color: blue;" ng-click="$vm.openModalEdit(ele, 2)"></i>-->
+            <!--                            &lt;!&ndash;<i class="fa fa-trash cursor" aria-hidden="true" style="color: red;" ng-click="$vm.delete(ele)"></i>&ndash;&gt;-->
+            <!--                        </td>-->
+            <!--                    </tr>-->
+            <!--                    <tr>-->
+            <!--                        <td colspan="99" ng-if="!$vm.listDebtGuest || $vm.listDebtGuest.length == 0">-->
+            <!--                            Chưa có khách nợ tại điểm bán-->
+            <!--                        </td>-->
+            <!--                    </tr>-->
+            <!--                </tbody>-->
+            <!--            </table>-->
+
+
+        </div>
+    </div>
+</div>

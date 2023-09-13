@@ -1,0 +1,91 @@
+﻿<div class="col-12 layout-spacing">
+   
+    <div class="container-fluid wh-bg">
+        <div class="row">
+            <div class=" col-xl-4 col-sm-4 col-md-4 col-lg-2 mt-10">
+                <label>Chọn ngày:</label>
+                <datepicker class="h-40" my-class="input-sm datepicker" date-format="DD-MM-YYYY" pick-time="false"
+                            ng-model="$vm.params.day" output-format="DD-MM-YYYY"
+                            ng-change="$vm.changeDate()"
+                            placeholder="dd/mm/yyyy"></datepicker>
+            </div>
+
+            <div class="col-xl-4 col-sm-4 col-md-4 col-lg-2 mt-10">
+                <label>Chọn điểm bán</label>
+                <ui-select ng-model="$vm.params.salePointId" ng-change="$vm.changeDate()"
+                           theme="select2" search-enabled="false">
+                    <ui-select-match placeholder="Chọn điểm bán" allow-clear="false">{{$select.selected.Name}}</ui-select-match>
+                    <ui-select-choices position="down" repeat="ele.Id.toString() as ele in $vm.listsalePoint">
+                        {{ele.Name}}
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+
+            <div class="col-xl-4 col-sm-4 col-md-4 col-lg-2 mt-10">
+                <label>Chọn loại</label>
+                <ui-select ng-model="$vm.params.transitionTypeId" ng-change="$vm.changeDate()"
+                           theme="select2" search-enabled="false">
+                    <ui-select-match placeholder="Chọn điểm bán" allow-clear="false">{{$select.selected.Name}}</ui-select-match>
+                    <ui-select-choices position="down" repeat="ele.Id.toString() as ele in $vm.listTransitionType">
+                        {{ele.Name}}
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </div>
+        <div style="overflow: auto">
+            <div class="table-responsive resize-tb mt-10">
+                <table class="table" style="width:100%">
+                    <thead class="fix-scroll">
+                        <tr>
+                            <th class="noselect theader text-center">STT</th>
+                            <th class="noselect theader text-center">Hoạt động</th>
+                            <th class="noselect theader text-center">Điểm bán</th>
+                            <th class="noselect theader text-center">Số lượng</th>
+                            <th class="noselect theader text-center">Trạng thái</th>
+                            <th class="noselect theader text-center">Trưởng nhóm</th>
+                            <th class="noselect theader text-center">Thời gian</th>
+
+                        </tr>
+                    </thead>
+                    <tbody ng-repeat-end>
+                        <tr  ng-repeat="item in $vm.listConfirm" ng-click="$vm.openDetail(item)">
+                          
+                               <td class="text-left "> {{$index + 1}}</td>
+                               <td class="text-left" ng-bind-html="item.TransitionTypeId | activeStatus"> {{item.TransitionTypeName}}</td>
+                               <td class="text-left "> {{item.TransitionTypeId ==2? item.ToSalePointName : item.FromSalePointName}}</td>
+                               <td class="text-left ">
+                                   <div ng-repeat="ele in item.Data" style="display: flex; justify-content: space-between;" ng-if="ele.TotalTrans>0">
+                                       <div style="text-align: left;"><strong>{{$vm.getLotteryName(ele.LotteryChannelId)}}</strong> </div>
+                                       <div style="text-align: right; line-height: 1.5;">{{ele.TotalTrans}}</div>
+                                   </div>
+
+                                   <div ng-repeat="ele in item.Data" style="display: flex; justify-content: space-between;" ng-if="ele.TotalTransDup>0">
+                                       <div style="text-align: left;"><strong>{{$vm.getLotteryName(ele.LotteryChannelId) }} (Vtr)</strong> </div>
+                                       <div style="text-align: right; line-height: 1.5;">{{ele.TotalTransDup}}</div>
+
+                                   </div>
+                                   <div style="display: flex; justify-content: space-between;">
+                                       <div style="text-align: left;"><strong>Tổng</strong> </div>
+                                       <div style="text-align: right; line-height: 1.5;">{{getTotalForColumn(item.Data) | formatCurrency}}</div>
+                                   </div>
+                               </td>
+                               <td class="text-center " ng-bind-html="item.ConfirmStatusId | confirmStatus"></td>
+                               <td class="text-center "> {{item.ManagerName}}</td>
+                               <td class="text-center "> {{item.TransitionDate| formatDateTime }}</td>
+                        
+
+                        </tr>
+
+                        <tr>
+                            <td colspan="99" ng-if=" $vm.listConfirm.length==0">Chưa có dữ liệu </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div>
+                <pagination params="$vm.params" total-row="$vm.totalRow"></pagination>
+            </div>
+        </div>
+    </div>
+</div>

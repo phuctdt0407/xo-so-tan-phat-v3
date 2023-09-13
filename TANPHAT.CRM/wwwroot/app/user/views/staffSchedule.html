@@ -1,0 +1,31 @@
+﻿<div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
+    <div class="container-fluid wh-bg pb-10 mt-10">
+
+        <div class="d-flex justify-content-lg-between pl-10">
+            <div class="pt10 w160px">
+                <label>Tháng</label>
+                <monthyearpicker my-class="input-sm datepicker-new" date-format="MM-YYYY" placeholder="All month"
+                                 ng-model="$vm.month" on-select="$vm.loadData()" output-format="YYYY-MM"></monthyearpicker>
+            </div>
+
+            <div class="pt-10">
+                <div class="morning-shift px-2 py-1" style="display: flex; justify-content: space-between; border-radius: 5px">
+                    <span>Ca sáng</span>
+                    <span>6:00 - 13:30</span>
+                </div>
+                <div class="evening-shift mt-2 px-2 py-1" style="display: flex; justify-content: space-between; border-radius: 5px">
+                    <span>Ca chiều</span>
+                    <span>13:30 - 21:00</span>
+                </div>
+                <div class="mt-2 px-2 py-1" style="background-color: deepskyblue; color: white; border-radius: 5px">
+                    <div class="mb-1">Tổng số ca trong tháng: {{$vm.totalShiftInMonth}}</div>
+                    <div>Tổng số ca đến hiện tại: {{$vm.totalShiftToCurrent}}</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="m10">
+            <div id="calendar"></div>
+        </div>
+    </div>
+</div>

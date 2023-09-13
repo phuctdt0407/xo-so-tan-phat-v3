@@ -1,0 +1,34 @@
+﻿namespace TANPHAT.CRM.Domain.Models.Activity.Enum
+{
+    public enum ActivityGetType
+    {
+        GetDataReceivedFromAgency,
+        GetDataDistributeForSalePoint,
+        GetDataSell,
+        GetSalePointLog,
+        GetDataInventory,
+        GetRepaymentLog,
+        GetInventoryLog,
+        GetDataScratchcardFromAgency,
+        GetDataDistributeScratchForSalePoint,
+        GetDataDistributeScratchForSubAgency,
+        GetScratchcardFull,
+        GetWinningList,
+        GetTransitionListToConfirm,
+        GetShiftDistributeByDate,
+        GetSoldLogDetail,
+        GetTransLogDetail,
+        GetSalePointReturn,
+        GetLotteryPriceAgency,
+        GetListLotteryForReturn,
+        GetListHistoryForManager,
+        GetListReportMoneyInADay,
+        GetTmpWinningTicket,
+        GetDataSubAgency,
+        GetListSubAgency,
+        GetListLotteryPriceSubAgency,
+        GetStaticFee,
+        GetDebtOfStaff,
+        GetPayedDebtAndNewDebtAllTime
+    }
+}

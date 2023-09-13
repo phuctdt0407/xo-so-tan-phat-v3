@@ -1,0 +1,72 @@
+﻿<div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
+    <div class="container-fluid wh-bg mt-10">
+
+        <div class="row">
+            <div class="col-md-3 col-xs-6 col-lg-2 pt10">
+                <label>Tháng</label>
+                <monthyearpicker my-class="input-sm datepicker-new" date-format="MM/YYYY" placeholder="All month"
+                                 ng-model="$vm.month" on-select="$vm.loadData()" ng-change="$vm.loadData()" output-format="YYYY-MM"></monthyearpicker>
+            </div>
+            <div class="col-md-3 col-xs-6 col-lg-2 pt10">
+                <label>Chọn nhân viên</label>
+                <!--<ui-select ng-model="$vm.params.userid" ng-change="$vm.loadData()"
+                   theme="select2" search-enabled="false">
+            <ui-select-match placeholder="Chọn nhân viên" allow-clear="false">{{$select.selected.Name}}</ui-select-match>
+            <ui-select-choices position="down" repeat="ele.Id.toString() as ele in $vm.listStaffDropDown">
+                {{ele.Name}}
+            </ui-select-choices>
+        </ui-select>-->
+                <ui-select multiple close-on-select="true" ng-model="$vm.params.userid" theme="select2"
+                           search-enabled="true">
+                    <ui-select-match placeholder="Chọn điểm bán" allow-clear="true">
+                        {{$item.Name}}
+                    </ui-select-match>
+                    <ui-select-choices position="down" repeat="ele.Id.toString() as ele in $vm.listStaffDropDown | filter:$select.search">
+                        {{ele.Name}}
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+            <div class="col-md-3 col-xs-6 col-lg-2 pt10">
+                <label>Chọn loại vé</label>
+                <ui-select ng-model="$vm.params.lotteryTypeId"
+                           theme="select2" search-enabled="false">
+                    <ui-select-match placeholder="Chọn loại vé" allow-clear="false">{{$select.selected.lotteryName}}</ui-select-match>
+                    <ui-select-choices position="down" repeat="ele.lotteryTypeId.toString() as ele in $vm.listLotteryType">
+                        {{ele.lotteryName}}
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+            <div style="height: 50px; margin-top: 45px;" class="btn btn-primary float-r resizeSchedule" ng-click="$vm.loadData()"> tìm kiếm </div>
+        </div>
+        <h3 class="text-center pt-4">Số lượng trung bình vé bán trong tháng {{$vm.thisMonth}} của mỗi nhân viên</h3>
+        <div class="table-responsive resize-tb">
+            <div id="chartColunm" class="minWidthChart"></div>
+        </div>
+        <h3 class="text-center pt-4">Số lượng vé đã bán các ngày trong tháng {{$vm.thisMonth}}</h3>
+<!--        <div class="table-responsive resize-tb">-->
+<!--            <div id="chartline" class="minWidthChart"></div>-->
+<!--        </div>-->
+        <div class="table-responsive resize-tb">
+            <table class="table">
+                <thead class="fix-scroll">
+                <tr>
+                    <th class="theader first-col-sticky"></th>
+                    <th class="theader text-center" ng-repeat="item in $vm.listDate">{{item.time}}</th>
+                </tr>
+                </thead>
+                <tbody class="">
+                <tr ng-repeat="ele in $vm.dataLine">
+                    <td class="first-col-sticky link ">
+                        {{ele.name}}
+
+                    </td>
+                    <td ng-repeat="item in ele.data track by $index" class="w100">
+                        {{item  | formatCurrency}}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>    

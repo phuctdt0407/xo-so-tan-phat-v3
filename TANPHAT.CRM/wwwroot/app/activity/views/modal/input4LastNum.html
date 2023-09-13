@@ -1,0 +1,54 @@
+﻿<div class="modal-header text-center">
+    <h3 class="modal-title text-center" id="modal-title">Nhập số lượng vé bán</h3>
+</div>
+<div class="mx-3">
+    <h3 class="text-left">Đài: {{$vm.data.ShortName}}</h3>
+    <div class="text-left">Ngày: {{$vm.LotteryDateDisplay}}</div>
+    <div class="text-left mt-2">Còn lại: {{$vm.data.TotalRemaining}}</div>
+    <table class="table mt-2" style="width:100%; margin-left:auto; margin-right:auto">
+        <thead>
+            <tr>
+                <th class="noselect theader text-center">Số lượng</th>
+                <th class="noselect theader text-center">6 số của vé </th>
+                <th class="noselect theader text-center">Thành tiền </th>
+                <th class="noselect theader text-center">Xóa </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="item in $vm.data.ListDetail">
+                <td>
+                    <input class="text-right" type="number" name="" min="0" max="999999"
+                           ng-model="item.input"
+                           ng-keypress="inputNumber($event)"
+                           ng-change="$vm.ChangeValueSale(item, 0,2,item.input, {{item.input}})"
+                           ng-click="showKeyBoard($event, false)">
+                </td>
+                <td>
+                    <input class="text-right" ng-disabled="item.input == 0" type="text" name=""
+                           ng-model="item.fourLastNumber"
+                           ng-change="$vm.ChangeValue4LastNumber(item, 0,2,item.fourLastNumber)"
+                           ng-click="showKeyBoard($event, true)">
+                </td>
+                <td>{{item.sum | formatCurrency}}</td>
+                <td>
+                    <i class="fa fa-trash fa-lg cursor" aria-hidden="true" style="color: red; font-size: 50px; align-self: stretch; margin: 0 !important" ng-click="$vm.deleteRow(item, $index)"></i>
+                </td>
+            </tr>
+            <tr ng-if="!$vm.data.ListDetail ||$vm.data.ListDetail.length == 0">
+                <td colspan="99">
+                    Không có dữ liệu
+                </td>
+            </tr>
+            <tr ng-show="!$vm.data.ListDetail || $vm.data.ListDetail.length == 0 || $vm.data.ListDetail[$vm.data.ListDetail.length - 1].input > 0">
+                <td colspan="99" class="py-1">
+                    <i class="fa fa-plus fa-lg cursor ml-3 mb-2" aria-hidden="true" style="color: green; font-size: 50px; align-self: center; line-height: revert" ng-click="$vm.addRow()"></i>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-success" type="button" ng-if="!$vm.isSaving" ng-click="$vm.save()">Lưu</button>
+    <img src="../images/loading-dot.gif" ng-if="$vm.isSaving" class="float-r" style="height: 45px; width: 120px;">
+    <button class="btn btn-secondary" type="button" ng-if="!$vm.isSaving" ng-click="$vm.cancel()">Đóng</button>
+</div>

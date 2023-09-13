@@ -1,0 +1,57 @@
+﻿<div class="modal-header">
+    <h3 class="modal-title" id="modal-title">
+        {{$vm.model.SalePointName}}, ngày {{$vm.model.Display}} <i ng-if="$vm.model.TotalPriceBK == $vm.model.Shift1.TotalPriceBK + $vm.model.Shift2.TotalPriceBK" class="fa fa-check btn-success" aria-hidden="true"></i>
+    </h3>
+</div>
+<div>
+    <div class="modal-body">
+     
+
+            <div class="mb-1 mt-1">
+                <div style="display: flex; justify-content: space-around;">
+                    <h2 class="text-center"> {{$vm.model.Name}}</h2>
+                </div>
+                <!---->
+                <div class="table-responsive resize-tb">
+                    <table class="table">
+                        <thead class="fix-scroll">
+                            <tr class="noselect theader" >
+                                <th class="text-left w80px">Ca</th>
+                                <th class="text-center">Nhân viên</th>
+                                <th class="text-center">Số tiền</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="text-left w80px">Ca 1</td>
+                                <td class="text-left">{{$vm.model.Shift1.FullName}}</td>
+                                <td class="text-right">{{$vm.model.Shift1.TotalPriceBK | formatCurrency}}</td>
+                            </tr>
+                            <tr>
+                                <td class="text-left">Ca 2</td>
+                                <td class="text-left">{{$vm.model.Shift2.FullName}}</td>
+                                <td class="text-right">{{$vm.model.Shift2.TotalPriceBK | formatCurrency}}</td>
+                            </tr>
+                            <tr>
+                                <td class="text-left bg-num" colspan="2">TC</td>
+                                <td class="text-right bg-num">{{$vm.model.Shift1.TotalPriceBK + $vm.model.Shift2.TotalPriceBK | formatCurrency}}</td>
+                            </tr>
+                            <tr>
+                                <td class="text-left bg-sum" colspan="2">
+                                    VIETLOTT
+                                </td>
+                                <td class="text-right bg-sum">{{$vm.model.TotalPriceBK | formatCurrency}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+          
+
+        </div>
+    </div>
+</div>
+
+<div class="modal-footer">
+    <button class="btn btn-secondary" type="button" ng-click="$vm.close()">Đóng</button>
+</div>

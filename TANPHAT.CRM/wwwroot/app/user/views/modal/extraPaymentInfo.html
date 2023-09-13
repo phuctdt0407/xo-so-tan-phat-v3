@@ -1,0 +1,66 @@
+﻿<div class="modal-header align-content-center">
+    <h3 class="modal-title text-left" id="modal-title">Thông tin chi tiết</h3>
+</div>
+
+<div class="modal-body">
+    <div class="row">
+        <div class="col-6 row padding-modal">
+            <div class="table-responsive resize-tb px-3">
+                <table class="table" style="width:100%">
+                    <thead>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="noselect bnor text-left"><strong>Hình thức: </strong></td>
+                            <td class="noselect bnor text-left">   <span class="{{'circle-payment '+ $vm.modelInfo.extraPaymentType.Css}}"></span>{{$vm.modelInfo.extraPaymentType.Name}}</td>
+                        </tr>
+                        <tr>
+                            <td class="noselect bnor text-left"><strong>Tên NV: </strong></td>
+                            <td class="noselect bnor text-left">{{$vm.listInfo.FullName}}</td>
+                        </tr>
+                        <tr>
+                            <td class="noselect bnor text-left"><strong>Người tạo: </strong> </td>
+                            <td class="noselect bnor text-left"> {{$vm.modelInfo.ActionByName}}</td>
+                        </tr>
+                        <tr>
+                            <td class="noselect bnor text-left"> <strong>Số tiền: </strong></td>
+                            <td class="noselect bnor text-left">{{$vm.modelInfo.Price | formatCurrency }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="col-6 row padding-modal">
+            <div class="table-responsive resize-tb px-3">
+                <table class="table" style="width:100%">
+                    <thead>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="noselect bnor text-left"> <strong>Loại: </strong></td>
+                            <td class="noselect bnor text-left">{{$vm.modelInfo.TypeName}}</td>
+                        </tr>
+                        <tr>
+                            <td class="noselect bnor text-left"><strong>Ngày: </strong> </></td>
+                            <td class="noselect bnor text-left">{{$vm.modelInfo.Date | formatDate}}</td>
+                        </tr>
+                        <tr>
+                            <td class="noselect bnor text-left"> <strong>Ngày tạo:</strong></td>
+                            <td class="noselect bnor text-left">{{$vm.modelInfo.ActionDate | formatDate}}</td>
+                        </tr>
+                        <tr>
+                            <td class="noselect bnor text-left">  <strong>Ghi chú: </strong> </td>
+                            <td class="noselect bnor text-left"> {{$vm.modelInfo.Note}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <img src="../images/loading-dot.gif" ng-if="$vm.isSaving" class="float-r" style="height: 45px; width: 120px;">
+    <button class="btn btn-danger" ng-if="!$vm.isSaving && $vm.isCanChangeData" type="submit" ng-click="$vm.save()">Xoá</button>
+    <button class="btn btn-secondary" ng-if="!$vm.isSaving" type="button" ng-click="$vm.close()">Đóng</button>
+</div>

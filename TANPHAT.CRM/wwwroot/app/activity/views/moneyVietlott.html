@@ -1,0 +1,129 @@
+﻿<div class="col-12 layout-spacing">
+    <h2 class="text-center pt-2">Tiền nạp Vietlott</h2>
+    <!--TAB-->
+    <ul class="nav nav-tabs" id="iconTab" role="tablist">
+        <li class="nav-item cursor" ng-click="$vm.changeTab(1)">
+            <a class="nav-link py-0" ng-class="{'active': !$vm.tab || $vm.tab == 1}" id="retail" data-toggle="tab" role="tab">
+                Danh sách nạp
+            </a>
+        </li>
+        <li class="nav-item cursor" ng-click="$vm.changeTab(2)">
+            <a class="nav-link py-0" ng-class="{'active':  $vm.tab == 2}" id="wholesale" data-toggle="tab" role="tab">
+                Nạp tiền
+            </a>
+        </li>
+    </ul>
+
+    <div ng-if="!$vm.tab || $vm.tab == 1" class="container-fluid wh-bg">
+        <div class="row mx-2">
+            <div class="mt20 w160px pt-10">
+                <label>Tháng</label>
+                <monthyearpicker my-class="input-sm datepicker-new" date-format="MM/YYYY" placeholder="All month"
+                                 ng-model="$vm.params.month" on-select="$vm.loadData()" ng-change="$vm.loadData()" output-format="YYYY-MM"></monthyearpicker>
+
+            </div>
+
+            <div class="mt-10 mx-2">
+                <label>Chọn điểm bán</label>
+                <ui-select ng-model="$vm.salepointId" ng-change="$vm.filterbySalePoint()"
+                           theme="select2" search-enabled="false">
+                    <ui-select-match placeholder="Chọn điểm bán" allow-clear="false">{{$select.selected.Name}}</ui-select-match>
+                    <ui-select-choices position="down" repeat="ele.Id as ele in $vm.listSalePoint">
+                        {{ele.Name}}
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </div>
+        <div style="overflow: auto">
+            <div class="table-responsive resize-tb mt-10">
+                <table class="table" style="width:100%">
+                    <thead class="fix-scroll">
+                        <tr>
+                            <th class="noselect theader text-center">Điểm bán</th>
+                            <th class="noselect theader text-center">Ngày</th>
+                            <th class="noselect theader text-center">Người nạp</th>
+                            <th class="noselect theader text-center">Số tiền</th>
+                            <th class="noselect theader text-center">Ghi chú</th>
+                            <th class="noselect theader text-center">Xóa</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat-start="item in $vm.listData" style="display: none"></tr>
+                        <tr ng-if="item.ListHistory.length > 0" ng-repeat="ele in item.ListHistory track by $index">
+                            <td rowspan="{{item.ListHistory.length}}" ng-if="$index == 0">
+                                {{item.SalePointName}}
+                            </td>
+                            <td class="text-left">{{ele.Date | formatDate}}</td>
+                            <td class="text-left"> {{ele.ActionByName}}</td>
+                            <td class="text-right" style="min-width: 120px"> {{ele.TotalPrice != 0 ? (ele.TotalPrice | formatCurrency) : 0}}</td>
+                            <td class="text-left">{{ele.Note}}</td>
+                            <td>
+                                <i class="fa fa-trash fa-lg cursor" style="color: red" ng-click="$vm.getBootBox(ele)"></i>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" class="text-center" style="font-weight:500">Tổng số tiền:</td>
+                            <td class="text-right" style="color:red">{{$vm.getTotalAmount($vm.listData, item.SalePointId) | formatCurrency}}</td>
+                            <td colspan="2"></td>
+                        </tr>
+                        <tr ng-if="item.ListHistory.length == 0">
+                            <td>
+                                {{item.SalePointName}}
+                            </td>
+                            <td colspan="99">
+                                Chưa có dữ liệu
+                            </td>
+                        </tr>
+                        <tr ng-repeat-end style="display: none"></tr>
+
+                        <tr>
+                            <td colspan="99" ng-if=" $vm.listData.length==0">Chưa có dữ liệu </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div ng-if="$vm.tab == 2">
+
+        <div class="col-12 layout-spacing px-1">
+            <div class="container-fluid wh-bg pt-3">
+                <div class="mx-auto col-4">
+                    <div class="">
+                        <label>Ngày</label>
+                        <datepicker my-class="input-sm datepicker" date-format="DD-MM-YYYY" pick-time="false"
+                                    ng-model="$vm.saveData.Date" output-format="DD-MM-YYYY"
+                                    placeholder="dd/mm/yyyy"></datepicker>
+
+                    </div>
+
+                    <div class="">
+                        <label>Chọn điểm bán</label>
+                        <ui-select ng-model="$vm.saveData.SalePointId"
+                                   theme="select2" search-enabled="false">
+                            <ui-select-match placeholder="Chọn điểm bán" allow-clear="false">{{$select.selected.Name}}</ui-select-match>
+                            <ui-select-choices position="down" repeat="ele.Id.toString() as ele in $vm.listSalePoint">
+                                {{ele.Name}}
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+
+                    <div class="mt-2 w-100">
+                        <label>Số tiền nạp</label> <br />
+                        <input ng-keypress="inputNumber($event)" class="text-align-right w-100" type="number" min="0" max="9999999999999999999999" ng-model="$vm.saveData.Price">
+
+                    </div>
+
+                    <div class="mt-2 w-100">
+                        <label>Ghi chú</label> <br />
+                        <input class="text-align-left w-100" type="text" ng-model="$vm.saveData.Note">
+                    </div>
+                </div>
+                <div class="modal-footer mt-3">
+                    <div class="btn btn-primary " ng-if="!$vm.isSaving" ng-click="$vm.save()"><i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu </div>
+                    <img src="../images/loading-dot.gif" ng-if="$vm.isSaving" class="float-r" style="height: 45px; width: 120px;">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

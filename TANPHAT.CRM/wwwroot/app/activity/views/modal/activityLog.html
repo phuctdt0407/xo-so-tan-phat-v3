@@ -1,0 +1,234 @@
+<div class="modal-header">
+    <h3 class="modal-title" id="modal-title">Nhật ký hoạt động</h3>
+</div>
+<div>
+    <div class="modal-body" >
+        <ul class="nav nav-tabs" id="iconTab" role="tablist">
+            <li class="nav-item cursor" ng-click="$vm.changeTab('activity-log-content')">
+                <a class="nav-link active" id="activity-log-tab" data-toggle="tab" role="tab"
+                   aria-controls="icon-home" aria-selected="true">
+                    Bán vé
+                </a>
+            </li>
+            <li class="nav-item cursor" ng-click="$vm.changeTab('transfer-log-content')">
+                <a class="nav-link pt8px " id="transfer-log-tab" data-toggle="tab" role="tab"
+                   aria-controls="icon-home" aria-selected="true">
+                    Chuyển nhận
+                    <span class="btn btn-danger" style="padding: 2px;" ng-if="$vm.totalConfirming1 != 0"> {{$vm.totalConfirming1}} <i class="fa fa-exclamation" aria-hidden="true"></i></span>
+                </a>
+            </li>
+            <li class="nav-item cursor" ng-click="$vm.changeTab('paying-winning-content')">
+                <a class="nav-link" id="paying-winning-tab" data-toggle="tab" role="tab"
+                   aria-controls="icon-home" aria-selected="true">
+                    Trả thưởng
+                </a>
+            </li>
+            <li class="nav-item cursor" ng-click="$vm.changeTab('paying-debt-content')">
+                <a class="nav-link" id="paying-deb-tab" data-toggle="tab" role="tab"
+                   aria-controls="icon-home" aria-selected="true">
+                    Trả nợ
+                </a>
+            </li>
+        </ul>
+
+        <div class="tab-content-level-1">
+            <div class="tab-pane fade" ng-class="{'show active': $vm.view == 'activity-log-content'}"
+                 id="activity-log-content"
+                 role="tabpanel" aria-labelledby="activity-log-tab">
+                <div class="card card-create-container">
+                    <table id="toDay" class="table" style="width: 100% ;">
+                        <thead>
+                            <tr>
+                                <th rowspan="2" class="noselect theader text-center"><span>STT</span></th>
+                                <th rowspan="2" class="noselect theader text-center"><span>Tổng số lượng</span></th>
+                                <th rowspan="2" class="noselect theader text-center"><span>Tổng doanh thu<br />dự kiến</span></th>
+                                <th colspan="4" class="noselect theader text-center"><span>Chi tiết</span></th>
+                                <th rowspan="2" class="noselect theader text-center"><span>Thời gian</span></th>
+                                <th rowspan="2" class="noselect theader text-center" style="max-width:70px">Xóa</th>
+                                <th rowspan="2" class="noselect theader text-center"><span>Hóa đơn</span></th>
+                            </tr>
+                            <tr>
+                                <th class="noselect theader text-center"><span>Loại vé</span></th>
+                                <th class="noselect theader text-center"><span>Đài bán</span></th>
+
+                                <th class="noselect theader text-center"><span>Số lượng</span></th>
+                                <th class="noselect theader text-center"><span>Doanh thu dự kiến</span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="display: none" ng-repeat-start="item in $vm.listSold"> </tr>
+                            <tr ng-repeat="ele in item.detail.SalePointLogData">
+                                <td ng-if="$index==0" ng-class="{'bg-sky' : item.RowNumber % 2 == 0}" rowspan="{{item.detail.SalePointLogData.length}}" class="noselect w80 text-center"> {{item.RowNumber}} </td>
+                                <td ng-if="$index==0" ng-class="{'bg-sky' : item.RowNumber % 2 == 0}" rowspan="{{item.detail.SalePointLogData.length}}" class="noselect w120 text-right"> {{item.TotalQuantity}} </td>
+                                <td ng-if="$index==0" ng-class="{'bg-sky' : item.RowNumber % 2 == 0}" rowspan="{{item.detail.SalePointLogData.length}}" class="noselect w120 text-right"> {{item.TotalPrice | formatCurrency}} </td>
+                                <td class="noselect" ng-class="{'bg-sky' : item.RowNumber % 2 == 0}">  {{ele.LotteryTypeName}}</td>
+                                <td class="noselect text-left" ng-class="{'bg-sky' : item.RowNumber % 2 == 0}">  {{ele.ShortName}}</td>
+                                <td class="noselect text-right" ng-class="{'bg-sky' : item.RowNumber % 2 == 0}">  {{ele.Quantity}}</td>
+
+                                <td class="noselect text-right" ng-class="{'bg-sky' : item.RowNumber % 2 == 0}">  {{ele.TotalValue | formatCurrency}}</td>
+
+                                <td ng-if="$index==0" ng-class="{'bg-sky' : item.RowNumber % 2 == 0}" rowspan="{{item.detail.SalePointLogData.length}}" class="noselect w120 text-center"> {{item.CreatedDate | formatDateTimeByHours}} </td>
+
+                                <td style="max-width:120px;cursor:pointer" ng-class="{'bg-sky' : item.RowNumber % 2 == 0}" rowspan="{{item.detail.SalePointLogData.length}}" ng-if="!$vm.isSaving && $index == 0" ng-click="$vm.getBootBox(item)">
+                                    <div style="text-align: center;">
+                                        <i class="fa fa-trash" aria-hidden="true"></i>
+                                        <img src="../images/loading-dot.gif" ng-if="$vm.isSaving" class="float-r" style="height: 45px; width: 120px;">
+                                    </div>
+                                </td>
+                                <td rowspan="{{item.detail.SalePointLogData.length}}" ng-class="{'bg-sky' : item.RowNumber % 2 == 0}" ng-if="$index == 0">
+                                    <div>
+                                        <i class="fa fa-print cursor" ng-click="$vm.printBill(item)"></i>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr style="display: none" ng-repeat-end=""> </tr>
+
+
+                            <tr ng-if=" (!$vm.listSold || $vm.listSold.length <=0 )">
+                                <td colspan="99" class="text-center">Chưa có dữ liệu </td>
+                            </tr>
+                    </table>
+                </div>
+                <div>
+                    <pagination params="$vm.params" total-row="$vm.totalRow"></pagination>
+                </div>
+            </div>
+            
+            <!---->
+            <div class="tab-pane fade" ng-class="{'show active': $vm.view == 'transfer-log-content'}"
+                 id="transfer-log-content"
+                 role="tabpanel" aria-labelledby="activity-log-tab">
+                <div class="card card-create-container">
+                    <table id="toDay" class="table table-hover " style="width: 100%; pointer-events: none;">
+                        <thead>
+                            <tr>
+                                <th rowspan="2" class="noselect theader text-center"><span>STT</span></th>
+                                <th rowspan="2" class="noselect theader text-center"><span>Hoạt Động</span></th>
+                                <th colspan="3" class="noselect theader text-center"><span>Chi tiết</span></th>
+                                <th rowspan="2" class="noselect theader text-center"><span>Quản lý phụ trách</span></th>
+                                <th rowspan="2" class="noselect theader text-center"><span>Trạng thái</span></th>
+                                <th rowspan="2" class="noselect theader text-center"><span>Thời gian</span></th>
+
+
+                            </tr>
+                            <tr>
+                                <th class="noselect theader text-center"><span>Loại vé</span></th>
+                                <th class="noselect theader text-center"><span>Đài</span></th>
+                                <th class="noselect theader text-center"><span>Số lượng</span></th>
+                            </tr>
+
+                        </thead>
+                        <tbody>
+                            <tr style="display: none" ng-repeat-start="item in $vm.listTrans"> </tr>
+
+
+
+                            <tr ng-repeat="ele in item.detail">
+                                <td ng-if="$index==0" ng-class="{'bg-sky' : item.RowNumber % 2 == 0}" rowspan="{{item.detail.length}}" class="noselect w80 text-center"> {{item.RowNumber}} </td>
+                                <td ng-if="$index==0" ng-class="{'bg-sky' : item.RowNumber % 2 == 0}" rowspan="{{item.detail.length}}" class="noselect w120 text-right"> {{item.TransitionTypeName}} </td>
+                                <td class="noselect text-left" ng-class="{'bg-sky' : item.RowNumber % 2 == 0}">
+                                    <span ng-if="ele.TotalTrans>0&&!ele.IsScratchcard">Vé thường</span>
+                                    <span ng-if="ele.TotalTransDup >0 &&!ele.IsScratchcard">Vé trùng </span>
+                                    <span ng-if="ele.IsScratchcard">Vé cào</span>
+                                </td>
+                                <td class="noselect text-left" ng-class="{'bg-sky' : item.RowNumber % 2 == 0}">  {{ele.ShortName}}</td>
+                                <td class="noselect text-right" ng-class="{'bg-sky' : item.RowNumber % 2 == 0}">
+                                    <span ng-if="ele.TotalTrans >0">  <span ng-if="item.TransitionTypeId==2" style="color:green">+  </span><span style="color:red" ng-if="item.TransitionTypeId!=2">-  </span>{{ele.TotalTrans}} <br /></span>
+
+                                    <span ng-if="ele.TotalTransDup >0">  <span ng-if="item.TransitionTypeId==2" style="color:green">+  </span><span style="color:red" ng-if="item.TransitionTypeId!=2">-  </span>{{ele.TotalTransDup}}</span>
+
+
+                                </td>
+                                <td ng-if="$index==0" ng-class="{'bg-sky' : item.RowNumber % 2 == 0}" rowspan="{{item.detail.length}}" class="noselect w120 text-right"> {{item.ManagerName}} </td>
+                                <td ng-if="$index==0" ng-class="{'bg-sky' : item.RowNumber % 2 == 0}" rowspan="{{item.detail.length}}" class="noselect w120 text-right"> {{item.ConfirmStatusName}} </td>
+                                <td ng-if="$index==0" ng-class="{'bg-sky' : item.RowNumber % 2 == 0}" rowspan="{{item.detail.length}}" class="noselect w120 text-right"> {{item.TransitionDate| formatDateTimeByHours}} </td>
+
+                            </tr>
+
+                            <tr style="display: none" ng-repeat-end=""> </tr>
+
+                            <tr ng-if="!$vm.listTrans || $vm.listTrans <=0">
+                                <td colspan="99" class="text-center">Không tìm thấy dữ liệu nào...</td>
+                            </tr>
+                    </table>
+                </div>
+            </div>
+            <!---->
+            <div class="tab-pane fade" ng-class="{'show active': $vm.view == 'paying-winning-content'}" id="paying-winning-content"
+                 role="tabpanel" aria-labelledby="paying-winning-tab">
+                <div class="card card-create-container">
+                    <table class="table table-hover " style="width: 100%">
+                        <thead>
+                            <tr>
+                                <th class="noselect theader text-center"><span>STT</span></th>
+                                <th class="noselect theader text-center"><span>Loại</span></th>
+                                <th class="noselect theader text-center"><span>Đài</span></th>
+                                <th class="noselect theader text-center"><span>Vé</span></th>
+                                <th class="noselect theader text-center"><span>Số lượng</span></th>
+                                <th class="noselect theader text-center"><span>Số tiền</span></th>
+                                <th class="noselect theader text-center"><span>Điểm bán</span></th>
+                                <th class="noselect theader text-center"><span>Thời gian</span></th>
+                                <th class="noselect theader text-center"><span>Xóa</span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="noselect" ng-repeat="item in $vm.listWinning">
+                                <td class="noselect w80 text-center" ng-class="{'bg-sky' : $index % 2 == 1}">{{$vm.listWinning.indexOf(item) + 1}}</td>
+                                <td class="noselect w120 text-left" ng-class="{'bg-sky' : $index % 2 == 1}">{{item.WinningTypeName}}</td>
+                                <td class="noselect w100 text-center" ng-class="{'bg-sky' : $index % 2 == 1}">{{item.ShortName}}</td>
+                                <td class="noselect w120 text-right" ng-class="{'bg-sky' : $index % 2 == 1}">{{item.LotteryNumber}}</td>
+                                <td class="noselect w100 text-right" ng-class="{'bg-sky' : $index % 2 == 1}">{{item.Quantity}}</td>
+                                <td class="noselect w120 text-right" ng-class="{'bg-sky' : $index % 2 == 1}">{{item.WinningPrice | formatCurrency}}</td>
+                                <td class="noselect w120 text-center" ng-class="{'bg-sky' : $index % 2 == 1}">{{item.FromSalePointName}}</td>
+                                <td class="noselect w120 text-center" ng-class="{'bg-sky' : $index % 2 == 1}">{{item.ActionDate | formatDateTimeByHours}}</td>
+                                <td class="noselect w50 text-center" ng-class="{'bg-sky' : $index % 2 == 1}"><i class="fa fa-trash link-black" aria-hidden="true" ng-click="$vm.getBootBoxWinnning(item)"></i></td>
+                            </tr>
+                            <tr ng-if="!$vm.listWinning || $vm.listWinning <=0">
+                                <td colspan="99" class="text-center">Không tìm thấy dữ liệu nào...</td>
+                            </tr>
+                    </table>
+                </div>
+
+            </div>
+            <div class="tab-pane fade" ng-class="{'show active': $vm.view == 'paying-debt-content'}" id="paying-debt-content"
+                 role="tabpanel" aria-labelledby="paying-deb-tab">
+                <div class="card card-create-container">
+                    <table class="table" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th class="noselect theader text-center"><span>STT</span></th>
+                                <th class="noselect theader text-center"><span>Tên khách</span></th>
+                                <th class="noselect theader text-center"><span>Số tiền</span></th>
+                                <th class="noselect theader text-center"><span>Ghi chú</span></th>
+                                <th class="noselect theader text-center"><span>Thời gian</span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="noselect" ng-repeat="item in $vm.listPayingDebtLog">
+                                <td class="noselect w80 text-center" ng-class="{'bg-sky' : $index % 2 == 1}">{{$vm.listPayingDebtLog.indexOf(item) + 1}}</td>
+                                <td class="noselect w120 text-center" ng-class="{'bg-sky' : $index % 2 == 1}">{{item.FullName}}</td>
+                                <td class="noselect w120 text-right" ng-class="{'bg-sky' : $index % 2 == 1}">{{item.TotalPrice | formatCurrency}}</td>
+                                <td class="noselect w120 text-center" ng-class="{'bg-sky' : $index % 2 == 1}">{{item.Note}}</td>
+
+
+                                <td class="noselect w120 text-center" ng-class="{'bg-sky' : $index % 2 == 1}">{{item.CreatedDate | formatDateTimeByHours}}</td>
+                            </tr>
+                            <tr ng-if="!$vm.listPayingDebtLog || $vm.listPayingDebtLog <=0">
+                                <td colspan="99" class="text-center">Không tìm thấy dữ liệu nào...</td>
+                            </tr>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+
+</div>
+
+
+<div class="modal-footer">
+    <button class="btn btn-secondary" type="button" ng-click="$vm.cancel()">Đóng</button>
+
+</div>

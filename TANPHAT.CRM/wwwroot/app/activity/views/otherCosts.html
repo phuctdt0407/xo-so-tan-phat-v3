@@ -1,0 +1,61 @@
+﻿<div class="modal-header">
+    <h3 class="modal-title" id="modal-title">Chi phí khác</h3>
+</div>
+<div class="modal-body">
+    <div class="m-3">
+        <div class="card card-create-container">
+            <div class="row p-2">
+                <div class="col-2">
+                    <label class="rq-form">Chọn điểm bán</label>
+                    <ui-select ng-model="$vm.salePointUpdate"
+                               theme="select2" search-enabled="false"
+                               ng-change="$vm.changeSalePointUpdate($select.selected)">
+                        <ui-select-match style="font-size: 20px" allow-clear="false" placeholder="Chọn điểm bán">
+                            {{$select.selected.Name}}
+                        </ui-select-match>
+                        <ui-select-choices position="down" repeat="item in $vm.listSalePoint">
+                            {{item.Name}}
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+
+                <div class="col-3">
+                    <label class="rq-form">Loại chi phí</label>
+                    <ui-select ng-model="$vm.saveData.TypeNameId"
+                               theme="select2"
+                               search-enabled="false">
+                        <ui-select-match style="font-size: 20px" allow-clear="false" placeholder="Chọn loại chi phí">
+                            {{$select.selected.Name}}
+                        </ui-select-match>
+                        <ui-select-choices position="down" repeat="item.TypeNameId as item in $vm.listTypeOfFee">
+                            {{item.Name}}
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+
+                <div class="col-3">
+                    <label class="rq-form">Chi phí</label>
+                    <input type="text" class="form-control" id="quantity" name="numonly" placeholder="Nhập chi phí" required
+                           ng-keypress="inputNumber($event)"
+                          
+                           ng-model="$vm.saveData.Price ">
+                </div>
+
+                <div class="col-4">
+                    <label class="rq-form">Ghi chú</label>
+                    <input type="text" class="form-control" id="quantity" name="numonly"
+                           placeholder="Nhập ghi chú" required
+                           ng-model="$vm.saveData.Note ">
+                </div>
+
+            </div>
+
+
+            <div class="p-2">
+                <img src="../images/loading-dot.gif" ng-if="$vm.isSaving" class="float-r" style="height: 45px; width: 120px;">
+                <button class="float-right  btn btn-success" ng-if="!$vm.isSaving" type="submit" ng-click="$vm.addNewFee()">Lưu</button>
+            </div>
+        </div>
+    </div>
+</div>
+

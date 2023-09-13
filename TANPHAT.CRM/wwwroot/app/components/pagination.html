@@ -1,0 +1,43 @@
+﻿<div class="panel-footer border-n">
+    <div class="row paginate-container">
+        <div class="col-6 ">
+            <div class="display-count" ng-hide="IsShowCount==false">
+                Show
+                <select id="selectOption" class="input-sm ml-2" ng-model="rowPerPage" ng-options="item.value.toString() as item.name for item in listDisplayCount" ng-change="ChangePageSize()"></select>
+                &nbsp; entries
+            </div>
+            <p class="pagination pagination-description mt-1" ng-if="IsShowCount && totalRow">
+                Showing {{startIndex}} to {{endIndex}} of {{totalRow}} entries
+            </p>
+        </div>
+        <div class="col-6">
+            <ul class="pagination pagination-sm mn float-right" ng-if="totalPage > 1">
+                <li class="paginate_button previous chervon" ng-class="{'disabled': pageNumber == 1}">
+                    <a href="javascript:void(0);" ng-click="PreviousPage($event)"><i class="fa fa-chevron-left"></i></a>
+                </li>
+                <li class="paginate_button" ng-if="startNum > 1">
+                    <a href="javascript:void(0);" ng-click="GoToPage(1, $event)">1</a>
+                </li>
+                <li class="paginate_button disabled" ng-if="startNum > 2">
+                    <a>...</a>
+                </li>
+                <li ng-repeat="i in getNumber(totalPage) track by $index"
+                    ng-class="{'activePage': pageNumber == $index + 1,}"
+                    ng-if="$index + 1 >= startNum && $index + 1 <= endNum">
+                    <a class="paginate-page" id="id{{$index+1}}" href="javascript:void(0);" ng-click="GoToPage($index + 1, $event)">{{$index + 1}}</a>
+                </li>
+                <li class="paginate_button disabled" ng-if="endNum < totalPage - 1">
+                    <a>...</a>
+                </li>
+                <li class="paginate_button" ng-if="totalPage > CountShowPage && endNum < totalPage - 1" ng-class="{'activePage': pageNumber == totalPage}">
+                    <a class="paginate-page" href="javascript:void(0);" ng-click="GoToPage(totalPage, $event)">{{totalPage}}</a>
+                </li>
+                <li class="paginate_button next chervon" ng-class="{'disabled': pageNumber >= totalPage}">
+                    <a  href="javascript:void(0);" ng-click="NextPage($event)">
+                        <i class="fa fa-chevron-right"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

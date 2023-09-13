@@ -1,0 +1,66 @@
+﻿<div class="col-xl-12 col-lg-12 col-sm-12 wh-bg py-3 layout-spacing">
+    <div ng-if="$vm.isShowList($vm.listVietlottMenu)" class="card card-create-container p-3" style="margin-bottom:10px">
+        <h2>Vietlott</h2>
+        <ol style="list-style: decimal; padding-left: 30px" class="link fs18">
+            <li ng-repeat="item in $vm.listVietlottMenu" ng-if="checkPermission(item.root)">
+                <a href="{{item.href}}">
+                    <span class="link fs18">
+                        {{item.Name}}
+                    </span>
+                </a>
+            </li>
+        </ol>
+    </div>
+
+    <div ng-if="$vm.isShowList($vm.listOwnDebtMenu)" class="card card-create-container p-3" style="margin-bottom: 10px">
+        <h2>Nợ riêng</h2>
+        <ol style="list-style: decimal; padding-left: 30px" class="link fs18">
+            <li ng-repeat="item in $vm.listOwnDebtMenu" ng-if="checkPermission(item.root)">
+                <a href="{{item.href}}">
+                    <span class="link fs18">
+                        {{item.Name}}
+                    </span>
+                </a>
+            </li>
+        </ol>
+    </div>
+
+    <div ng-if="$vm.isShowList($vm.listTransfer_DebtMenu)" class="card card-create-container p-3" style="margin-bottom: 10px">
+        <h2>Chuyển khoản - Nợ</h2>
+        <ol style="list-style: decimal; padding-left: 30px" class="link fs18">
+            <li ng-repeat="item in $vm.listTransfer_DebtMenu" ng-if="checkPermission(item.root)">
+                <a href="{{item.href}}">
+                    <span class="link fs18">
+                        {{item.Name}}
+                    </span>
+                </a>
+            </li>
+        </ol>
+    </div>
+    <div class="card card-create-container p-3" style="margin-bottom: 10px">
+        <h2>Chi phí khác</h2>
+        <ol style="list-style: decimal; padding-left: 30px" class="link fs18">
+            <li>
+                <a ng-click="checkPermission('root.activity.otherCosts')? goToPage('root.activity.otherCosts') : return">
+                    <span class="link fs18">
+                        Chi phí
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a ng-click="checkPermission('root.activity.otherCostsHistory')? goToPage('root.activity.otherCostsHistory') : return">
+                    <span class="link fs18">
+                        Lịch sử chi phí
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a ng-click="checkPermission('root.activity.staticFee')? goToPage('root.activity.staticFee') : return">
+                    <span class="link fs18">
+                        Chi phí cố định
+                    </span>
+                </a>
+            </li>
+        </ol>
+    </div>
+</div>

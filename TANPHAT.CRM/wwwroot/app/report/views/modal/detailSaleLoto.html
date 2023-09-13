@@ -1,0 +1,54 @@
+﻿<div class="modal-header text-center">
+    <h3 class="modal-title" id="modal-title">Chi tiết doanh thu theo ca</h3>
+</div>
+
+<div>
+    <div class="">
+        <h4>Ngày: {{ $vm.dayDisplay}}</h4>
+        <h4>Điểm bán: {{$vm.salePointName}}</h4>
+        <div class="card card-create-container m-3">
+            <table class="table w100p">
+                <thead class="theader text-center fix-scroll">
+                    <tr>
+                        <th class="text-center">Nhân viên</th>
+                        <th class="text-center">Ca làm việc</th>
+                        <th class="text-center">Doanh thu</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in $vm.model.Data">
+                        <td class="text-left">
+                            {{item.FullName}}
+                        </td>
+                        <td class="text-left">
+                            {{item.ShiftId == 1 ? 'Ca sáng' : 'Ca chiều'}}
+
+                        </td>
+                        <td ng-if="item.TotalPrice == null" class="text-left">
+                            Chưa nhập
+                        </td>
+                        <td ng-if="item.TotalPrice != null" class="text-right">
+                            {{item.TotalPrice > 0 ? (item.TotalPrice | formatCurrency) : 0 }}
+                        </td>
+                        <td>
+                            <i  ng-click="$vm.openUpdate(item)" id="btnUpdate" style=" color: blue; cursor: pointer" class="fa fa-pencil-square-o" aria-hidden="true"></i>
+<!--                            <i ng-if="item.TotalPrice == null" id="btnUpdate" style=" pointer-events: none; opacity: 0.5; color: blue; cursor: pointer" class="fa fa-pencil-square-o" aria-hidden="true"></i>-->
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-left" colspan="2">Tổng cộng</td>
+                        <td class="text-right" colspan="2">
+                            {{$vm.model.AllTotalPrice > 0 ? ($vm.model.AllTotalPrice | formatCurrency) : 0}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<div class="modal-footer">
+    <button class="btn btn-secondary" type="button" ng-click="$vm.cancel()">Đóng</button>
+</div>

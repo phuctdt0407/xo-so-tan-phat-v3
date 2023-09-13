@@ -1,0 +1,32 @@
+﻿namespace TANPHAT.CRM.Domain.Models.SalePoint.Enum
+{
+    public enum SalePointGetType
+    {
+        GetListSalePoint,
+        GetListFeeOutsite,
+        GetListItemConfirm,
+        GetListConfirmPayment,
+        GetListCommission,
+        GetListHistoryOrder,
+        GetListUserByDateAndSalePoint,
+        GetDataForGuestReturn,
+        GetListGuestForConfirm,
+        GetListFeeOfCommission,
+        GetListTransaction,
+        GetListPaymentForConfirm,
+        GetListSalePointOfLeader,
+        GetListAttendentOfLeader,
+        GetListSaleOfVietLottInDate,
+        GetListSaleOfVietLottInMonth,
+        GetListSaleOfLotoInMonth,
+        GetListFeeOutSiteInMonth,
+        GetListUnionInYear,
+        GetListHistoryOfGuest,
+        GetListPayVietlott,
+        GetListSalePointPercent,
+        GetListLotteryAwardExpected,
+        GetListOtherFees,
+        GetTotalCommisionAndFee,
+        GetAllStaticFee
+    }
+}

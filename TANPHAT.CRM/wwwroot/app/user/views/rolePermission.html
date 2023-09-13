@@ -1,0 +1,51 @@
+﻿<div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
+    <div class="container-fluid wh-bg pt-10 mt-10">
+            <div class="row">
+                <div class="col-1">
+                    <table id="default-ordering" class="table" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th class="noselect theader center-align fix-scroll">Role</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="noselect" ng-repeat="element in $vm.listRole" ng-click="$vm.rowHighilited($index,element.Id)" ng-class="$index==$vm.selectedRow?'selected':''">
+                                <td class="noselect">{{element.Name}}</td>
+                            </tr>
+
+                            <tr ng-if="!$vm.listRole || $vm.listRole.length <=0">
+                                <td colspan="99" class="text-center">Không tìm thấy dữ liệu nào...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="col-11">
+                    <div class="table-responsive resize-tb">
+
+                        <table id="default-ordering" class="table" style="max-width:100%">
+                            <thead class="">
+                                <tr>
+                                    <th ng-repeat="item in $vm.listTitle" class="noselect theader center-align cus-th-user fix-scroll"> {{item.PermissionName}}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="noselect">
+                                    <td ng-repeat="item in $vm.listTitle" class="noselect align-top cus-td-user">
+                                        <ul >
+                                            <input ng-click="$vm.checkAll($index)" type="checkbox" ng-model="item.IsChecked" class="parent{{$index}}" style="margin-bottom: 12px"/> Select All
+
+                                            <li class="cus-td-user ml-1rem" ng-repeat="ele in item.Data" style="padding-bottom: 0.75rem;">
+                                                <input ng-click="$vm.checkFull($parent.$index); $vm.checkItem($parent.$index,$index)" ng-model="ele.IsCheck" type="checkbox" value="ele.TitleId" class="child{{$parent.$index}}"> {{ele.RoleName}}
+                                            </li>
+                                        </ul>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>

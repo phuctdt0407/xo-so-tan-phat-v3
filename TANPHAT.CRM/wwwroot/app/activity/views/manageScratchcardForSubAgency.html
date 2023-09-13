@@ -1,0 +1,55 @@
+﻿<div class="col-12 layout-spacing">
+    <div class="container-fluid wh-bg mt-10 pt-10">
+        <!--<div class="mt20" style="width: 160px;">
+            <label>Chọn ngày:</label>
+            <datepicker my-class="input-sm datepicker" date-format="DD-MM-YYYY" pick-time="false"
+                        ng-model="$vm.params.day" output-format="DD-MM-YYYY"
+                        ng-change="$vm.changeDate()"
+                        placeholder="dd/mm/yyyy"></datepicker>
+        </div>-->
+        <h2 class="p20">Ngày hiện tại: {{$vm.dayDisplay}}</h2>
+
+        <span>
+            <div ng-if="!$vm.isSaving" style="margin-top: 20px; margin-bottom: 20px" class="btn btn-primary pt-10 mb-10" ng-click="$vm.save()"><i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;Lưu</div>
+        </span>
+        <div style="overflow: auto">
+
+            <div class="table-responsive resize-tb">
+                <table class="table" style="width:100%">
+                    <thead class="fix-scroll">
+                        <tr class="">
+                            <!--<th class="noselect theader text-center">STT</th>-->
+                            <th rowspan="2" class="noselect theader text-center w80px">Đại lý con</th>
+                            <th colspan="2" ng-repeat="item in $vm.listScratchcard" class="noselect theader text-center">{{item.ShortName}}: {{item.TotalRemaining}}</th>
+                        </tr>
+                        <tr>
+                            <th ng-repeat-start="item in $vm.listScratchcard" style="display:none"></th>
+                            <th class="noselect theader text-center">Còn lại</th>
+                            <th class="noselect theader text-center">Chuyển thêm</th>
+                            <th ng-repeat-end style="display:none"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="daily in $vm.listSubAgency">
+                            <!-- <td class="text-center"> {{$index + 1}}</td>-->
+                            <td class="text-left"> {{daily.AgencyName}}</td>
+
+                            <!--MODIFY-->
+                            <td style="display:none" ng-repeat-start="vecao in daily.listScratchcard"> </td>
+                            <td class="text-right"> {{vecao.RemainingData  | formatCurrency}}</td>
+                            <td class="text-align-right" ng-class="vecao.InputData !== 0 ? 'bg-color' : ''" ng-click="$vm.onClick($index, $parent.$index)">
+                                <input ng-keypress="inputNumber($event)" class="text-align-right" id="quantity_{{$index}}_{{$parent.$index}}" ng-change="$vm.onChangeData(vecao, $index, $parent.$index)" ng-class="vecao.InputData !== 0 ? ['bg-color', 'border-input'] : 'border-input'" type="number" name="" min="0" max="999999999" ng-model="vecao.InputData">
+                            </td>
+
+                            <td style="display:none" ng-repeat-end> </td>
+                            <!--END-->
+
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <img src="../images/loading-dot.gif" ng-if="$vm.isSaving" class="float-r" style="height: 45px; width: 120px;">
+            <div ng-if="!$vm.isSaving" style="margin-top: 20px; margin-bottom: 20px" class="btn btn-primary float-r pt-10 mb-10" ng-click="$vm.save()"><i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;Lưu</div>
+        </div>
+    </div>
+</div>

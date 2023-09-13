@@ -1,0 +1,64 @@
+﻿<div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
+    <div class="container-fluid wh-bg mt-10">
+
+        <div class="row">
+            <div class="col-md-3 col-xs-6 col-lg-2 pt10">
+                <label>Tháng</label>
+                <monthyearpicker my-class="input-sm datepicker-new" date-format="MM/YYYY" placeholder="MM/YYYY"
+                                 ng-model="$vm.month" on-select="$vm.loadData()" ng-change="$vm.loadData()" output-format="YYYY-MM"></monthyearpicker>
+            </div>
+        </div>
+        <!--<h3 class="text-center">Số lượng vé nhận từ đại lý {{$vm.thisMonth}}</h3>
+        <div class="table-responsive resize-tb">
+            <div id="chartColunm" class="minWidthChart"></div>
+        </div>
+        <h3 class="text-center pt-4">Số lượng vé nhận từng ngày trong tháng {{$vm.thisMonth}}</h3>-->
+        <!--        <div class="table-responsive resize-tb">-->
+        <!--            <div id="chartline" class="minWidthChart"></div>-->
+        <!--        </div>-->
+
+    <div class="table-responsive resize-tb">
+        <table class="table">
+            <thead class="fix-scroll">
+                <tr>
+                    <th rowspan="2" class="theader first-col-sticky"></th>
+                    <th colspan="2" class="theader text-center" ng-repeat="item in $vm.listDate">{{item.time}}</th>
+                </tr>
+                <tr>
+                    <th ng-repeat-start="item in $vm.listDate" style="display: none"></th>
+                    <th class="theader text-center">
+                        Vé thường
+                    </th>
+                    <th class="theader text-center">
+                        Vé cào
+                    </th>
+                    <th ng-repeat-end style="display: none"></th>
+                   
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="ele in $vm.dataTable">
+                    <td class="first-col-sticky link ">
+                        {{ele.name}}
+
+                    </td>
+                    <td ng-repeat-start="item in ele.data track by $index" style="display: none"></td>
+                    <td class="w100" ng-bind-html="ele.data[$index] | changeColor">
+                         {{ele.data[$index] | formatCurrency}}
+                    </td>
+                    <td class="w100" ng-bind-html="ele.data1[$index] | changeColor">
+                        {{ele.data1[$index] | formatCurrency}}
+                    </td>
+                    <td ng-repeat-end style="display: none"></td>
+
+                  
+                </tr>
+            </tbody>
+        </table>
+
+
+
+
+    </div>
+    </div>
+</div>     

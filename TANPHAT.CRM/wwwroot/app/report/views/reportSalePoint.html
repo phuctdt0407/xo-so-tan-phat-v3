@@ -1,0 +1,684 @@
+﻿<div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
+    <div class="container-fluid mt-10 pt-10 pb-10 mt-10 px-4 wh-bg">
+        <div class="row">
+            <div class="col-md-3 col-xs-6 col-lg-2">
+                <label>Chọn ngày</label>
+                <datepicker my-class="input-sm datepicker" date-format="DD/MM/YYYY" pick-time="false"
+                            ng-model="$vm.params.day" output-format="DD/MM/YYYY"
+                            placeholder="dd/mm/yyyy"></datepicker>
+            </div>
+            <div class="col-md-3 col-xs-6 col-lg-2">
+                <label>Chọn điểm bán</label>
+                <ui-select ng-model="$vm.params.salePointId"
+                           theme="select2" search-enabled="false">
+                    <ui-select-match placeholder="Chọn điểm bán" allow-clear="false">
+                        {{$select.selected.Name}}
+                    </ui-select-match>
+                    <ui-select-choices position="down" repeat="ele.Id.toString() as ele in $vm.listSalePoint">
+                        {{ele.Name}}
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+            <div style="height: 50px; margin-top: 36px;" class="btn btn-primary float-r resizeSchedule"
+                 ng-click="$vm.changeDate()"> tìm kiếm
+            </div>
+        </div>
+        <div ng-if="$vm.listReportSalePoint.LotteryData ==null && $vm.listReportSalePoint.RepaymentData ==null && $vm.listReportSalePoint.ScratchcardData ==null && $vm.listReportSalePoint.WinningData ==null">
+            Chưa có dữ liệu
+        </div>
+
+
+        <div ng-if="$vm.listReportSalePoint.LotteryData !=null || $vm.listReportSalePoint.RepaymentData !=null || $vm.listReportSalePoint.ScratchcardData !=null || $vm.listReportSalePoint.WinningData !=null ">
+            <div class="table-responsive ">
+                <table class="table">
+                    <thead class="fix-scroll">
+                    <tr class="fix-scroll">
+                        <th class="noselect theader center-align first-col-sticky"></th>
+                        <th colspan="6" class="noselect theader center-align border-special">Ca 1</th>
+                        <th colspan="6" class="noselect theader center-align total-col-sticky">Ca 2</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td class="w100 first-col-sticky"></td>
+                        <td class="w100">Số tồn</td>
+                        <td class="w100">Thêm</td>
+                        <td class="w100">Sỉ</td>
+                        <td class="w100">Lẻ</td>
+                        <td class="w100">T.Tiền</td>
+                        <td class="w100 border-special">Còn lại</td>
+                        <td class="w100">Số tồn</td>
+                        <td class="w100">Thêm</td>
+                        <td class="w100">Sỉ</td>
+                        <td class="w100">Lẻ</td>
+                        <td class="w100">T.Tiền</td>
+                        <td class="w100">Còn lại</td>
+                    </tr>
+                    <tr>
+                        <td class="w100 grin-bg first-col-sticky bold-Num">Vé cào TP</td>
+                        <td class="text-align-right bold-Num">
+                            {{$vm.shift1ScratchCard1000.TotalStocks ? $vm.shift1ScratchCard1000.TotalStocks : '' | formatCurrency}}
+                        </td>
+
+                        <td class="text-align-right" ng-if="$vm.shift1ScratchCard1000.totalBalance< 0"
+                            style="color:red">
+                            {{$vm.shift1ScratchCard1000.totalBalance | formatCurrency}}
+                        </td>
+                        <td class="text-align-right" ng-if="$vm.shift1ScratchCard1000.totalBalance > 0"
+                            style="color:green">
+                            {{$vm.shift1ScratchCard1000.totalBalance | formatCurrency}}
+                        </td>
+                        <td class="text-align-right" ng-if="$vm.shift1ScratchCard1000.totalBalance == 0"></td>
+
+                        <td class="text-align-right">
+                            {{$vm.shift1ScratchCard1000.TotalWholesale ? $vm.shift1ScratchCard1000.TotalWholesale : '' | formatCurrency}}
+                        </td>
+                        <td class="text-align-right">
+                            {{$vm.shift1ScratchCard1000.TotalRetail ? $vm.shift1ScratchCard1000.TotalRetail : '' | formatCurrency}}
+                        </td>
+
+                        <td class="text-align-right">
+                            {{(($vm.shift1ScratchCard1000.TotalWholesaleMoney + $vm.shift1ScratchCard1000.TotalRetailMoney) | formatCurrency)}}
+                        </td>
+                        <td class="border-special text-align-right bold-Num">
+                            {{($vm.shift1ScratchCard1000.TotalStocks + $vm.shift1ScratchCard1000.totalBalance - $vm.shift1ScratchCard1000.TotalWholesale - $vm.shift1ScratchCard1000.TotalRetail) | formatCurrency}}
+                        </td>
+                        <td class="text-align-right bold-Num">
+                            {{($vm.shift1ScratchCard1000.TotalStocks + $vm.shift1ScratchCard1000.totalBalance - $vm.shift1ScratchCard1000.TotalWholesale - $vm.shift1ScratchCard1000.TotalRetail) | formatCurrency}}
+                        </td>
+
+                        <td class="text-align-right" ng-if="$vm.shift2ScratchCard1000.totalBalance< 0"
+                            style="color:red">
+                            {{$vm.shift2ScratchCard1000.totalBalance | formatCurrency}}
+                        </td>
+                        <td class="text-align-right" ng-if="$vm.shift2ScratchCard1000.totalBalance > 0"
+                            style="color:green">
+                            {{$vm.shift2ScratchCard1000.totalBalance | formatCurrency}}
+                        </td>
+                        <td class="text-align-right" ng-if="$vm.shift2ScratchCard1000.totalBalance == 0"></td>
+
+                        <td class="text-align-right">
+                            {{$vm.shift2ScratchCard1000.TotalWholesale ? $vm.shift2ScratchCard1000.TotalWholesale : '' | formatCurrency}}
+                        </td>
+                        <td class="text-align-right">
+                            {{$vm.shift2ScratchCard1000.TotalRetail ? $vm.shift2ScratchCard1000.TotalRetail : '' | formatCurrency}}
+                        </td>
+                        <td class="text-align-right">
+                            {{(($vm.shift2ScratchCard1000.TotalWholesaleMoney + $vm.shift2ScratchCard1000.TotalRetailMoney) | formatCurrency)}}
+                        </td>
+                        <td class="text-align-right bold-Num">
+                            {{($vm.shift1ScratchCard1000.TotalStocks + $vm.shift1ScratchCard1000.totalBalance + $vm.shift2ScratchCard1000.totalBalance - $vm.shift1ScratchCard1000.TotalWholesale - $vm.shift1ScratchCard1000.TotalRetail - $vm.shift2ScratchCard1000.TotalWholesale - $vm.shift2ScratchCard1000.TotalRetail) | formatCurrency}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="w100 grin-bg first-col-sticky bold-Num">Vé cào ĐN</td>
+                        <td class="text-align-right bold-Num">
+                            {{$vm.shift1ScratchCard1001.TotalStocks ? $vm.shift1ScratchCard1001.TotalStocks : '' | formatCurrency}}
+                        </td>
+
+                        <td class="text-align-right" ng-if="$vm.shift1ScratchCard1001.totalBalance< 0"
+                            style="color:red">
+                            {{$vm.shift1ScratchCard1001.totalBalance | formatCurrency}}
+                        </td>
+                        <td class="text-align-right" ng-if="$vm.shift1ScratchCard1001.totalBalance > 0"
+                            style="color:green">
+                            {{$vm.shift1ScratchCard1001.totalBalance | formatCurrency}}
+                        </td>
+                        <td class="text-align-right" ng-if="$vm.shift1ScratchCard1001.totalBalance == 0"></td>
+
+                        <td class="text-align-right">
+                            {{$vm.shift1ScratchCard1001.TotalWholesale ? $vm.shift1ScratchCard1001.TotalWholesale : '' | formatCurrency}}
+                        </td>
+                        <td class="text-align-right">
+                            {{$vm.shift1ScratchCard1001.TotalRetail ? $vm.shift1ScratchCard1001.TotalRetail : '' | formatCurrency}}
+                        </td>
+
+                        <td class="text-align-right">
+                            {{(($vm.shift1ScratchCard1001.TotalWholesaleMoney + $vm.shift1ScratchCard1001.TotalRetailMoney) | formatCurrency)}}
+                        </td>
+                        <td class="border-special text-align-right bold-Num">
+                            {{($vm.shift1ScratchCard1001.TotalStocks + $vm.shift1ScratchCard1001.totalBalance - $vm.shift1ScratchCard1001.TotalWholesale - $vm.shift1ScratchCard1001.TotalRetail) | formatCurrency}}
+                        </td>
+                        <td class="text-align-right bold-Num">
+                            {{($vm.shift1ScratchCard1001.TotalStocks + $vm.shift1ScratchCard1001.totalBalance - $vm.shift1ScratchCard1001.TotalWholesale - $vm.shift1ScratchCard1001.TotalRetail) | formatCurrency}}
+                        </td>
+
+                        <td class="text-align-right" ng-if="$vm.shift2ScratchCard1001.totalBalance< 0"
+                            style="color:red">
+                            {{$vm.shift2ScratchCard1001.totalBalance | formatCurrency}}
+                        </td>
+                        <td class="text-align-right" ng-if="$vm.shift2ScratchCard1001.totalBalance > 0"
+                            style="color:green">
+                            {{$vm.shift2ScratchCard1001.totalBalance | formatCurrency}}
+                        </td>
+                        <td class="text-align-right" ng-if="$vm.shift2ScratchCard1001.totalBalance == 0"></td>
+
+                        <td class="text-align-right">
+                            {{$vm.shift2ScratchCard1001.TotalWholesale ? $vm.shift2ScratchCard1001.TotalWholesale : '' | formatCurrency}}
+                        </td>
+                        <td class="text-align-right">
+                            {{$vm.shift2ScratchCard1001.TotalRetail ? $vm.shift2ScratchCard1001.TotalRetail : '' | formatCurrency}}
+                        </td>
+                        <td class="text-align-right">
+                            {{(($vm.shift2ScratchCard1001.TotalWholesaleMoney + $vm.shift2ScratchCard1001.TotalRetailMoney) | formatCurrency)}}
+                        </td>
+                        <td class="text-align-right bold-Num">
+                            {{($vm.shift1ScratchCard1001.TotalStocks + $vm.shift1ScratchCard1001.totalBalance + $vm.shift2ScratchCard1001.totalBalance - $vm.shift1ScratchCard1001.TotalWholesale - $vm.shift1ScratchCard1001.TotalRetail - $vm.shift2ScratchCard1001.TotalWholesale - $vm.shift2ScratchCard1001.TotalRetail) | formatCurrency}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="w100 grin-bg first-col-sticky bold-Num">Cào XO</td>
+                        <td class="text-align-right bold-Num">
+                            {{$vm.shift1XO.TotalStocks ? $vm.shift1XO.TotalStocks : '' | formatCurrency}}
+                        </td>
+
+                        <td class="text-align-right" ng-if="$vm.shift1XO.totalBalance< 0" style="color:red">
+                            {{$vm.shift1XO.totalBalance | formatCurrency}}
+                        </td>
+                        <td class="text-align-right" ng-if="$vm.shift1XO.totalBalance > 0" style="color:green">
+                            {{$vm.shift1XO.totalBalance | formatCurrency}}
+                        </td>
+                        <td class="text-align-right" ng-if="$vm.shift1XO.totalBalance == 0"></td>
+
+                        <td class="text-align-right">
+                            {{$vm.shift1XO.TotalWholesale ? $vm.shift1XO.TotalWholesale : '' | formatCurrency}}
+                        </td>
+                        <td class="text-align-right">
+                            {{$vm.shift1XO.TotalRetail ? $vm.shift1XO.TotalRetail : '' | formatCurrency}}
+                        </td>
+
+                        <td class="text-align-right">
+                            {{(($vm.shift1XO.TotalWholesaleMoney + $vm.shift1XO.TotalRetailMoney) | formatCurrency)}}
+                        </td>
+                        <td class="border-special text-align-right bold-Num">
+                            {{($vm.shift1XO.TotalStocks + $vm.shift1XO.totalBalance - $vm.shift1XO.TotalWholesale - $vm.shift1XO.TotalRetail) | formatCurrency}}
+                        </td>
+                        <td class="text-align-right bold-Num">
+                            {{($vm.shift1XO.TotalStocks + $vm.shift1XO.totalBalance - $vm.shift1XO.TotalWholesale - $vm.shift1XO.TotalRetail) | formatCurrency}}
+                        </td>
+
+                        <td class="text-align-right" ng-if="$vm.shift2XO.totalBalance< 0" style="color:red">
+                            {{$vm.shift2XO.totalBalance | formatCurrency}}
+                        </td>
+                        <td class="text-align-right" ng-if="$vm.shift2XO.totalBalance > 0" style="color:green">
+                            {{$vm.shift2XO.totalBalance | formatCurrency}}
+                        </td>
+                        <td class="text-align-right" ng-if="$vm.shift2XO.totalBalance == 0"></td>
+
+                        <td class="text-align-right">
+                            {{$vm.shift2XO.TotalWholesale ? $vm.shift2XO.TotalWholesale : '' | formatCurrency}}
+                        </td>
+                        <td class="text-align-right">
+                            {{$vm.shift2XO.TotalRetail ? $vm.shift2XO.TotalRetail : '' | formatCurrency}}
+                        </td>
+                        <td class="text-align-right">
+                            {{(($vm.shift2XO.TotalWholesaleMoney + $vm.shift2XO.TotalRetailMoney) | formatCurrency)}}
+                        </td>
+                        <td class="text-align-right bold-Num">
+                            {{($vm.shift1XO.TotalStocks + $vm.shift1XO.totalBalance + $vm.shift2XO.totalBalance - $vm.shift1XO.TotalWholesale - $vm.shift1XO.TotalRetail - $vm.shift2XO.TotalWholesale - $vm.shift2XO.TotalRetail) | formatCurrency}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="w100 grin-bg first-col-sticky bold-Num">Cào XO 2k</td>
+                        <td class="text-align-right bold-Num">
+                            {{$vm.shift1XO2k.TotalStocks ? $vm.shift1XO2k.TotalStocks : '' | formatCurrency}}
+                        </td>
+
+                        <td class="text-align-right" ng-if="$vm.shift1XO2k.totalBalance< 0" style="color:red">
+                            {{$vm.shift1XO2k.totalBalance | formatCurrency}}
+                        </td>
+                        <td class="text-align-right" ng-if="$vm.shift1XO2k.totalBalance > 0" style="color:green">
+                            {{$vm.shift1XO2k.totalBalance | formatCurrency}}
+                        </td>
+                        <td class="text-align-right" ng-if="$vm.shift1XO2k.totalBalance == 0"></td>
+
+                        <td class="text-align-right">
+                            {{$vm.shift1XO2k.TotalWholesale ? $vm.shift1XO2k.TotalWholesale : '' | formatCurrency}}
+                        </td>
+                        <td class="text-align-right">
+                            {{$vm.shift1XO2k.TotalRetail ? $vm.shift1XO2k.TotalRetail : '' | formatCurrency}}
+                        </td>
+
+                        <td class="text-align-right">
+                            {{(($vm.shift1XO2k.TotalWholesaleMoney + $vm.shift1XO2k.TotalRetailMoney) | formatCurrency)}}
+                        </td>
+                        <td class="border-special text-align-right bold-Num">
+                            {{($vm.shift1XO2k.TotalStocks + $vm.shift1XO2k.totalBalance - $vm.shift1XO2k.TotalWholesale - $vm.shift1XO2k.TotalRetail) | formatCurrency}}
+                        </td>
+                        <td class="text-align-right bold-Num">
+                            {{($vm.shift1XO2k.TotalStocks + $vm.shift1XO2k.totalBalance - $vm.shift1XO2k.TotalWholesale - $vm.shift1XO2k.TotalRetail) | formatCurrency}}
+                        </td>
+
+                        <td class="text-align-right" ng-if="$vm.shift2XO2k.totalBalance< 0" style="color:red">
+                            {{$vm.shift2XO2k.totalBalance | formatCurrency}}
+                        </td>
+                        <td class="text-align-right" ng-if="$vm.shift2XO2k.totalBalance > 0" style="color:green">
+                            {{$vm.shift2XO2k.totalBalance | formatCurrency}}
+                        </td>
+                        <td class="text-align-right" ng-if="$vm.shift2XO2k.totalBalance == 0"></td>
+
+                        <td class="text-align-right">
+                            {{$vm.shift2XO2k.TotalWholesale ? $vm.shift2XO2k.TotalWholesale : '' | formatCurrency}}
+                        </td>
+                        <td class="text-align-right">
+                            {{$vm.shift2XO2k.TotalRetail ? $vm.shift2XO2k.TotalRetail : '' | formatCurrency}}
+                        </td>
+                        <td class="text-align-right">
+                            {{(($vm.shift2XO2k.TotalWholesaleMoney + $vm.shift2XO2k.TotalRetailMoney) | formatCurrency)}}
+                        </td>
+                        <td class="text-align-right bold-Num">
+                            {{($vm.shift1XO2k.TotalStocks + $vm.shift1XO2k.totalBalance + $vm.shift2XO2k.totalBalance - $vm.shift1XO2k.TotalWholesale - $vm.shift1XO2k.TotalRetail - $vm.shift2XO2k.TotalWholesale - $vm.shift2XO2k.TotalRetail) | formatCurrency}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="w100 grin-bg first-col-sticky bold-Num">Vé bóc</td>
+                        <td class="text-align-right bold-Num">
+                            {{$vm.shift1VeBoc.TotalStocks ? $vm.shift1VeBoc.TotalStocks : '' | formatCurrency}}
+                        </td>
+
+                        <td class="text-align-right" ng-if="$vm.shift1VeBoc.totalBalance< 0" style="color:red">
+                            {{$vm.shift1VeBoc.totalBalance | formatCurrency}}
+                        </td>
+                        <td class="text-align-right" ng-if="$vm.shift1VeBoc.totalBalance > 0" style="color:green">
+                            {{$vm.shift1VeBoc.totalBalance | formatCurrency}}
+                        </td>
+                        <td class="text-align-right" ng-if="$vm.shift1VeBoc.totalBalance == 0"></td>
+
+                        <td class="text-align-right">
+                            {{$vm.shift1VeBoc.TotalWholesale ? $vm.shift1VeBoc.TotalWholesale : '' | formatCurrency}}
+                        </td>
+                        <td class="text-align-right">
+                            {{$vm.shift1VeBoc.TotalRetail ? $vm.shift1VeBoc.TotalRetail : '' | formatCurrency}}
+                        </td>
+
+                        <td class="text-align-right">
+                            {{(($vm.shift1VeBoc.TotalWholesaleMoney + $vm.shift1VeBoc.TotalRetailMoney) | formatCurrency)}}
+                        </td>
+                        <td class="border-special text-align-right bold-Num">
+                            {{($vm.shift1VeBoc.TotalStocks + $vm.shift1VeBoc.totalBalance - $vm.shift1VeBoc.TotalWholesale - $vm.shift1VeBoc.TotalRetail) | formatCurrency}}
+                        </td>
+                        <td class="text-align-right bold-Num">
+                            {{($vm.shift1VeBoc.TotalStocks + $vm.shift1VeBoc.totalBalance - $vm.shift1VeBoc.TotalWholesale - $vm.shift1VeBoc.TotalRetail) | formatCurrency}}
+                        </td>
+
+                        <td class="text-align-right" ng-if="$vm.shift2VeBoc.totalBalance< 0" style="color:red">
+                            {{$vm.shift2VeBoc.totalBalance | formatCurrency}}
+                        </td>
+                        <td class="text-align-right" ng-if="$vm.shift2VeBoc.totalBalance > 0" style="color:green">
+                            {{$vm.shift2VeBoc.totalBalance | formatCurrency}}
+                        </td>
+                        <td class="text-align-right" ng-if="$vm.shift2VeBoc.totalBalance == 0"></td>
+
+                        <td class="text-align-right">
+                            {{$vm.shift2VeBoc.TotalWholesale ? $vm.shift2VeBoc.TotalWholesale : '' | formatCurrency}}
+                        </td>
+                        <td class="text-align-right">
+                            {{$vm.shift2VeBoc.TotalRetail ? $vm.shift2VeBoc.TotalRetail : '' | formatCurrency}}
+                        </td>
+                        <td class="text-align-right">
+                            {{(($vm.shift2VeBoc.TotalWholesaleMoney + $vm.shift2VeBoc.TotalRetailMoney) | formatCurrency)}}
+                        </td>
+                        <td class="text-align-right bold-Num">
+                            {{($vm.shift1VeBoc.TotalStocks + $vm.shift1VeBoc.totalBalance + $vm.shift2VeBoc.totalBalance - $vm.shift1VeBoc.TotalWholesale - $vm.shift1VeBoc.TotalRetail - $vm.shift2VeBoc.TotalWholesale - $vm.shift2VeBoc.TotalRetail) | formatCurrency}}
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td class="w100 grin-bg first-col-sticky bold-Num">Vé số</td>
+                        <td class="text-align-right bold-Num">
+                            {{$vm.shift1.totalStocks ? $vm.shift1.totalStocks : '' | formatCurrency}}
+                        </td>
+                        <td class="text-align-right" ng-if="$vm.shift1.totalBalance < 0" style="color:red">
+                            {{$vm.shift1.totalBalance | formatCurrency}}
+                        </td>
+                        <td class="text-align-right" ng-if="$vm.shift1.totalBalance > 0" style="color:green">
+                            {{$vm.shift1.totalBalance | formatCurrency}}
+                        </td>
+                        <td class="text-align-right" ng-if="$vm.shift1.totalBalance == 0"></td>
+                        <td class="text-align-right">
+                            {{$vm.shift1.totalWholesale ? $vm.shift1.totalWholesale : '' | formatCurrency}}
+                        </td>
+                        <td class="text-align-right">
+                            {{$vm.shift1.totalRetail ? $vm.shift1.totalRetail : '' | formatCurrency}}
+                        </td>
+                        <td class="text-align-right">
+                            {{($vm.shift1.totalWholesaleMoney + $vm.shift1.totalRetailMoney) ? (($vm.shift1.totalWholesaleMoney + $vm.shift1.totalRetailMoney) | formatCurrency) : ''}}
+                        </td>
+                        <td class="border-special text-align-right bold-Num">
+                            {{$vm.shift1.totalRemaining ? $vm.shift1.totalRemaining : '' | formatCurrency}}
+                        </td>
+                        <td class="text-align-right bold-Num">
+                            {{$vm.shift2.totalStocks ? $vm.shift2.totalStocks : '' | formatCurrency}}
+                        </td>
+                        <td class="text-align-right" ng-if="$vm.shift2.totalBalance < 0" style="color:red">
+                            {{$vm.shift2.totalBalance | formatCurrency}}
+                        </td>
+                        <td class="text-align-right" ng-if="$vm.shift2.totalBalance > 0" style="color:green">
+                            {{$vm.shift2.totalBalance | formatCurrency}}
+                        </td>
+                        <td class="text-align-right" ng-if="$vm.shift2.totalBalance == 0"></td>
+                        <td class="text-align-right">
+                            {{$vm.shift2.totalWholesale ? $vm.shift2.totalWholesale : '' | formatCurrency}}
+                        </td>
+                        <td class="text-align-right">
+                            {{$vm.shift2.totalRetail ? $vm.shift2.totalRetail : '' | formatCurrency}}
+                        </td>
+                        <td class="text-align-right">
+                            {{($vm.shift2.totalWholesaleMoney + $vm.shift2.totalRetailMoney) ? (($vm.shift2.totalWholesaleMoney + $vm.shift2.totalRetailMoney) | formatCurrency) : ''}}
+                        </td>
+                        <td class="text-align-right bold-Num">
+                            {{$vm.shift2.totalRemaining ? $vm.shift2.totalRemaining : '' | formatCurrency}}
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class=" row">
+                <div class="col-md-6">
+                    <table class="table ">
+                        <thead class="fix-scroll">
+                        <tr class="fix-scroll">
+                            <th class="noselect theader center-align first-col-sticky">Ca 1</th>
+                            <th class="noselect theader center-align w100">Số tồn</th>
+                            <th class="noselect theader center-align w100">Vé thêm</th>
+                            <th class="noselect theader center-align w100">Bán</th>
+                            <th class="noselect theader center-align w100 border-special">Chuyển 2</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="item in $vm.dataShift1">
+                            <td class="first-col-sticky text-left bold-Num">{{item.ShortNameNew | formatCurrency}}</td>
+                            <td class="text-align-right bold-Num">
+                                {{(item.Stock + item.StockDup) | formatCurrency}}
+                            </td>
+                            <td class="text-align-right" ng-if="item.Balance < 0" style="color:red">
+                                {{item.Balance | formatCurrency}}
+                            </td>
+                            <td class="text-align-right" ng-if="item.Balance > 0" style="color:green">
+                                {{item.Balance | formatCurrency}}
+                            </td>
+                            <td class="text-align-right" ng-if="item.Balance == 0"></td>
+                            <td class="text-align-right">
+                                {{(item.SoldRetail + item.SoldRetailDup + item.SoldWholeSale + item.SoldWholeSaleDup) | formatCurrency}}
+                            </td>
+                            <td class="text-align-right border-special bold-Num">{{item.Remaining | formatCurrency}}
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td class="bg-sum first-col-sticky">TC</td>
+                            <td class="bg-num text-align-right bold-Num">
+                                {{$vm.shift1Sum.Stock ? $vm.shift1Sum.Stock  : "" | formatCurrency}}
+                            </td>
+                            <td class="bg-num text-align-right">
+                                {{$vm.shift1Sum.Balance ? $vm.shift1Sum.Balance  : "" | formatCurrency}}
+                            </td>
+                            <td class="bg-num text-align-right">
+                                {{$vm.shift1Sum.Sold ? $vm.shift1Sum.Sold  : "" | formatCurrency}}
+                            </td>
+                            <td class="bg-num border-special text-align-right bold-Num">
+                                {{$vm.shift1Sum.Remaining ? $vm.shift1Sum.Remaining  : "" | formatCurrency}}
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-6">
+                    <table class="table ">
+                        <thead class="fix-scroll">
+                        <tr class="fix-scroll">
+                            <th class="noselect theader center-align w100 first-col-sticky">Hoàn vé</th>
+                            <th class="noselect theader center-align w100">3 số ĐB</th>
+                            <th class="noselect theader center-align w100">4 số ĐB</th>
+                            <th class="noselect theader center-align w100">Vé thường</th>
+                            <th class="noselect theader center-align w100">Thưởng Vietlott</th>
+                            <th class="noselect theader center-align w100">Thưởng Loto</th>
+                            <th class="noselect theader center-align w100">Tổng cộng</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td
+                                    rowspan="{{$vm.dataShift1[$vm.params.day].Data.length +  $vm.dataShift1[$vm.params.nextDay].Data.length + ($vm.dataShift1['scratchCard']!=undefined?$vm.dataShift1['scratchCard'].Data.length:-1)+ ($vm.dataShift1[$vm.params.nextDay].Data.length>0?3:2)}}"
+                                    class="align-text-top text-align-right">
+                                {{$vm.shift1.type4Sum ? ($vm.shift1.type4Sum | formatCurrency) : ''}}
+                            </td>
+                            <td
+                                    rowspan="{{$vm.dataShift1[$vm.params.day].Data.length +  $vm.dataShift1[$vm.params.nextDay].Data.length + ($vm.dataShift1['scratchCard']!=undefined?$vm.dataShift1['scratchCard'].Data.length:-1)+ ($vm.dataShift1[$vm.params.nextDay].Data.length>0?3:2)}}"
+                                    class="align-text-top text-align-right">
+                                {{$vm.shift1.type2Sum ? ($vm.shift1.type2Sum | formatCurrency) : ''}}
+                            </td>
+                            <td
+                                    rowspan="{{$vm.dataShift1[$vm.params.day].Data.length +  $vm.dataShift1[$vm.params.nextDay].Data.length + ($vm.dataShift1['scratchCard']!=undefined?$vm.dataShift1['scratchCard'].Data.length:-1)+ ($vm.dataShift1[$vm.params.nextDay].Data.length>0?3:2)}}"
+                                    class="align-text-top text-align-right">
+                                {{$vm.shift1.type3Sum ? ($vm.shift1.type3Sum | formatCurrency) : ''}}
+                            </td>
+                            <td
+                                    rowspan="{{$vm.dataShift1[$vm.params.day].Data.length +  $vm.dataShift1[$vm.params.nextDay].Data.length + ($vm.dataShift1['scratchCard']!=undefined?$vm.dataShift1['scratchCard'].Data.length:-1)+ ($vm.dataShift1[$vm.params.nextDay].Data.length>0?3:2)}}"
+                                    class="align-text-top text-align-right">
+                                {{$vm.shift1.type1Quantity ? ($vm.shift1.type1Quantity | formatCurrency) : ''}}
+                            </td>
+                            <td
+                                    rowspan="{{$vm.dataShift1[$vm.params.day].Data.length +  $vm.dataShift1[$vm.params.nextDay].Data.length + ($vm.dataShift1['scratchCard']!=undefined?$vm.dataShift1['scratchCard'].Data.length:-1)+ ($vm.dataShift1[$vm.params.nextDay].Data.length>0?3:2)}}"
+                                    class="align-text-top text-align-right">
+                                {{$vm.shift1.type5Sum ? ($vm.shift1.type5Sum | formatCurrency) : ''}}
+                            </td>
+                            <td
+                                    rowspan="{{$vm.dataShift1[$vm.params.day].Data.length +  $vm.dataShift1[$vm.params.nextDay].Data.length + ($vm.dataShift1['scratchCard']!=undefined?$vm.dataShift1['scratchCard'].Data.length:-1)+ ($vm.dataShift1[$vm.params.nextDay].Data.length>0?3:2)}}"
+                                    class="align-text-top text-align-right">
+                                {{$vm.shift1.type6Sum ? ($vm.shift1.type6Sum | formatCurrency) : ''}}
+                            </td>
+                            <td
+                                    rowspan="{{$vm.dataShift1[$vm.params.day].Data.length +  $vm.dataShift1[$vm.params.nextDay].Data.length + ($vm.dataShift1['scratchCard']!=undefined?$vm.dataShift1['scratchCard'].Data.length: -1)+ ($vm.dataShift1[$vm.params.nextDay].Data.length>0?3:2)}}"
+                                    class="align-text-top text-align-right">
+                                {{(($vm.shift1.type1Quantity + $vm.shift1.type2Sum + $vm.shift1.type3Sum + $vm.shift1.type4Sum + $vm.shift1.type5Sum + $vm.shift1.type6Sum) | formatCurrency)}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <!--TRA THUONG O DAY-->
+                            <td class="first-col-sticky bold-Num">Vietlott</td>
+                            <td colspan="6" class="border-special bold-Num text-align-right">
+                                {{($vm.shift1.Vietlott | formatCurrency)}}
+                            </td>
+
+
+                        </tr>
+                        <tr>
+                            <td class="first-col-sticky bold-Num">Loto</td>
+                            <td colspan="6" class="border-special bold-Num text-align-right">
+                                {{($vm.shift1.Loto | formatCurrency)}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="first-col-sticky bold-Num">Khách CK</td>
+                            <td colspan="6" class="border-special bold-Num text-align-right">
+                                {{($vm.shift1.TransferConfirmed | formatCurrency)}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="first-col-sticky bold-Num">CK cho khách</td>
+                            <td colspan="6" class="border-special bold-Num text-align-right">
+                                {{($vm.shift1.TransferToGuest | formatCurrency)}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="first-col-sticky bold-Num">Chi Phí</td>
+                            <td colspan="6" class="border-special bold-Num text-align-right">
+                                {{($vm.shift1.Cost | formatCurrency)}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="first-col-sticky bold-Num">Tiền nộp về</td>
+                            <td colspan="6" class="border-special bold-Num text-align-right">
+                                {{($vm.shift1.MoneyReturn | formatCurrency)}}
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+              
+                <!--                TABLE 2-->
+             
+            </div>
+            <div class="row ">
+             <div class="col-sm-6">
+                 <table class="table">
+                     <thead class="fix-scroll">
+                     <tr class="fix-scroll">
+                         <th class="noselect theader center-align first-col-sticky">Ca 2</th>
+                         <th class="noselect theader center-align w100">Số tồn</th>
+                         <th class="noselect theader center-align w100">Vé thêm</th>
+                         <th class="noselect theader center-align w100">Bán</th>
+                         <th class="noselect theader center-align w100 border-special">Ôm ế / Chuyển 1</th>
+                     </tr>
+                     </thead>
+                     <tbody>
+                     <tr ng-repeat="item in $vm.dataShift2">
+                         <td class="first-col-sticky text-left bold-Num">{{item.ShortNameNew | formatCurrency}}</td>
+                         <td class="text-align-right bold-Num">
+                             {{(item.Stock + item.StockDup) | formatCurrency}}
+                         </td>
+                         <td class="text-align-right" ng-if="item.Balance < 0" style="color:red">
+                             {{item.Balance | formatCurrency}}
+                         </td>
+                         <td class="text-align-right" ng-if="item.Balance > 0" style="color:green">
+                             {{item.Balance | formatCurrency}}
+                         </td>
+                         <td class="text-align-right" ng-if="item.Balance == 0"></td>
+                         <td class="text-align-right">
+                             {{(item.SoldRetail + item.SoldRetailDup + item.SoldWholeSale + item.SoldWholeSaleDup) | formatCurrency}}
+                         </td>
+                         <td class="text-align-right border-special bold-Num">{{item.Remaining | formatCurrency}}
+                         </td>
+                     </tr>
+                     <tr >
+                         <td class="bg-sum first-col-sticky">TC</td>
+                         <td class="bg-num text-align-right bold-Num">
+                             {{$vm.shift2Sum.Stock ? $vm.shift2Sum.Stock  : "" | formatCurrency}}
+                         </td>
+                         <td class="bg-num text-align-right">
+                             {{$vm.shift2Sum.Balance ? $vm.shift2Sum.Balance  : "" | formatCurrency}}
+                         </td>
+                         <td class="bg-num text-align-right">
+                             {{$vm.shift2Sum.Sold ? $vm.shift2Sum.Sold  : "" | formatCurrency}}
+                         </td>
+                         <td class="bg-num border-special text-align-right bold-Num">
+                             {{$vm.shift2Sum.Remaining ? $vm.shift2Sum.Remaining  : "" | formatCurrency}}
+                         </td>
+                     </tr>
+
+                    
+
+                     </tbody>
+                 </table>
+             </div>
+                <div class="col-sm-6">
+                    <table class="table">
+                        <thead class="fix-scroll">
+                        <tr class="fix-scroll">
+                            <th class="noselect theader center-align w100">Hoàn vé</th>
+                            <th class="noselect theader center-align w100">3 số ĐB</th>
+                            <th class="noselect theader center-align w100">4 số ĐB</th>
+                            <th class="noselect theader center-align w100">Vé thường</th>
+                            <th class="noselect theader center-align w100">Thưởng Vietlott</th>
+                            <th class="noselect theader center-align w100">Thưởng Loto</th>
+                            <th class="noselect theader center-align w100">Tổng cộng</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr >
+                            <td 
+                                rowspan="{{$vm.dataShift2[$vm.params.day].Data.length +  $vm.dataShift2[$vm.params.nextDay].Data.length + ($vm.dataShift2['scratchCard']!=undefined?$vm.dataShift2['scratchCard'].Data.length:-1)+ ($vm.dataShift2[$vm.params.nextDay].Data.length>0?3:2)}}"
+                                class="align-text-top text-align-right">
+                                {{$vm.shift2.type4Sum ? ($vm.shift2.type4Sum | formatCurrency) : ''}}
+                            </td>
+                            <td 
+                                rowspan="{{$vm.dataShift2[$vm.params.day].Data.length +  $vm.dataShift2[$vm.params.nextDay].Data.length + ($vm.dataShift2['scratchCard']!=undefined?$vm.dataShift2['scratchCard'].Data.length:-1) + ($vm.dataShift2[$vm.params.nextDay].Data.length>0?3:2)}}"
+                                class="align-text-top text-align-right">
+                                {{$vm.shift2.type2Sum ? ($vm.shift2.type2Sum | formatCurrency) : ''}}
+                            </td>
+                            <td 
+                                rowspan="{{$vm.dataShift2[$vm.params.day].Data.length +  $vm.dataShift2[$vm.params.nextDay].Data.length + ($vm.dataShift2['scratchCard']!=undefined?$vm.dataShift2['scratchCard'].Data.length:-1)+ ($vm.dataShift2[$vm.params.nextDay].Data.length>0?3:2)}}"
+                                class="align-text-top text-align-right">
+                                {{$vm.shift2.type3Sum ? ($vm.shift2.type3Sum | formatCurrency) : ''}}
+                            </td>
+                            <td 
+                                rowspan="{{$vm.dataShift2[$vm.params.day].Data.length +  $vm.dataShift2[$vm.params.nextDay].Data.length + ($vm.dataShift2['scratchCard']!=undefined?$vm.dataShift2['scratchCard'].Data.length:-1)+ ($vm.dataShift2[$vm.params.nextDay].Data.length>0?3:2)}}"
+                                class="align-text-top text-align-right">
+                                {{$vm.shift2.type1Quantity ? ($vm.shift2.type1Quantity | formatCurrency) : ''}}
+                            </td>
+                            <td 
+                                rowspan="{{$vm.dataShift2[$vm.params.day].Data.length +  $vm.dataShift2[$vm.params.nextDay].Data.length + ($vm.dataShift2['scratchCard']!=undefined?$vm.dataShift2['scratchCard'].Data.length:-1)+ ($vm.dataShift2[$vm.params.nextDay].Data.length>0?3:2)}}"
+                                class="align-text-top text-align-right">
+                                {{$vm.shift2.type5Sum ? ($vm.shift2.type5Sum | formatCurrency) : ''}}
+                            </td>
+                            <td 
+                                rowspan="{{$vm.dataShift2[$vm.params.day].Data.length +  $vm.dataShift2[$vm.params.nextDay].Data.length + ($vm.dataShift2['scratchCard']!=undefined?$vm.dataShift2['scratchCard'].Data.length:-1)+ ($vm.dataShift2[$vm.params.nextDay].Data.length>0?3:2)}}"
+                                class="align-text-top text-align-right">
+                                {{$vm.shift2.type6Sum ? ($vm.shift2.type6Sum | formatCurrency) : ''}}
+                            </td>
+                            <td 
+                                rowspan="{{$vm.dataShift2[$vm.params.day].Data.length +  $vm.dataShift2[$vm.params.nextDay].Data.length + ($vm.dataShift2['scratchCard']!=undefined?$vm.dataShift2['scratchCard'].Data.length:-1)+ ($vm.dataShift2[$vm.params.nextDay].Data.length>0?3:2)}}"
+                                class="align-text-top text-align-right">
+                                {{(($vm.shift2.type1Quantity + $vm.shift2.type2Sum + $vm.shift2.type3Sum + $vm.shift2.type4Sum + $vm.shift2.type5Sum + $vm.shift2.type6Sum) | formatCurrency)}}
+                            </td>
+
+                            <!--TRA THUONG O DAY-->
+                           
+                        </tr>
+                        <tr>
+                            <td class="first-col-sticky bold-Num">Vietlott</td>
+                            <td colspan="6" class="border-special bold-Num text-align-right">
+                                {{($vm.shift2.Vietlott | formatCurrency)}}
+                            </td>
+
+                           
+
+                           
+
+                           
+
+                          
+
+                           
+                        </tr>
+                        <tr>
+                            <td class="first-col-sticky bold-Num">Loto</td>
+                            <td  colspan="6" class="border-special bold-Num text-align-right">
+                                {{($vm.shift2.Loto | formatCurrency)}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="first-col-sticky bold-Num">Khách CK</td>
+                            <td colspan="6" class="border-special bold-Num text-align-right">
+                                {{($vm.shift2.TransferConfirmed | formatCurrency)}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td  class="first-col-sticky bold-Num">CK cho khách</td>
+                            <td colspan="6" class="border-special bold-Num text-align-right">
+                                {{($vm.shift2.TransferToGuest | formatCurrency)}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="first-col-sticky bold-Num">Chi Phí</td>
+                            <td  colspan="6" class="border-special bold-Num text-align-right">
+                                {{($vm.shift2.Cost | formatCurrency)}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td  class="first-col-sticky bold-Num">Tiền nộp về</td>
+                            <td colspan="6" class="border-special bold-Num text-align-right">
+                                {{($vm.shift2.MoneyReturn | formatCurrency)}}
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+            </div>
+        </div>
+
+    </div>
+</div>

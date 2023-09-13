@@ -1,0 +1,51 @@
+﻿<div class="col-12 layout-spacing">
+    <div class="container-fluid wh-bg">
+        <div class="row">
+            <div class="mx-2 mt-10">
+                <label>Chọn loại nhân viên</label>
+                <ui-select ng-model="$vm.staffTypeId" ng-change="$vm.changeStaff()"
+                           theme="select2" search-enabled="false">
+                    <ui-select-match placeholder="Loại nhân viên" allow-clear="false">{{$select.selected.name}}</ui-select-match>
+                    <ui-select-choices position="down" repeat="ele.id.toString() as ele in $vm.staffType">
+                        {{ele.name}}
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </div>
+        <div class="table-responsive resize-tb mt-10">
+            <table class="table" style="width:100%">
+                <thead class="fix-scroll">
+                    <tr>
+                        <th class="noselect theader text-center">STT</th>
+                        <th class="noselect theader text-center">Tên nhân viên</th>
+                        <th class="noselect theader text-center">Điểm bán</th>
+                        <th class="noselect theader text-center">Tổng nợ</th>
+                        <th class="noselect theader text-center">Nợ còn lại</th>
+                        <th class="noselect theader text-center"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="data in $vm.listData">
+                        <td class="text-left ">{{$index + 1}}</td>
+                        <td class="text-left ">{{data.FullName}}</td>
+                        <td class="text-left ">{{data.FullName}}</td>
+                        <td class="text-right">{{data.TotalDebt}}</td>
+                        <td class="text-right">{{data.PayedDebt}}</td>
+                        <td class="text-center">
+                            <i class="fa fa-plus cursor mr-2" style="color: blue;" ng-click="$vm.openModalDebt(data)"></i>
+                            <i class="fa fa-edit fa-lg cursor" style="color: blue" ng-click="$vm.showDetail(data)"></i>
+                        </td>
+
+                    </tr>
+                    <tr ng-if="!$vm.listData || $vm.listData.length <= 0">
+                        <td colspan="99">
+                            Không có dữ liệu
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+    

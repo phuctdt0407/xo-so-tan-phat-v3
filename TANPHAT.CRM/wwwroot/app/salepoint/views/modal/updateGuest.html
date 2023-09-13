@@ -1,0 +1,75 @@
+﻿<div class="modal-header">
+    <h3 class="modal-title" id="modal-title">Thêm khách hàng</h3>
+</div>
+<div class="px-3 py-3">
+    <div class="row my-2">
+        <label for="channel" class="rq-form col-4">
+            Tên khách hàng
+        </label>
+        <input class="col-6" placeholder="Tên khách hàng" ng-model="$vm.saveData.FullName" />
+    </div>
+    <div class="row my-2" ng-if="$vm.typeGuest==1">
+        <label for="channel" class="rq-form col-4">
+            Số điện thoại
+        </label>
+        <input class="col-6" ng-change="$vm.findDebtGuest()" placeholder="Số điện thoại" min="0" max="999999999999999" ng-keypress="inputNumber($event)" class="text-center" ng-model="$vm.saveData.Phone" />
+    </div>
+    <div class="row my-2" ng-if="$vm.typeGuest==2">
+        <label for="channel" class="rq-form col-4">
+            Số điện thoại
+        </label>
+        <input class="col-6" placeholder="Số điện thoại" min="0" max="999999999999999" ng-keypress="inputNumber($event)" class="text-center" ng-model="$vm.saveData.Phone" />
+    </div>
+    <div class="row my-2">
+        <label for="channel" class="rq-form col-4">
+            Chọn điểm bán
+        </label>
+        <ui-select class="col-6 px-0" ng-model="$vm.saveData.SalePointId" theme="select2" search-enabled="false">
+            <ui-select-match allow-clear="false" placeholder="Chọn điểm bán">
+                {{$select.selected.Name}}
+            </ui-select-match>
+            <ui-select-choices position="down" repeat="item.Id as item in $vm.listSalePoint">
+                {{item.Name}}
+            </ui-select-choices>
+        </ui-select>
+    </div>
+    <div class="row my-2" ng-if="$vm.typeGuest==1">
+        <label for="channel" class="rq-form col-4">
+            Chọn giá vé thường
+        </label>
+        <!--<ui-select class="col-6 px-0" ng-model="$vm.saveData.WholesalePriceId" theme="select2" search-enabled="false">
+        <ui-select-match allow-clear="false" placeholder="Chọn giá vé thường">
+            {{$select.selected.LotteryPriceName}}
+        </ui-select-match>
+        <ui-select-choices position="down" repeat="item.LotteryPriceId as item in $vm.listPriceDup">
+            {{item.LotteryPriceName}}
+        </ui-select-choices>
+    </ui-select>-->
+       
+        <input ng-change="numToCurrency( $vm.saveData,'WholesalePriceId',$vm.saveData.WholesalePriceId? $vm.saveData.WholesalePriceId: '0',{{$vm.saveData.WholesalePriceId? $vm.saveData.WholesalePriceId: '0'}})"
+               type="text" class="col-6 px-0 form-control" id="amountPrice" name="" placeholder="Nhập giá trị tùy ý" required
+               ng-model="$vm.saveData.WholesalePriceId">
+    </div>
+    <div class="row my-2" ng-if="$vm.typeGuest==1">
+        <label for="channel" class="rq-form col-4">
+            Chọn giá vé cào
+        </label>
+        <!--<ui-select class="col-6 px-0" ng-model="$vm.saveData.ScratchPriceId" theme="select2" search-enabled="false">
+        <ui-select-match allow-clear="false" placeholder="Chọn giá vé cào">
+            {{$select.selected.LotteryPriceName}}
+        </ui-select-match>
+        <ui-select-choices position="down" repeat="item.LotteryPriceId as item in $vm.listPriceScratchCard">
+            {{item.LotteryPriceName}}
+        </ui-select-choices>
+    </ui-select>-->
+       
+        <input ng-change="numToCurrency( $vm.saveData,'ScratchPriceId',$vm.saveData.ScratchPriceId? $vm.saveData.ScratchPriceId: '0',{{$vm.saveData.ScratchPriceId? $vm.saveData.ScratchPriceId: '0'}})"
+               type="text" class="col-6 px-0 form-control" id="ScratchPriceId" name="" placeholder="Nhập giá trị tùy ý" required
+               ng-model="$vm.saveData.ScratchPriceId">
+    </div>
+</div>
+<div class="modal-footer">
+    <img src="../images/loading-dot.gif" ng-if="$vm.isSaving" class="float-r" style="height: 45px; width: 120px;">
+    <button class="btn btn-success" ng-if="!$vm.isSaving" type="submit" ng-click="$vm.save()">Cập nhật</button>
+    <button class="btn btn-secondary" ng-if="!$vm.isSaving" type="button" ng-click="$vm.cancel()">Đóng</button>
+</div>

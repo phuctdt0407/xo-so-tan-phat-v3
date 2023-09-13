@@ -1,0 +1,21 @@
+﻿<div class="modal-header align-content-center">
+    <h3 class="modal-title" id="modal-title">Cập nhật tiền tồn cuối năm</h3>
+</div>
+<form name="formUpdate" class="trial-form p-3">
+    <div class="col-12 mb-10">
+        <label class="rq-form">Số tiền</label>
+        <input type="text" class="form-control" id="commission" name="numonly"
+               ng-keypress="inputNumber($event)"
+               ng-model="$vm.dataSave.money"
+               ng-change="numToCurrency( $vm.dataSave,'money',$vm.dataSave.money? $vm.dataSave.money: '0',{{$vm.dataSave.money? $vm.dataSave.money: '0'}})">
+    </div>
+
+    <div class="modal-footer">
+        <div ng-if="!$vm.isSaving" class="btn btn-primary "
+             ng-click="$vm.save()">
+            <i class="fa fa-floppy-o" aria-hidden="true"></i> Cập nhật
+        </div>
+        <img src="../images/loading-dot.gif" ng-if="$vm.isSaving" class="float-r" style="height: 45px; width: 120px;">
+        <button class="btn btn-secondary" type="button" ng-click="$vm.close()">Đóng</button>
+    </div>
+</form>

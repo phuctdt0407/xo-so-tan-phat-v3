@@ -1,0 +1,73 @@
+﻿<div class="modal-header text-center">
+    <h3 class="modal-title" id="modal-title">Xác nhận thanh toán khách sỉ</h3>
+</div>
+
+
+<div>
+    <div class="modal-body">
+        <div class="table-responsive resize-tb px-3">
+            <table class="table" style="width:100%">
+                <thead>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="noselect bnor text-left"><strong>Thời gian</strong> </td>
+                        <td class="noselect bnor text-left">{{$vm.listConfirm.ActionDate| formatDateTime}}</td>
+
+                        <td class="noselect bnor text-left"></td>
+                    </tr>
+
+                    <tr>
+                        <td class="noselect bnor text-left"><strong>Khách hàng</strong> </td>
+                        <td class="noselect bnor text-left">{{$vm.listConfirm.GuestName }}</td>
+                    </tr>
+
+                    <tr>
+                        <td class="noselect bnor text-left"><strong>Điểm bán</strong> </td>
+                        <td class="noselect bnor text-left">{{$vm.listConfirm.SalePointName }}</td>
+                    </tr>
+
+                    <tr ng-repeat="item in $vm.listConfirm.DataConfirm">
+                        <td ng-if="item.Data.length>0" class="noselect bnor text-left" style="vertical-align: baseline "><strong> <br />{{item.ConfirmForTypeName}}</strong> </td>
+
+                        <td ng-if="item.ConfirmFor==3" class="noselect bnor text-left">
+                            <div ng-repeat=" ele in item.Data">
+                                <div ng-if="ele.LotteryTypeId==1" style="text-align: left;">{{$vm.getLotteryName(ele.LotteryChannelId)}}</div>
+                                <div ng-if="ele.LotteryTypeId!=1" style="text-align: left;">{{$vm.getLotteryName(ele.LotteryChannelId)}} (Vtr)</div>
+                            </div>
+                        </td>
+
+                        <td ng-if="item.ConfirmFor==3" class="noselect bnor text-left">
+                            <div ng-repeat=" ele in item.Data" style="text-align: right;">
+                                {{ele.Quantity | formatCurrency}}
+                            </div>
+                        </td>
+
+                        <td ng-if="item.ConfirmFor==2" class="noselect bnor text-left">
+                            <div ng-repeat=" ele in item.Data">
+                                <div ng-if="ele.FormPaymentId==1" style="text-align: left;">Tiền mặt</div>
+                                <div ng-if="ele.FormPaymentId==2" style="text-align: left;">Chuyển khoản</div>
+                            </div>
+                        </td>
+
+                        <td ng-if="item.ConfirmFor==2" class="noselect bnor text-left">
+                            <div ng-repeat=" ele in item.Data" style="text-align: right;">
+                                {{ele.TotalPrice | formatCurrency}}
+                            </div>
+                        </td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal-footer">
+    <button class="btn btn-danger" type="button" ng-if="$vm.listConfirm.ConfirmStatusId ==1" ng-click="$vm.getBootBox(3)">Huỷ yêu cầu</button>
+
+    <button class="btn btn-success" type="button" ng-if="$vm.listConfirm.ConfirmStatusId ==1" ng-click="$vm.getBootBox(2)">Xác nhận</button>
+
+    <button class="btn btn-secondary" type="button" ng-click="$vm.cancel()">Đóng</button>
+</div>

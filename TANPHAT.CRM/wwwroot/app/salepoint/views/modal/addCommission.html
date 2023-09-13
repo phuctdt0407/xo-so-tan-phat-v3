@@ -1,0 +1,43 @@
+<div class="modal-header">
+    <h3 class="modal-title" id="modal-title">Nhập hoa hồng đổi số trúng</h3>
+</div>
+
+<div class="modal-body">
+    <label for="amountPrice" class="rq-form">Hoa hồng</label>
+    <input ng-change="numToCurrency( $vm.saveData.Data,'Commission',$vm.saveData.Data.Commission? $vm.saveData.Data.Commission: '0',{{$vm.saveData.Data.Commission? $vm.saveData.Data.Commission: '0'}})"
+           type="text" class="form-control" id="amountPrice" name="" placeholder="Nhập hoa hồng" required
+           ng-model="$vm.saveData.Data.Commission">
+    <label for="amountFee" class="rq-form">Phí đst</label>
+    <input ng-change="numToCurrency( $vm.saveData.Data,'Fee',$vm.saveData.Data.Fee? $vm.saveData.Data.Fee: '0',{{$vm.saveData.Data.Fee? $vm.saveData.Data.Fee: '0'}})"
+           type="text" class="form-control" id="amountFee" name="" placeholder="Nhập phí đst" required
+           ng-model="$vm.saveData.Data.Fee">
+
+    <label>Chọn ngày</label>
+    <datepicker my-class="input-sm datepicker" date-format="DD/MM/YYYY" pick-time="false" 
+                on-select="$vm.getListUser()"
+                ng-model="$vm.params.date" output-format="DD/MM/YYYY"
+                ng-change="$vm.getListUser()"
+                placeholder="dd/mm/yyyy"></datepicker>
+ 
+    <label>Chọn điểm bán</label>
+    <ui-select ng-model="$vm.params.salePointId" ng-change="$vm.getListUser()"
+               theme="select2" search-enabled="false">
+        <ui-select-match placeholder="Chọn điểm bán" allow-clear="false">{{$select.selected.Name}}</ui-select-match>
+        <ui-select-choices position="down" repeat="ele.Id.toString() as ele in $vm.listSalePoint">
+            {{ele.Name}}
+        </ui-select-choices>
+    </ui-select>
+    <label>Chọn NV</label>
+   <ul>
+       <li class="cus-td-user ml-1rem" ng-repeat="ele in $vm.listUser" style="padding-bottom: 0.75rem;">
+           <input ng-model="ele.IsCheck" type="checkbox" class="child{{$parent.$index}}" ng-click=" ele.IsCheck= !ele.IsCheck;$vm.checkStaff($vm.listUser)"> {{ele.FullName}}
+       </li>
+   </ul>
+
+
+</div>
+<div class="modal-footer">
+    <img src="../images/loading-dot.gif" ng-if="$vm.isSaving" class="float-r" style="height: 45px; width: 120px;">
+    <button class="btn btn-success" ng-if="!$vm.isSaving" type="submit" ng-click="$vm.save()">Xác nhận</button>
+    <button class="btn btn-secondary" ng-if="!$vm.isSaving" type="button" ng-click="$vm.cancel()">Đóng</button>
+</div>

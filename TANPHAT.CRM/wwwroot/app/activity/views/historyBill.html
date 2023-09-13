@@ -1,0 +1,102 @@
+﻿
+<div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
+    <div class="wh-bg mt-10 title-flex">
+
+        <div class="mt20" style="width: 220px; padding-left: 15px;">
+            <label>Chọn ngày</label>
+            <datepicker my-class="input-sm datepicker" date-format="DD/MM/YYYY" pick-time="false"
+                        on-select="$vm.getData(date)"
+                        ng-model="$vm.DateDisplay" output-format="DD/MM/YYYY"
+                        ng-change="$vm.changeDate() "
+                        placeholder="dd/mm/yyyy"></datepicker>
+        </div>
+        <div class="mt20" style="width: 220px; padding-left: 15px;">
+            <label>Chọn điểm bán</label>
+            <ui-select ng-model="$vm.params.salePointId" ng-change="$vm.changeDate()"
+                       theme="select2" search-enabled="true">
+                <ui-select-match placeholder="Chọn điểm bán" allow-clear="false">{{$select.selected.Name}}</ui-select-match>
+                <ui-select-choices position="down" repeat="ele.Id.toString() as ele in $vm.listSalePoint | filter: $select.search.toUnaccent()">
+                    {{ele.Name}}
+                </ui-select-choices>
+            </ui-select>
+        </div>
+        <div class="mt20" style="width: 220px; padding-left: 15px;">
+            <label>Chọn ca làm việc</label>
+            <ui-select ng-model="$vm.params.shiftId" ng-change="$vm.changeDate()"
+                       theme="select2" search-enabled="false">
+                <ui-select-match placeholder="Chọn ca làm việc" allow-clear="false">{{$select.selected.Name}}</ui-select-match>
+                <ui-select-choices position="down" repeat="ele.Id.toString() as ele in $vm.listShift">
+                    {{ele.Name}}
+                </ui-select-choices>
+            </ui-select>
+        </div>
+        <div class=" mt20" style="padding-left:15px; padding-top: 38px">
+            <button class="btn btn-danger"
+                    ng-if="($vm.salePointInfo.IsEndOfShift && $vm.checkClicked)"
+                    ng-click="($vm.salePointInfo.IsEndOfShift && $vm.checkClicked) ? $vm.rmShistTransfer():return;">
+                Xoá kết ca
+            </button>
+        </div>
+
+    </div>
+    <h3 class=" text-center mt-10">Lịch sử bán vé </h3>
+    <div class="tab-pane fade" ng-class="{'show active': $vm.view == 'activity-log-content'}"
+         id="activity-log-content"
+         role="tabpanel" aria-labelledby="activity-log-tab">
+        <div class="card card-create-container">
+            <table id="toDay" class="table" style="width: 100% ;">
+                <thead>
+                    <tr>
+                        <th rowspan="2" class="noselect theader text-center"><span>STT</span></th>
+                        <th rowspan="2" class="noselect theader text-center"><span>Tổng số lượng</span></th>
+                        <th rowspan="2" class="noselect theader text-center"><span>Tổng doanh thu<br />dự kiến</span></th>
+                        <th colspan="5" class="noselect theader text-center"><span>Chi tiết</span></th>
+                        <th rowspan="2" class="noselect theader text-center"><span>Thời gian</span></th>
+                     <!--   <th rowspan="2" class="noselect theader text-center" style="max-width:70px">Xóa</th>-->
+                   <!--     <th rowspan="2" class="noselect theader text-center"><span>Hóa đơn</span></th>-->
+                    </tr>
+                    <tr>
+                        <th class="noselect theader text-center"><span>Loại vé</span></th>
+                        <th class="noselect theader text-center"><span>Đài bán</span></th>
+
+                        <th class="noselect theader text-center"><span>Số lượng</span></th>
+                        <th class="noselect theader text-center"><span>Sáu số đặc biệt</span></th>
+                        <th class="noselect theader text-center"><span>Doanh thu dự kiến</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="display: none" ng-repeat-start="item in $vm.listData"> </tr>
+                    <tr ng-repeat="ele in item.Data.SalePointLogData">
+                        <td ng-if="$index==0" ng-class="{'bg-sky' : item.RowNumber % 2 == 0}" rowspan="{{item.Data.SalePointLogData.length}}" class="noselect w80 text-center"> {{item.RowNumber}} </td>
+                        <td ng-if="$index==0" ng-class="{'bg-sky' : item.RowNumber % 2 == 0}" rowspan="{{item.Data.SalePointLogData.length}}" class="noselect w120 text-right"> {{item.Quantity}} </td>
+                        <td ng-if="$index==0" ng-class="{'bg-sky' : item.RowNumber % 2 == 0}" rowspan="{{item.Data.SalePointLogData.length}}" class="noselect w120 text-right"> {{item.TotalPrice | formatCurrency}} </td>
+                        <td class="noselect" ng-class="{'bg-sky' : item.RowNumber % 2 == 0}">  {{ele.LotteryTypeName}}</td>
+                        <td class="noselect text-left" ng-class="{'bg-sky' : item.RowNumber % 2 == 0}">  {{ele.ShortName}}</td>
+                        <td class="noselect text-right" ng-class="{'bg-sky' : item.RowNumber % 2 == 0}">  {{ele.Quantity}}</td>
+                        <td class="noselect text-right" ng-class="{'bg-sky' : item.RowNumber % 2 == 0}">  {{ele.FourLastNumber}}</td>
+                        <td class="noselect text-right" ng-class="{'bg-sky' : item.RowNumber % 2 == 0}">  {{ele.TotalValue | formatCurrency}}</td>
+
+                        <td ng-if="$index==0" ng-class="{'bg-sky' : item.RowNumber % 2 == 0}" rowspan="{{item.Data.SalePointLogData.length}}" class="noselect w120 text-center"> {{item.CreatedDate | formatDateTimeByHours}} </td>
+
+                        <!-- <td style="max-width:120px;cursor:pointer" ng-class="{'bg-sky' : item.RowNumber % 2 == 0}" rowspan="{{item.Data.SalePointLogData.length}}" ng-if="!$vm.isSaving && $index == 0" ng-click="$vm.getBootBox(item)">
+         <div style="text-align: center;">
+             <i class="fa fa-trash" aria-hidden="true"></i>
+             <img src="../images/loading-dot.gif" ng-if="$vm.isSaving" class="float-r" style="height: 45px; width: 120px;">
+         </div>
+     </td>-->
+                        <!--<td rowspan="{{item.Data.SalePointLogData.length}}" ng-class="{'bg-sky' : item.RowNumber % 2 == 0}" ng-if="$index == 0">
+        <div>
+            <i class="fa fa-print cursor" ng-click="$vm.printBill(item)"></i>
+        </div>
+    </td>-->
+                    </tr>
+                    <tr style="display: none" ng-repeat-end=""> </tr>
+
+
+                    <tr ng-if=" $vm.Check()">
+                        <td colspan="99" class="text-center">Chưa có dữ liệu </td>
+                    </tr>
+            </table>
+        </div>
+    </div>
+</div>

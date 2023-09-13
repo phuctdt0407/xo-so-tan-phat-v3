@@ -1,0 +1,49 @@
+﻿<div class="modal-header">
+    <h3 class="modal-title" id="modal-title">Lịch sử chia vé cào</h3>
+</div>
+<div class="col-12 layout-spacing">
+    <div class="container-fluid wh-bg mt-10 pt-10">
+        <div class="mt20" style="width: 160px;">
+            <label>Chọn ngày:</label>
+            <datepicker my-class="input-sm datepicker" date-format="YYYY-MM-DD" pick-time="false"
+                        ng-model="$vm.day" output-format="YYYY-MM-DD"
+                        ng-change="$vm.changeDate()"
+                        placeholder="yyyy/mm/dd"></datepicker>
+        </div>
+        <div class="card card-create-container">
+            <table class="table table-hover ">
+                <thead>
+                    <tr>
+                        <th class="noselect theader text-center"><span>STT</span></th>
+                        <th class="noselect theader text-center"><span>Điểm bán</span></th>
+                        <th class="noselect theader text-center"><span>Loại cào</span></th>
+                        <th class="noselect theader text-center"><span>Người thao tác</span></th>
+                        <th class="noselect theader text-center"><span>Thời gian</span></th>
+                        <th class="noselect theader text-center"><span>Số lượng vé</span></th>
+                        <th class="noselect theader text-center"><span>Chỉnh sửa</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="noselect" ng-repeat="item in $vm.listScratchCardLog">
+                        <td class="noselect w120 text-center" ng-class="{'bg-sky' : $index % 2 == 1}">{{$index + 1}}</td>
+                        <td class="noselect w120 text-center" ng-class="{'bg-sky' : $index % 2 == 1}">{{item.SalePointName}}</td>
+                        <td class="noselect w120 text-center" ng-class="{'bg-sky' : $index % 2 == 1}">{{item.LotteryChannelName}}</td>
+                        <td class="noselect w120 text-center" ng-class="{'bg-sky' : $index % 2 == 1}">{{item.ActionByName}}</td>
+                        <td class="noselect w120 text-center" ng-class="{'bg-sky' : $index % 2 == 1}">{{item.ActionDate|formatDateTime}}</td>
+                        <td class="noselect w120 text-center" ng-class="{'bg-sky' : $index % 2 == 1}">
+                            {{item.TotalReceived}}
+                        </td>
+                        <td class="noselect w120 text-center" ng-class="{'bg-sky' : $index % 2 == 1}">
+                            <a style="cursor: pointer" ng-click="$vm.openModal(item)"><i style="font-size:24px" class="fa">&#xf044;</i></a>
+                        </td>
+                    </tr>
+                    <tr ng-if="!$vm.listScratchCardLog || $vm.listScratchCardLog <=0">
+                        <td colspan="99" class="text-center">Không tìm thấy dữ liệu nào...</td>
+                    </tr>
+            </table>
+        </div>
+        <!--<div>
+            <pagination params="$vm.params" total-row="$vm.totalRow"></pagination>
+        </div>-->
+    </div>
+</div>

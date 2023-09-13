@@ -1,0 +1,74 @@
+﻿<div class="col-12 layout-spacing">
+    <div class="container-fluid wh-bg">
+        <div class="row">
+            <div class="mx-2 mt-10">
+                <label>Tháng</label>
+                <monthyearpicker my-class="input-sm datepicker-new" date-format="MM/YYYY" placeholder="All month"
+                                 ng-model="$vm.month" output-format="YYYY-MM"></monthyearpicker>
+            </div>
+
+            <div class="mx-2 mt-10">
+                <label>Chọn điểm bán</label>
+                <ui-select ng-model="$vm.params.salePointId"
+                           theme="select2" search-enabled="false">
+                    <ui-select-match placeholder="Chọn điểm bán" allow-clear="false">{{$select.selected.Name}}</ui-select-match>
+                    <ui-select-choices position="down" repeat="ele.Id.toString() as ele in $vm.listSalePoint">
+                        {{ele.Name}}
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+            <div style="height: 50px; margin-top: 45px; margin-left: 8px;" class="btn btn-primary float-r resizeSchedule" ng-click="$vm.loadData()"> tìm kiếm </div>
+
+        </div>
+        <div style="overflow: auto">
+            <div class="table-responsive resize-tb mt-10">
+                <table class="table" style="width:100%">
+                    <thead class="fix-scroll">
+                        <tr>
+                            <th class="noselect theader text-center">STT</th>
+                            <th class="noselect theader text-center">Tên công cụ</th>
+
+                            <th class="noselect theader text-center">Hoạt động</th>
+                            <th class="noselect theader text-center">Điểm bán</th>
+                            <th class="noselect theader text-center">Số lượng</th>
+                            <th class="noselect theader text-center">Trạng thái</th>
+                            <th class="noselect theader text-center">Trưởng nhóm</th>
+                            <th class="noselect theader text-center">Thời gian</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat-start="item in $vm.listDataBK" style="display: none"></tr>
+                        <tr ng-repeat="ele in item.NewData track by $index"  ng-click="$vm.openDetail(item)" ng-show="$vm.checkRole().includes(item.TypeOfItemId)">
+                            <td class="text-center " ng-if="$index == 0" rowspan="{{ item.NewData.length}}"> {{$vm.listDataBK.indexOf(item) + 1}}</td>
+                            <td class="text-left"> {{ele.ItemName}}</td>
+                            <td class="text-left"> {{item.ItemTypeName}}</td>
+
+                            <td class="text-left "> {{ele.SalePointName}}</td>
+                            <td class="text-left ">
+                                <div style="display:flex; justify-content:space-between">
+                                    <span>  {{ele.Quantity | formatCurrency}}</span>
+                                    <span>  {{ele.UnitName}}</span>
+
+                                </div>
+                            </td>
+                            <td class="text-center " ng-if="$index == 0" rowspan="{{ item.NewData.length}}" ng-bind-html="item.ConfirmStatusId | confirmStatus"></td>
+                            <td class="text-center " ng-if="$index == 0" rowspan="{{ item.NewData.length}}"> {{item.RequestByName}}</td>
+                            <td class="text-center " ng-if="$index == 0" rowspan="{{ item.NewData.length}}"> {{item.RequestDate| formatDateTime }}</td>
+
+                        </tr>
+                        <tr ng-repeat-end style="display: none"></tr>
+
+                        <tr>
+                            <td colspan="99" ng-if=" $vm.listConfirm.length==0">Chưa có dữ liệu </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!--<div>
+                <pagination params="$vm.params" total-row="$vm.totalRow"></pagination>
+            </div>-->
+        </div>
+    </div>
+</div>

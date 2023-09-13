@@ -1,0 +1,54 @@
+﻿<div class="col-12 layout-spacing">
+    <div class="container-fluid wh-bg mt-10 pt-10">
+        <div class="mt20" style="width: 160px;">
+            <label>Chọn ngày xổ số:</label>
+            <datepicker my-class="input-sm datepicker" date-format="DD-MM-YYYY" pick-time="false"
+                        ng-model="$vm.params.day" output-format="DD-MM-YYYY"
+                        ng-change="$vm.changeDate()"
+                        placeholder="dd/mm/yyyy"></datepicker>
+        </div>
+
+        <span class="btn btn-today" ng-click="$vm.clickToday()">Hôm nay</span>
+        <span class="btn btn-tomorrow" ng-click="$vm.clickToday(1)">Ngày mai</span>
+        <span class="btn btn-nextday" ng-click="$vm.clickToday(2)">Ngày kia</span>
+        <h2>Ngày xổ số: {{$vm.dayDisplay}}</h2>
+        <div style="overflow: auto">
+            <div class="table-responsive resize-tb">
+                <table class="table" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th class="noselect theader first-col-sticky text-center">Đài bán</th>
+                            <th ng-repeat="item in $vm.listAgency"  ng-if="item.IsActive" class="noselect theader text-center">{{item.Name}}  </th>
+                        </tr>
+                    </thead>
+                    <tbody ng-repeat-end>
+                        <tr ng-repeat="diemban in $vm.listLottery">
+                            <td class="mw-250 first-col-sticky">
+                                <div style="display: flex;justify-content: space-between;">
+                                    <div style="text-align: left;"><strong>{{$index + 1}}. {{diemban.ShortName}}</strong></div>
+                                    <div style="text-align: right;" class="font-weight-bold">{{diemban.Total | formatCurrency}}</div>
+                                </div>
+                            </td>
+                            <td class="text-align-right" ng-repeat="item in diemban.InfoDiemBan"   ng-class="item.TotalReceived !== 0 && item.TotalReceived? 'bg-color' : ''" ng-click="$vm.onClick($parent.$index,$index)">
+                                <input  ng-keypress="inputNumber($event)" class="text-align-right" ng-disabled="!$vm.isCanChangeData" id="quantity_{{$parent.$index}}_{{$index}}"
+                                       ng-class="item.TotalReceived !== 0 && item.TotalReceived ? ['bg-color', 'border-input'] : 'border-input'"
+                                       ng-change=" ($vm.onChangeData(item, item.TotalReceived, {{item.TotalReceived ? item.TotalReceived : 0}}, $parent.$index, $index, diemban))" type="number" name="" min="0" max="999999999" ng-model="item.TotalReceived">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="noselect first-col-sticky bg-sum mw-250">
+                                <div style="display: flex; justify-content: space-between">
+                                    <div style="text-align: left;">Tổng cộng</div>
+                                    <div style="text-align: right;" class="font-weight-bold">{{$vm.listLottery[0].sum | formatCurrency}}</div>
+                                </div>
+                            </td>
+                            <td ng-repeat="item in $vm.listAgency" ng-if="item.IsActive" class="noselect text-align-right padding-r24 bg-num">{{item.Total? (item.Total | formatCurrency) : 0}}  </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="btn btn-primary float-r pt-10 mb-10" ng-if="!$vm.isSaving && $vm.isCanChangeData" ng-click="$vm.save()"><i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;Lưu</div>
+            <img src="../images/loading-dot.gif" ng-if="$vm.isSaving" class="float-r" style="height: 45px; width: 120px;">
+        </div>
+    </div>
+</div>

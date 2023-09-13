@@ -1,0 +1,54 @@
+﻿<div class="modal-header">
+    <h3 class="modal-title" id="modal-title">
+        Chi phí chi tiết - {{$vm.model.Data.SalePointName}}
+    </h3>
+</div>
+<div>
+    <div class="modal-body">
+
+
+        <div class="mb-1 mt-1">
+            <div style="display: flex; justify-content: space-around;">
+                <h2 class="text-center"> {{$vm.model.Name}}</h2>
+            </div>
+            <!---->
+            <div class="table-responsive resize-tb">
+                <table class="table">
+                    <thead class="fix-scroll">
+                        <tr class="noselect theader">
+                            <th class="text-center">Nhân viên</th>
+                            <th class="text-center">Số tiền</th>
+                            <th class="text-center">Chi tiết</th>
+                            <th class="text-center">Ngày</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-left">{{$vm.model.Shift1.FullName}}</td>
+                            <td class="text-right">{{$vm.model.Shift1.TotalPriceBK | formatCurrency}}</td>
+                            <td>
+                                <table style="width: 100%;">
+                                    <tbody>
+                                        <tr ng-repeat="date in $vm.model.Shift1.Data">
+                                            <td style="border: none;" class="text-left">{{date.Note}}</td>
+                                            <td style="border: none;" class="text-right">{{date.TotalPrice |formatCurrency}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                            <td class="text-right">{{$vm.model.Shift1.TotalPriceBK | formatCurrency}}</td>
+
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+
+
+        </div>
+    </div>
+</div>
+
+<div class="modal-footer">
+    <button class="btn btn-secondary" type="button" ng-click="$vm.close()">Đóng</button>
+</div>

@@ -1,0 +1,23 @@
+
+
+.z999{
+    z-index: 999 !important;
+}
+.fc-daygrid-day-frame fc-scrollgrid-sync-inner{
+    height: 80px;
+}
+.fc-event-main-frame{
+    height: 2rem;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.morning-shift {
+    color: white;
+    background-color: #F14C35 !important;
+}
+.evening-shift {
+    color: white;
+    background-color: #1874F1 !important;
+}

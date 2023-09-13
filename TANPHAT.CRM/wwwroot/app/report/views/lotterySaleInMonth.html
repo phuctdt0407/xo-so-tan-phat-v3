@@ -1,0 +1,63 @@
+﻿<div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
+    <div class="container-fluid wh-bg mt-10">
+
+        <div class="row">
+            <div class="col-md-3 col-xs-6 col-lg-2 pt10">
+                <label>Tháng</label>
+                <monthyearpicker my-class="input-sm datepicker-new" date-format="MM/YYYY" placeholder="All month"
+                                 ng-model="$vm.month" on-select="$vm.loadData()" ng-change="$vm.loadData()" output-format="YYYY-MM"></monthyearpicker>
+            </div>
+        </div>
+        <h3 class="text-center pt-4">Doanh số vé bán trong tháng {{$vm.thisMonth}} của mỗi điểm bán</h3>
+        <div class="table-responsive resize-tb">
+            <div id="chartColunm" class="minWidthChart"></div>
+        </div>
+        <h3 class="text-center pt-4">Doanh số các điểm bán trong tháng {{$vm.thisMonth}}</h3>
+        <!--<h4>Đơn vị tính: 1,000</h4>-->
+        <div class="table-responsive resize-tb">
+            <table class="table">
+                <thead class="fix-scroll">
+                    <tr>
+                        <th class="theader first-col-sticky"></th>
+                        <th class="theader text-center" ng-repeat="item in $vm.listDate">{{item.time}}</th>
+                    </tr>
+                </thead>
+                <tbody class="">
+                    <tr>
+                        <td class="first-col-sticky link text-left" style="min-width: 150px">
+                            Vé thường
+                        </td>
+                        <td class="text-right" ng-repeat="item in $vm.listVT track by $index">
+                            {{item | formatCurrency}}
+                        </td>
+                    </tr>
+                    <tr >
+                        <td class="first-col-sticky link text-left">
+                            Vé trùng
+                        </td>
+                        <td class="text-right" ng-repeat="item in $vm.listVTr track by $index" style="min-width: 120px">
+                            {{item  | formatCurrency}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="first-col-sticky link text-left" style="min-width: max-content">
+                            Vé cào
+                        </td>
+                        <td class="text-right" ng-repeat="item in $vm.listVC track by $index" style="min-width: 120px">
+                            {{item  | formatCurrency}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="first-col-sticky link text-left">
+                            Tổng cộng
+                        </td>
+                        <td class="text-right" ng-repeat="item in $vm.listSUM track by $index" style="min-width: 120px">
+                            {{item  | formatCurrency}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>    

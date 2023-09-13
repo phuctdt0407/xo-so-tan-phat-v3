@@ -1,0 +1,69 @@
+﻿<div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
+    <div class="container-fluid wh-bg mt-10">
+        <div class="row">
+            <div class="wh-bg ">
+                <div class="mt20 w160px pt-10">
+                    <label>Tháng</label>
+                    <monthyearpicker my-class="input-sm datepicker-new" date-format="MM/YYYY" placeholder="All month"
+                                     ng-model="$vm.month" on-select="$vm.loadData()" ng-change="$vm.loadData()" output-format="YYYY-MM"></monthyearpicker>
+                </div>
+            </div>
+
+<!--            <div class="ml-auto mr-3" style="padding-top: 50px;">-->
+<!--                <img src="../images/loading-dot.gif" ng-if="$vm.isSaving" class="float-r" style="height: 45px; width: 120px;">-->
+<!--                <span ng-if="!$vm.isSaving" ng-click="$vm.save()" class="btn btn-primary">Lưu toàn bộ</span>-->
+<!--            </div>-->
+
+        </div>
+        <div class="table-responsive resize-tb">
+            <div id="calendar">
+                <table class="table w100p table-wrapper-scroll-y my-custom-scrollbar">
+                    <thead class="theader text-center fix-scroll ">
+                        <tr class="flex flex-wrap ">
+                            <th class="th-none first1-col-sticky" rowspan="2"></th>
+                            <th style="left: 122px; z-index: 51; background: #7a009f !important;"
+                                class="bg-sum th-none text-right sticky"
+                                rowspan="2">{{$vm.getSum() |formatCurrency}}</th>
+
+                            <th style="width: 10px;" class="sticky-border-1 text-center fix-scroll py-4 resizeSchedule " ng-repeat="item in $vm.listMonth"
+                                ng-class="({{$vm.checkCurrentDate($index)}}&&{{item.IsWeekEnd}}) ? 'bg-current-weekend'
+                                            : {{$vm.checkCurrentDate($index)}} ? 'bg-curentDate'
+                                            : {{item.IsWeekEnd}} ? 'patternsCss' : '' ">
+                                {{$index+1}}
+                            </th>
+                        </tr>
+                        <tr class="flex flex-wrap ">
+                            <th style="width: 10px;" class="sticky-border-1 text-center fix-scroll py-4 resizeSchedule " ng-repeat="item in $vm.listMonth"
+                                ng-class="({{$vm.checkCurrentDate($index)}}&&{{item.IsWeekEnd}}) ? 'bg-current-weekend'
+                                            : {{$vm.checkCurrentDate($index)}} ? 'bg-curentDate'
+                                            : {{item.IsWeekEnd}} ? 'patternsCss' : '' ">
+                                {{item.DateName}}
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="salepoint in $vm.listSalePoint">
+                            <td style="left:0" class="td-none col-sticky ">{{salepoint.Name}} </td>
+                            <td style="left: 123px; background: #f6ddff !important;"
+                                class="w180 td-none col-sticky text-right">
+                                {{salepoint.Sum | formatCurrency}} </td>
+                            <td class="w180" ng-repeat="date in salepoint.listMonth">
+                                <div class="row">
+                                    <div class="col-10 text-right">
+                                        {{(date.Shift1.TotalPrice + date.Shift2.TotalPrice) |formatCurrency}}
+                                    </div>
+                                    
+                                    <span class="link" ng-if="date.Shift1.TotalPrice + date.Shift2.TotalPrice >0" ng-click="$vm.showInfo(date)"><i style="display:flex" class="fa fa-eye" aria-hidden="true"></i></span>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="99" ng-if="!$vm.listSalePoint || $vm.listSalePoint.length ==0">... Chưa chia ca làm việc trong tháng</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,94 @@
+﻿<div class="modal-header text-center">
+    <h3 class="modal-title" id="modal-title">Danh sách trả thưởng</h3>
+</div>
+
+<div class="m-2">
+    <div ng-show="!$vm.showForm" class="mb-3">
+        <i class="fa fa-plus cursor" style="color: green" ng-click="$vm.showFormPayFund()">{{'  '}}Thêm mới</i>
+    </div>
+    <div ng-show="$vm.showForm" class="card card-create-container mx-2">
+        <h4>Số tiền trả thưởng tối đa: {{$vm.data.TotalPriceRemain > 0 ? ($vm.data.TotalPriceRemain | formatCurrency) : 0}}</h4>
+        <div class="row p-2">
+            <div class="col-4">
+                <label class="rq-form">Số tiền</label>
+                <input type="number" class="form-control" id="quantity" name="numonly" placeholder="Nhập tiền trả thưởng" required
+                       ng-keypress="inputNumber($event)"
+                       ng-model="$vm.updateData.Price "
+                       ng-change="$vm.ChangeInputPrice()">
+            </div>
+
+            <div class="col-6">
+                <label class="rq-form">Ghi chú</label>
+                <input type="text" class="form-control" id="quantity" name="numonly"
+                       placeholder="Nhập ghi chú" required
+                       ng-model="$vm.updateData.Note ">
+            </div>
+        </div>
+
+        <div class="p-2">
+            <img src="../images/loading-dot.gif" ng-if="$vm.isSaving" class="float-r" style="height: 45px; width: 120px;">
+            <button class="float-right  btn btn-success" ng-if="!$vm.isSaving" type="submit" ng-click="$vm.payFund()">Trả thưởng</button>
+            <button class="float-right  btn btn-primary mx-3" ng-if="!$vm.isSaving" ng-click="$vm.closeForm()">Đóng</button>
+        </div>
+    </div>
+    <div class="m-2">
+        <!--<div class="wh-bg mt-10 col-9">
+            <div class="mt20 w160px pt-10">
+                <label>Tháng</label>
+                <monthyearpicker my-class="input-sm datepicker-new" date-format="MM/YYYY" placeholder="All month"
+                                 ng-model="$vm.month" on-select="$vm.loadData()" ng-change="$vm.loadData()" output-format="YYYY-MM"></monthyearpicker>
+            </div>
+        </div>-->
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="noselect theader text-center">
+                        No.
+                    </th>
+                    <th class="noselect theader text-center">
+                        Số tiền trả thưởng
+                    </th>
+                    <th class="noselect theader text-center">
+                        Ghi chú
+                    </th>
+                    <th class="noselect theader text-center">
+                        Ngày trả
+                    </th>
+                    <th class="noselect theader text-center">
+                        Xóa
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in $vm.data.ListDataReturn">
+                    <td class="text-center">
+                        {{$index + 1}}
+                    </td>
+                    <td class="text-right">
+                        {{item.Price > 0 ? (item.Price | formatCurrency) : 0}}
+                    </td>
+                    <td class="text-left">
+                        {{item.Note}}
+                    </td>
+                    <td class="text-center">
+                        {{item.Date | formatDate}}
+                    </td>
+                    <td class="text-center">
+                        <i class="fa fa-trash fa-lg cursor" style="color: red" ng-click="$vm.getBootBox(item, $index)"></i>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="99" ng-if="!$vm.data.ListDataReturn || $vm.data.ListDataReturn.length == 0">
+                        Chưa có dữ liệu
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<div class="modal-footer">
+    <button class="btn btn-secondary" type="button" ng-click="$vm.cancel()">Đóng</button>
+</div>

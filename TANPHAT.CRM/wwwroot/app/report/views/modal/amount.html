@@ -1,0 +1,167 @@
+﻿<div class="modal-header">
+    <h3 class="modal-title" id="modal-title">Nhập số liệu</h3>
+</div>
+<div>
+    <div class="modal-body">
+        <div class="card card-create-container m-3 modal-body">
+
+            <div class="mb-1 mt-1">
+                <div style="display: flex; justify-content: space-around;">
+                    <h5 class="text-center">Ngày xổ: {{$vm.listData.LotteryDate}}</h5>
+                    <h5 lass="text-center">Đài bán: {{$vm.listData.ShortName}}</h5>
+
+
+                </div>
+                <!---->
+                <table id="" class="table " style="width:100%; ">
+                    <thead>
+                        <tr>
+                            <th colspan="{{$vm.tempBk[0].TotalRemaining>0 && $vm.temp2Bk[0].TotalDupRemaining >0 ? '2':'1'}}" class="noselect theader" style="width: 50%;">
+                                <div class="d-flex justify-content-center align-items-center">
+                                    <span>Loại vé</span>
+                                </div>
+                            </th>
+                            <th colspan="{{$vm.tempBk[0].TotalRemaining>0 && $vm.temp2Bk[0].TotalDupRemaining >0 ? '2':'1'}}" class="noselect theader">
+                                <div class="d-flex justify-content-center align-items-center">
+                                    <div style="display:flex; justify-content:space-between">
+                                        <div class="cus-ui m-center " disabled>
+                                            <ui-select ng-if="$vm.temp2Bk[0].TotalDupRemaining>0"
+                                                       ng-model="$vm.price" theme="select2"
+                                                       ng-change="$vm.onChangePrice($select.selected)"
+                                                       search-enabled="false">
+                                                <ui-select-match allow-clear="false" placeholder="Chọn giá vé">
+                                                    {{$select.selected.LotteryPriceName}}
+                                                </ui-select-match>
+                                                <ui-select-choices position="down"
+                                                                   repeat="item.LotteryTypeId.toString() as item in $vm.listTypeSelect">
+                                                    {{item.LotteryPriceName}}
+                                                </ui-select-choices>
+
+                                            </ui-select>
+                                            <ui-select ng-if="$vm.temp2Bk[0].TotalDupRemaining<=0"
+                                                       ng-model="$vm.price" theme="select2"
+                                                       ng-change="$vm.onChangePrice($select.selected)"
+                                                       search-enabled="false">
+                                                <ui-select-match allow-clear="false" placeholder="Chọn giá vé">
+                                                    {{$select.selected.LotteryPriceName}}
+                                                </ui-select-match>
+                                                <ui-select-choices position="down"
+                                                                   repeat="item.LotteryTypeId.toString() as item in $vm.listTypeSelectVer1">
+                                                    {{item.LotteryPriceName}}
+                                                </ui-select-choices>
+
+                                            </ui-select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </th>
+                        </tr>
+                        <tr>
+                            <th  class="noselect theader" ng-if="$vm.tempBk[0].TotalRemaining>0 && $vm.price.LotteryPriceId !=6">
+                                <div class="d-flex justify-content-center align-items-center">
+                                    <span>Vé thường</span>
+                                </div>
+                            </th>
+                            <th colspan="{{$vm.temp2Bk[0].TotalDupRemaining>0  &&  $vm.price.LotteryPriceId==6 ? '2':'1'}}"  class="noselect theader" ng-if="$vm.temp2Bk[0].TotalDupRemaining>0">
+                                <div class="d-flex justify-content-center align-items-center">
+                                    <span>Vé trùng</span>
+                                </div>
+                            </th>
+                            <th class="noselect theader" ng-if="$vm.tempBk[0].TotalRemaining>0 && $vm.price.LotteryPriceId !=6">
+                                <div class="d-flex justify-content-center align-items-center">
+                                    <span>Vé thường</span>
+                                </div>
+                            </th>
+
+
+                            <th  colspan="{{$vm.temp2Bk[0].TotalDupRemaining>0  &&  $vm.price.LotteryPriceId==6 ? '2':'1'}}" class="noselect theader" ng-if="$vm.temp2Bk[0].TotalDupRemaining>0">
+                                <div class="d-flex justify-content-center align-items-center">
+                                    <span>Vé trùng</span>
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td ng-if="$vm.tempBk[0].TotalRemaining>0 && $vm.price.LotteryPriceId !=6">
+                                <div style="display: flex;justify-content: right;">
+                                    <div style="text-align: left;">{{$vm.temp[0].TotalRemaining}}</div>
+
+                                </div>
+                            </td>
+                            <td  colspan="{{$vm.temp2Bk[0].TotalDupRemaining>0  &&  $vm.price.LotteryPriceId==6 ? '2':'1'}}" ng-if="$vm.temp2Bk[0].TotalDupRemaining>0">
+                                <div style="display: flex;justify-content: right;">
+                                    <div style="text-align: left;">{{$vm.temp2[0].TotalDupRemaining}}</div>
+
+                                </div>
+                            </td>
+
+
+                            <td ng-if="$vm.tempBk[0].TotalRemaining>0 && $vm.price.LotteryPriceId !=6">
+
+                                <input 
+                                   ng-keypress="inputNumber($event)" class="text-align-right" type="number" min="0" max="999999"  ng-model="$vm.temp[0].inputTransfer" ng-change="$vm.ChangeValueTransfer($vm.temp[0], $vm.temp[0].inputTransfer, {{$vm.temp[0].inputTransfer}})">
+
+                            </td>
+                            
+                            <td colspan="{{$vm.temp2Bk[0].TotalDupRemaining>0  &&  $vm.price.LotteryPriceId==6 ? '2':'1'}}" ng-if="$vm.temp2Bk[0].TotalDupRemaining>0 && $vm.price.LotteryPriceId == 6">
+
+                                <input
+                                   ng-keypress="inputNumber($event)" class="text-align-right" type="number" min="0" max="999999" ng-model="$vm.temp2[0].inputTransfer" ng-change="$vm.ChangeValueTransferModify($vm.temp2[0], $vm.temp2[0].inputTransfer, {{$vm.temp2[0].inputTransfer}})">
+
+                            </td>
+
+                            <td ng-if="$vm.temp2Bk[0].TotalDupRemaining>0 && $vm.price.LotteryPriceId !=6">
+
+                                <input
+                                   ng-keypress="inputNumber($event)"class="text-align-right" type="number" min="0" max="999999" ng-model="$vm.temp2[0].inputTransfer" ng-change="$vm.ChangeValueTransfer2($vm.temp2[0], $vm.temp2[0].inputTransfer, {{$vm.temp2[0].inputTransfer}})">
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="{{$vm.tempBk[0].TotalRemaining>0 && $vm.temp2Bk[0].TotalDupRemaining >0 ? '2':'1'}}">
+                                <div style="display:flex; justify-content:space-between">
+                                    <div style="text-align:left">
+                                        <span>Tổng cộng: </span>
+                                    </div>
+                                    <div style="text-align:right">
+                                        <span>{{$vm.total | formatCurrency}} </span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td  ng-if="$vm.tempBk[0].TotalRemaining>0  && $vm.price.LotteryPriceId !=6 ">
+                                <div>
+                                    <span> {{$vm.total1  | formatCurrency}}</span>
+                                </div>
+                            </td>
+                            
+                            <td  ng-if="$vm.temp2Bk[0].TotalDupRemaining>0 ">
+                                <div>
+                                    <span> {{$vm.total2  | formatCurrency}}</span>
+                                </div>
+                            </td>
+
+                        </tr>
+
+                        <tr ng-if="!$vm.listData || $vm.listData.length <=0">
+                            <td colspan="99" class="text-center">Không tìm thấy dữ liệu nào...</td>
+                        </tr>
+                </table>
+
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+
+<div class="modal-footer">
+    <div class="btn btn-primary " ng-if="!$vm.isSaving" ng-click="$vm.save()"><i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu </div>
+    <img src="../images/loading-dot.gif" ng-if="$vm.isSaving" class="float-r" style="height: 45px; width: 120px;">
+
+    <button class="btn btn-secondary" type="button" ng-click="$vm.cancel()">Đóng</button>
+</div>

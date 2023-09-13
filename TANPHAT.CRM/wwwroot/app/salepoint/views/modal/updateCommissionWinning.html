@@ -1,0 +1,27 @@
+﻿<div class="modal-header align-content-center">
+    <h3 class="modal-title" id="modal-title">Cập nhật hoa hồng đst</h3>
+</div>
+<form name="formUpdate" class="trial-form p-3">
+    <div class="col-12 mb-10">
+        <label class="rq-form">Hoa hồng đst</label>
+        <input type="text" class="form-control" id="commission" name="numonly" 
+               ng-keypress="inputNumber($event)"
+               ng-model="$vm.commission.TotalCommision">
+    </div>
+
+    <div class="col-12 mb-10">
+        <label class="rq-form">Phí đst</label>
+        <input type="text" class="form-control" id="fee" name="numonly" 
+               ng-keypress="inputNumber($event)"
+               ng-model="$vm.commission.Fee">
+    </div>
+
+    <div class="modal-footer">
+        <div class="btn btn-primary "
+             ng-click="$vm.save()">
+            <i class="fa fa-floppy-o" aria-hidden="true"></i> Cập nhật
+        </div>
+        <img src="../images/loading-dot.gif" ng-if="$vm.isSaving" class="float-r" style="height: 45px; width: 120px;">
+        <button class="btn btn-secondary" type="button" ng-click="$vm.close()">Đóng</button>
+    </div>
+</form>

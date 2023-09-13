@@ -1,0 +1,196 @@
+﻿<div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
+    <div class="container-fluid wh-bg mt-10">
+
+        <div class="row">
+            <div class="wh-bg mt-10 col-9">
+                <div class="mt20 w160px pt-10">
+                    <label>Tháng</label>
+                    <monthyearpicker my-class="input-sm datepicker-new" date-format="MM/YYYY" placeholder="All month"
+                                     ng-model="$vm.month" on-select="$vm.loadData()" ng-change="$vm.loadData()" output-format="YYYY-MM"></monthyearpicker>
+                </div>
+            </div>
+
+            <div class="col-3 my-auto">
+                <div class="d-flex justify-content-between resizeSchedule">
+                    <div class="legend-duplicate-shift">
+                        <span class="m-3">Trùng ca</span>
+                    </div>
+                    <span>{{$vm.totalDup}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="p-2">
+            <span class="resizeSchedule btn btn-today" ng-click="$vm.clickMonth()">Tháng này</span>
+            <span class="resizeSchedule btn btn-tomorrow" ng-click="$vm.clickMonth(1)">Tháng sau</span>
+            <div ng-if="!$vm.isSaving" class="btn btn-primary float-r resizeSchedule" ng-click="$vm.save()"><i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu </div>
+            <img src="../images/loading-dot.gif" ng-if="$vm.isSaving" class="float-r" style="height: 45px; width: 120px;">
+        </div>
+        <div class="table-responsive">
+            <div class="table-responsive resize-tb">
+                <div id="calendar">
+                    <table class="table w100p table-wrapper-scroll-y my-custom-scrollbar editPadding">
+                        <thead class="theader text-center fix-scroll ">
+                            <tr class="flex flex-wrap sticky-border-1">
+                                <th colspan="2" class="text-center first1-col-sticky fix-scroll py-4 resizeSchedule">Bảng lịch tháng {{$vm.thisMonth}}</th>
+
+                                <th style="width: 10px;" class="text-center fix-scroll py-4 resizeSchedule " ng-repeat="item in $vm.listDateInMonth"
+                                    ng-class="({{$vm.checkCurrentDate($index)}} && item.IsWeekEnd && item.isDup) || (item.IsWeekEnd && item.isDup) ? 'bg-warning-weekend'
+                                                : (({{$vm.checkCurrentDate($index)}} && item.isDup) || item.isDup) ? 'bg-warning'
+                                                : ({{$vm.checkCurrentDate($index)}}&&item.IsWeekEnd) ? 'bg-current-weekend'
+                                                : {{$vm.checkCurrentDate($index)}} ? 'bg-curentDate'
+                                                : item.IsWeekEnd ? 'patternsCss' : '' ">
+                                    <span class="custom_ByTien">
+                                        {{$index+1}}
+
+                                        <i ng-if="item.IsHoliday" class="fa fa-solid fa-star tooltips" tooltip="{{item.Tooltip}}" tooltip-position="bottom" style="color:yellow"></i>
+
+                                    </span>
+                                </th>
+
+                                <!--<th ng-repeat="item in $vm.listDateInMonth" ng-class="[{'bg-warning': item.isDup}]"> </th>-->
+                            </tr>
+                            <tr class="flex flex-wrap sticky-border-1 resizeSchedule">
+                                <td class="text-center first1-col-sticky fix-scroll py-4">TP</td>
+                                <td class="text-center  fix-scroll second1-col-sticky py-4">Tên</td>
+                                <td class="text-center fix-scroll py-4" ng-repeat="item in $vm.listMonth"
+                                    ng-class="({{$vm.checkCurrentDate($index)}}&&{{item.IsWeekEnd}}) ? 'bg-current-weekend'
+                                                : {{$vm.checkCurrentDate($index)}} ? 'bg-curentDate'
+                                                : {{item.IsWeekEnd}} ? 'patternsCss' : '' ">
+                                    {{item.DateName}}
+                                </td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat-start="item in $vm.listSalePoint" style="display:none"> </tr>
+                            <tr>
+                                <td rowspan="2" class="text-center center-align first-col-sticky sticky-border-1">{{$index +1}}. {{item.Name}}</td>
+                                <td class="text-center sky-bg second-col-sticky sticky-border-1">
+                                    <ui-select ng-model="item.inputShift_2" ng-change="$vm.checkDupValueAll()"
+                                           
+                                               ng-click="$vm.clicked()"
+                                               theme="select2" search-enabled="true">
+                                        <ui-select-match placeholder="Chọn nhân viên" allow-clear="false" class="text-center" >{{$select.selected.Name}}</ui-select-match>
+                                        <ui-select-choices position="down" repeat="ele.Id as ele in $vm.listStaff | filter: $select.search.toUnaccent()">
+                                            {{ele.Name}}
+                                        </ui-select-choices>
+                                    </ui-select>
+                                </td>
+                                <td class="mw-7r" ng-repeat="ele in item.listMonth" ng-click="  $vm.openPopup(1,ele, item)" ng-class="[ !$vm.isCheckMonth(ele,1)? 'notAllow':'' ,ele.objShift1.isDup? 'bg-warning' : ele.objShift1.isChangeData? 'wh-bg' : ele.IsWeekEnd? (ele.objShift1.isShift1?  'grin-patternsCss' :'sky-patternsCss') :  (ele.objShift1.isShift1?  'grin-bg' :'sky-bg')]">
+                                    {{ele.objShift1.isChangeData? ele.objShift1.Name : ele.objShift1.isShift1?$vm.objStaff[item.inputShift_1]:$vm.objStaff[item.inputShift_2]}}
+                                    <!--Trung ca-->
+                                    <!--{{ele.objShift1.isShift1?$vm.objStatus[ele.ShiftTypeId1]:$vm.objStatus[ele.ShiftTypeId2]}}-->
+                                </td>
+                            </tr>
+                            <tr class="bb-4">
+                                <td class="text-center grin-bg second-col-sticky sticky-border-1">
+                                    <ui-select ng-model="item.inputShift_1" ng-change="$vm.checkDupValueAll()"
+                                           
+                                               theme="select2" search-enabled="true">
+                                        <ui-select-match placeholder="Chọn nhân viên" allow-clear="false" class="text-center">{{$select.selected.Name}}</ui-select-match>
+                                        <ui-select-choices position="down" repeat="ele.Id as ele in $vm.listStaff | filter: $select.search.toUnaccent()">
+                                            {{ele.Name}}
+                                        </ui-select-choices>
+                                    </ui-select>
+                                </td>
+                                <td class="mw-7r" ng-repeat="ele in item.listMonth" ng-click="  $vm.openPopup(2,ele, item)" ng-class="[ !$vm.isCheckMonth(ele,2)? 'notAllow':'' , ele.objShift2.isDup? 'bg-warning' : ele.objShift2.isChangeData? 'wh-bg' : ele.IsWeekEnd? (ele.objShift2.isShift1?  'grin-patternsCss' :'sky-patternsCss') :  (ele.objShift2.isShift1?  'grin-bg' :'sky-bg')] ">
+                                    {{ele.objShift2.isChangeData? ele.objShift2.Name : ele.objShift2.isShift1?$vm.objStaff[item.inputShift_1]:$vm.objStaff[item.inputShift_2]}}
+                                    <!--Trung ca-->
+                                    <!--{{ele.objShift2.isShift1?$vm.objStatus[ele.ShiftTypeId1]:$vm.objStatus[ele.ShiftTypeId2]}}-->
+                                </td>
+                            </tr>
+                          
+                            <tr ng-repeat-end style="display:none"> </tr>
+
+                            <!--LEADER OFF-->
+                            <tr>
+                                <td colspan="2" style="left:0px; z-index:51" class="td-bottom">Trưởng nhóm vắng mặt</td>
+                                <td ng-repeat="date in $vm.listDateOff" class="td-bottom" ng-click="$vm.openDayOffLeader(date)">
+                                {{date.Name}}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <img src="../images/loading-dot.gif" ng-if="$vm.isSaving" class="float-r" style="height: 45px; width: 120px;">
+            <div ng-if="!$vm.isSaving &&" class="btn btn-primary float-r mt-10" ng-click="$vm.save()"><i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu </div>
+        </div>
+        <div class="col-md-6 col-xs-12">
+            <div class="table-responsive resize-tb py-4">
+                <table class="table table-wrapper-scroll-y my-custom-scrollbar">
+                    <thead class="theader text-center fix-scroll ">
+                        <tr>
+                            <th colspan="2" class="text-center py-4">CHÚ GIẢI</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="py-4">
+                                <div class="p-8 bg-sky w-112 mx-auto">
+                                    <div class="text-center text-12 py-4 px-8 bg-white border-4"> Vinh Pham</div>
+                                </div>
+                            </td>
+                            <td class="py-4 text-12 text-left">
+                                Nhân viên làm chính trong điểm bán
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="py-4">
+                                <div class="p-8 bg-sky text-12 w-112 mx-auto">
+                                    Vinh Pham
+                                </div>
+                            </td>
+                            <td class="py-4 text-12 text-left">
+                                Ca theo nhân viên làm chính
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="py-4">
+                                <div class="d-flex">
+                                    <div class="p-8 bg-warning text-12 mr-4 w-112 mx-auto">
+                                        Vinh Pham
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-4 text-12 text-left">
+                                Ca trùng
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="py-4">
+                                <div class="p-8 px-36 bg-curentDate text-12 font-weight-bold w-112 mx-auto">
+                                    1
+                                </div>
+                            </td>
+                            <td class="py-4 text-12 text-left">
+                                Ngày hiện tại
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="py-4">
+                                <div class="p-8 px-36 patternsCss text-12 font-weight-bold w-112 mx-auto">
+                                    1
+                                </div>
+                            </td>
+                            <td class="py-4 text-12 text-left">
+                                Ngày cuối tuần
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="py-4">
+                                <div class="p-8 bg-sky text-12 w-112 mx-auto">
+                                    <i class="fa fa-solid fa-star" style="color:yellow"></i>
+                                </div>
+                            </td>
+                            <td class="py-4 text-12 text-left">
+                                Ngày lễ
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+</div>

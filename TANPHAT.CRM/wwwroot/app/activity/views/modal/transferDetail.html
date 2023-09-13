@@ -1,0 +1,58 @@
+﻿<div class="modal-header">
+    <h3 class="modal-title" id="modal-title" ng-if="$vm.listData[0].TransitionTypeId!=3">Chuyển nhận vé {{$vm.salePoint}}</h3>
+    <h3 class="modal-title" id="modal-title" ng-if="$vm.listData[0].TransitionTypeId==3">Trả ế tại điểm bán {{$vm.salePoint}}</h3>
+
+</div>
+<div class="modal-body">
+    <div>
+        <div class="card ">
+            <div class="mb-4 mt-4">
+                <h3 class="text-center">{{$vm.data.toDay.day}}</h3>
+                <table id="toDay" class="table " style="width:100%">
+                    <thead>
+                        <tr class="">
+                            <th class="noselect theader text-center"><span>STT</span></th>
+                            <th class="noselect theader">
+                                <div class="d-flex justify-content-center align-items-center">
+                                    <span>Đài bán</span>
+                                </div>
+                            </th>
+                            <th class="noselect theader">
+                                <div class="d-flex justify-content-center align-items-center">
+                                    <span>Số lượng</span>
+                                </div>
+                            </th>
+                            <th class="noselect theader">
+                                <div class="d-flex justify-content-center align-items-center">
+                                    <span>Người phụ trách</span>
+                                </div>
+                            </th>
+
+                            <th class="noselect theader">
+                                <div class="d-flex justify-content-center align-items-center">
+                                    <span>Thời gian</span>
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="noselect" ng-repeat="ele in $vm.listData">
+                            <td class="noselect w80 text-center" ng-class="{'bg-sky' : $index % 2 == 1}">{{$index+1}}</td>
+                            <td class="noselect border-soild td-color text-left" ng-class="{'bg-sky' : $index % 2 == 1}">{{ele.ShortName}}</td>
+                            <td class="noselect border-soild td-color text-left" ng-class="{'bg-sky' : $index % 2 == 1}">
+                                <div style="display: flex; justify-content: space-between;">
+                                    <div style="text-align: left;">  <strong>{{ele.TransitionTypeId==2? "Nhận: ": ele.TransitionTypeId==1? "Chuyển: " : "Trả ế: "}}</strong></div>
+                                    <div style="text-align: right;"> <span ng-if="ele.TotalTrans>0">{{ele.TotalTrans}} <br /></span> {{ele.TotalTransDup>0? "Vé trùng: "+ele.TotalTransDup+"":""}}</div>
+                                </div>
+                            </td>
+                            <td class="noselect border-soild td-color text-left " ng-class="{'bg-sky' : $index % 2 == 1}">{{ele.ManagerName?ele.ManagerName:'--'}}</td>
+                            <td class="noselect border-soild td-color text-right " ng-class="{'bg-sky' : $index % 2 == 1}">{{ele.TransitionDate  | formatDateTime}}</td>
+                        </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-secondary" type="button" ng-click="$vm.cancel()">Đóng</button>
+</div>

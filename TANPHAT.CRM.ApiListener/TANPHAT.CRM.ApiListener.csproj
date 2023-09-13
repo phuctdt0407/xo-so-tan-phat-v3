@@ -1,0 +1,53 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="KTHub.Core.DBConnection" />
+    <None Remove="KTHub.Core.Listener" />
+    <None Remove="Swashbuckle.AspNetCore" />
+    <None Remove="Dapper" />
+    <None Remove="Npgsql" />
+    <None Remove="Newtonsoft.Json" />
+    <None Remove="Wire" />
+    <None Remove="Microsoft.AspNetCore.Hosting" />
+    <None Remove="Microsoft.AspNetCore.Http" />
+    <None Remove="Microsoft.AspNetCore.Http.Features" />
+    <None Remove="KTHub.Core.Client" />
+    <None Remove="Controllers\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="KTHub.Core.DBConnection">
+      <HintPath>..\DLLpackages\KTHub.Core.DBConnection.dll</HintPath>
+    </Reference>
+    <Reference Include="KTHub.Core.Listener">
+      <HintPath>..\DLLpackages\KTHub.Core.Listener.dll</HintPath>
+    </Reference>
+    <Reference Include="KTHub.Core.Client">
+      <HintPath>..\DLLpackages\KTHub.Core.Client.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TANPHAT.CRM.Business\TANPHAT.CRM.Business.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
+    <ProjectReference Include="..\TANPHAT.CRM.Domain\TANPHAT.CRM.Domain.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+    <PackageReference Include="Dapper" Version="2.0.123" />
+    <PackageReference Include="Npgsql" Version="6.0.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Wire" Version="1.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.13" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+  </ItemGroup>
+</Project>

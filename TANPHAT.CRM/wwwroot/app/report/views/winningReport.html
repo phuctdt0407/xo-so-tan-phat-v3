@@ -1,0 +1,42 @@
+﻿
+<div class="col-xl-12 col-lg-12 col-sm-12 layout-spacing">
+    <div class="container-fluid wh-bg mt-10">
+        <div class="mt20" style="width: 220px; padding-left: 15px;">
+            <label>Chọn ngày</label>
+            <datepicker my-class="input-sm datepicker" date-format="DD/MM/YYYY" pick-time="false"
+                on-select="$vm.getData(date)" ng-model="$vm.params.date" output-format="DD/MM/YYYY"
+                ng-change="$vm.changeDate()" placeholder="dd/mm/yyyy"></datepicker>
+        </div>
+        <div class="bound__table-responsive">
+            <table class="table__custom">
+                <thead>
+                    <tr>
+                        <th class="sticky-custom"></th>
+                        <th ng-repeat="item in $vm.showData" class="noselect center-align p-2">{{item.SalePointName}} </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in $vm.listChannel">
+                        <td class="sticky-custom p-3">{{item.Name}}</td>
+                        <td ng-repeat="ParentData in $vm.showData" style="cursor: pointer" ng-click="$vm.openModalDetail(ParentData, item.Id)">
+                            <div class="table__col-content-bound-custom">
+                                <div class="table__col-content-custom" ng-repeat="type in ParentData.DataGroupType" ng-if="item.Id == type.LotteryChannelId">
+                                    <div>
+                                        {{type.WinningTypeName}} : &ensp;
+                                    </div>
+                                    <div>
+                                        {{type.PriceLottery | formatCurrency}}
+                                    </div>
+                                    <div>
+                                        {{type.Number}}
+                                    </div>
+                                </div>
+                            </div>
+                           
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

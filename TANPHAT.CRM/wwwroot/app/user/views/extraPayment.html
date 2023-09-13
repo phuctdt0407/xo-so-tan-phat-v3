@@ -1,0 +1,180 @@
+﻿<div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
+    <div class="container-fluid wh-bg mt-10">
+
+        <div class="row">
+            <div class="wh-bg mt-10 col-9">
+                <div class="mt20 w160px pt-10">
+                    <label>Tháng</label>
+                    <monthyearpicker my-class="input-sm datepicker-new" date-format="MM/YYYY" placeholder="All month"
+                                     ng-model="$vm.month" on-select="$vm.loadData()" ng-change="$vm.loadData()" output-format="YYYY-MM"></monthyearpicker>
+                </div>
+            </div>
+
+            <div class="col-3 my-auto">
+                <div class="resizeSchedule" ng-repeat="item in $vm.extraPaymentType">
+                    <span style="padding-top:23px" class="{{'circle-payment '+ item.Css}}"></span>
+                    <span class="m-3">{{item.Name}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="p-2">
+            <span class="resizeSchedule btn btn-today" ng-click="$vm.clickMonth()">Tháng này</span>
+            <span class="resizeSchedule btn btn-tomorrow" ng-click="$vm.clickMonth(1)">Tháng sau</span>
+          
+        </div>
+        <div class="table-responsive">
+            <div class="table-responsive resize-tb">
+                <div id="calendar">
+                    <table class="table w100p table-wrapper-scroll-y my-custom-scrollbar">
+                        <thead class="theader text-center fix-scroll ">
+                            <tr class="flex flex-wrap sticky-border-1">
+                                <th rowspan="2" colspan="2" class="text-center first1-col-sticky fix-scroll py-4 resizeSchedule"></th>
+
+                                <th rowspan="2" class="text-center first2-col-sticky fix-scroll py-4 resizeSchedule">TC</th>
+
+
+                                <th style="width: 10px;" class="text-center fix-scroll py-4 resizeSchedule " ng-repeat="item in $vm.listMonth"
+                                    ng-class="({{$vm.checkCurrentDate($index)}}&&{{item.IsWeekEnd}}) ? 'bg-current-weekend'
+                                                : {{$vm.checkCurrentDate($index)}} ? 'bg-curentDate'
+                                                : {{item.IsWeekEnd}} ? 'patternsCss' : '' ">
+                                    {{$index+1}}
+
+                                    <i ng-if="item.IsHoliday" class="fa fa-solid fa-star tooltips" tooltip="{{item.Tooltip}}" tooltip-position="bottom" style="color:yellow"></i>
+                                </th>
+
+                                <!--<th ng-repeat="item in $vm.listDateInMonth" ng-class="[{'bg-warning': item.isDup}]"> </th>-->
+                            </tr>
+                            <tr class="flex flex-wrap sticky-border-1 resizeSchedule">
+                                <td class="text-center fix-scroll py-4" ng-repeat="item in $vm.listMonth"
+                                    ng-class="({{$vm.checkCurrentDate($index)}}&&{{item.IsWeekEnd}}) ? 'bg-current-weekend'
+                                                : {{$vm.checkCurrentDate($index)}} ? 'bg-curentDate'
+                                                : {{item.IsWeekEnd}} ? 'patternsCss' : ''">
+                                    {{item.DateName}}
+                                </td>
+                            </tr>
+                        </thead>
+                        <tbody ng-if="$vm.check">
+                            <tr ng-repeat-start="user in $vm.listUser" style="display:none"> </tr>
+                            <tr>
+                                <td class="col-sticky cus-extra-payment-1"> {{$index+1}}</td>
+                                <td class="col-sticky cus-extra-payment-2 link"> {{user.FullName}}</td>
+                                <td class="col-sticky cus-extra-payment-3 link ">
+                                    <ul class="cus-size-payment">
+                                        <li style="padding-top: 5px;" ng-repeat="type in user.listSum" ng-if="type.Sum>0">
+                                            <div class="row ">
+                                                <div class="col-2 cus-nor-col-2" style="flex:none;">
+                                                    <span class="{{'circle-payment '+ type.Css}}"></span>
+                                                </div>
+                                                <div class="col-10">
+                                                    <span class="payment-currency">
+                                                        {{type.Sum | formatCurrency}}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <hr ng-if="user.sum>0" />
+                                        <li style="padding-top: 5px;" ng-if="user.sum>0">
+                                            <div class="row ">
+                                                <div class="col-2 cus-nor-col-2" style="flex:none;">
+
+                                                </div>
+                                                <div class="col-10">
+                                                    <span class="payment-currency">
+                                                        {{user.sum | formatCurrency}}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </td>
+                                <td ng-repeat="item in user.listMonth" ng-click="$vm.isCanChangeData? $vm.openModalCreate(user, item,$parent.$index, $index): return">
+                                    <ul class="cus-size-payment">
+                                        <li style="padding-top: 5px;" ng-repeat="data in item.DataInfo" ng-click="$vm.openModalUpdate(data, user, $parent.$parent.$index, $parent.$index)">
+                                            <div class="row bg-grey">
+                                                <div class="col-2 cus-nor-col-2" style="flex:none;">
+                                                    <span class="{{'circle-payment '+ data.extraPaymentType.Css}}"></span>
+                                                    <!--<span ng-if="data.IsSum" class="span-payment" style="color: green">+</span>-->
+
+                                                </div>
+                                                <div class="col-10">
+                                                    <span class="payment-currency">
+                                                        <!--<span ng-if="!data.IsSum" style="color: red">-</span>
+                                    <span ng-if="data.IsSum" style="color: green">+</span>-->
+                                                        {{data.Price | formatCurrency}}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
+
+                            <tr ng-repeat-end style="display:none"> </tr>
+                        </tbody>
+
+                        <!--for staff-->
+                        <tbody ng-if="!$vm.check">
+                            <tr  ng-repeat-start="user in $vm.listUserAfter" style="display:none"> </tr>
+                            <tr>
+                                <td class="col-sticky cus-extra-payment-1"> {{$index+1}}</td>
+                                <td class="col-sticky cus-extra-payment-2 link"> {{user.FullName}}</td>
+                                <td class="col-sticky cus-extra-payment-3 link ">
+                                    <ul class="cus-size-payment">
+                                        <li style="padding-top: 5px;" ng-repeat="type in user.listSum" ng-if="type.Sum>0">
+                                            <div class="row ">
+                                                <div class="col-2 cus-nor-col-2" style="flex:none;">
+                                                    <span class="{{'circle-payment '+ type.Css}}"></span>
+                                                </div>
+                                                <div class="col-10">
+                                                    <span class="payment-currency">
+                                                        {{type.Sum | formatCurrency}}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <hr ng-if="user.sum>0" />
+                                        <li style="padding-top: 5px;" ng-if="user.sum>0">
+                                            <div class="row ">
+                                                <div class="col-2 cus-nor-col-2" style="flex:none;">
+
+                                                </div>
+                                                <div class="col-10">
+                                                    <span class="payment-currency">
+                                                        {{user.sum | formatCurrency}}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </td>
+                                <td ng-repeat="item in user.listMonth" >
+                                    <ul class="cus-size-payment">
+                                        <li style="padding-top: 5px;" ng-repeat="data in item.DataInfo" >
+                                            <div class="row bg-grey">
+                                                <div class="col-2 cus-nor-col-2" style="flex:none;">
+                                                    <span class="{{'circle-payment '+ data.extraPaymentType.Css}}"></span>
+                                                    <!--<span ng-if="data.IsSum" class="span-payment" style="color: green">+</span>-->
+
+                                                </div>
+                                                <div class="col-10">
+                                                    <span class="payment-currency">
+                                                        <!--<span ng-if="!data.IsSum" style="color: red">-</span>
+                                    <span ng-if="data.IsSum" style="color: green">+</span>-->
+                                                        {{data.Price | formatCurrency}}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
+
+                            <tr ng-repeat-end style="display:none"> </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

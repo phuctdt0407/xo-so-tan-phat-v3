@@ -1,0 +1,60 @@
+﻿<div class="modal-header text-center">
+    <h3 class="modal-title" id="modal-title">Xác nhận chuyển giao dụng cụ</h3>
+</div>
+
+<div>
+    <div class="modal-body">
+        <div class="card card-create-container m-3 modal-body">
+
+            <div class="mb-1 mt-1">
+                <div style="display: flex; justify-content: space-around;">
+                    <h2 class="text-center"> {{$vm.model.NewData[0].SalePointName}}</h2>
+                </div>
+                <!---->
+                <div class="table-responsive resize-tb">
+                    <table class="table">
+                        <thead class="fix-scroll">
+                            <tr class="noselect theader center-align  fix-scroll">
+                               <!-- <th>Điểm bán</th>-->
+                                <th>Tên dụng cụ</th>
+                                <th>Số lượng</th>
+                                <th>Hoạt động</th>
+                                <th>Thời gian</th>
+
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in $vm.model.NewData">
+                                <td class="noselect w160px  text-left">{{item.ItemName}}</td>
+                                <td class="noselect w160px  text-right">
+                                    <div style="display:flex; justify-content:space-between">
+                                        <span>  {{item.Quantity | formatCurrency}}</span>
+                                        <span>  {{item.UnitName}}</span>
+                                    </div>
+                                </td>
+                                <td class="noselect  text-center">{{$vm.model.ItemTypeName}} </td>
+                                <td class="noselect  text-center" style="min-width: 220px">{{$vm.model.RequestDate| formatDateTime}}</td>
+
+                            </tr>
+                            
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+
+<div class="modal-footer">
+    <button class="btn btn-danger" type="button" ng-if="$vm.model.ConfirmStatusId ==1" ng-click="$vm.getBootBox(false)">Huỷ yêu cầu</button>
+
+    <button class="btn btn-success" type="button" ng-if="$vm.model.ConfirmStatusId ==1" ng-click="$vm.getBootBox(true)">Xác nhận</button>
+
+    <button class="btn btn-secondary" type="button" ng-click="$vm.cancel()">Đóng</button>
+</div>

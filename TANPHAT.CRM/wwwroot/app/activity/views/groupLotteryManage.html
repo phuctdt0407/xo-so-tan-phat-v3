@@ -1,0 +1,47 @@
+﻿<div class="col-xl-12 col-lg-12 col-sm-12 wh-bg py-3 layout-spacing">
+    <div ng-if="$vm.isShowList($vm.listActivityMenu)" class="card card-create-container p-3" style="margin-bottom:10px">
+        <h2>Vé - Đại lý</h2>
+        <ol style="list-style: decimal; padding-left: 30px" class="link fs18">
+            <li ng-repeat="item in $vm.listActivityMenu" ng-if="checkPermission(item.root)">
+                <a href="{{item.href}}">
+                    <span class="link fs18">
+                        {{item.Name}}
+                    </span>
+                </a>
+            </li>
+        </ol>
+    </div>
+
+    <div ng-if="$vm.isShowList($vm.listTransferMenu)" class="card card-create-container p-3" style="margin-bottom: 10px">
+        <h2>Chuyển nhận vé</h2>
+        <ol style="list-style: decimal; padding-left: 30px" class="link fs18">
+            <li ng-repeat="item in $vm.listTransferMenu" ng-if="checkPermission(item.root)">
+                <a href="{{item.href}}">
+                    <span class="link fs18">
+                        {{item.Name}}
+                    </span>
+                </a>
+            </li>
+        </ol>
+    </div>
+
+    <div class="card card-create-container p-3" style="margin-bottom: 10px">
+        <h2>Lịch sử vé cào</h2>
+        <ol style="list-style: decimal; padding-left: 30px" class="link fs18">
+            <li>
+                <a ng-click="checkPermission('root.activity.scratchCardFullLog')? goToPage('root.activity.scratchCardFullLog') : return">
+                    <span class="link fs18">
+                        Lịch sử nhập vé cào
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a ng-click="checkPermission('root.activity.scratchCardLog')? goToPage('root.activity.scratchCardLog') : return">
+                    <span class="link fs18">
+                        Lịch sử chia vé cào
+                    </span>
+                </a>
+            </li>
+        </ol>
+    </div>
+</div>

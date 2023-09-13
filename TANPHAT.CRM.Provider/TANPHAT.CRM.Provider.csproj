@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="KTHub.Core.DBConnection" />
+    <None Remove="Dapper" />
+    <None Remove="Npgsql" />
+    <None Remove="Microsoft.Extensions.Configuration.Abstractions" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="KTHub.Core.DBConnection">
+      <HintPath>..\DLLpackages\KTHub.Core.DBConnection.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.0.123" />
+    <PackageReference Include="Npgsql" Version="6.0.3" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TANPHAT.CRM.Domain\TANPHAT.CRM.Domain.csproj" />
+  </ItemGroup>
+</Project>

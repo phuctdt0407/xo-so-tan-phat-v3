@@ -1,0 +1,161 @@
+﻿<div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
+    <div class="container-fluid wh-bg mt-10">
+        <div class="row">
+            <div class="wh-bg mx-3">
+                <div class="mt20 w160px pt-10">
+                    <label>Năm</label>
+                    <yearpicker my-class="input-sm datepicker-new" date-format="YYYY" placeholder="All year"
+                                ng-model="$vm.year" on-select="$vm.loadData()" ng-change="$vm.loadData()" output-format="YYYY"></yearpicker>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive resize-tb">
+            <table class="table" style="width:100%">
+                <thead class="fix-scroll">
+                    <tr>
+                        <th class="theader text-center col1-fund-sticky" rowspan="2">
+                            Điểm bán
+                        </th>
+                        <th class="theader text-center col2-fund-sticky" rowspan="2">
+                            Nhân viên
+                        </th>
+                        <th class="theader text-center col3-fund-sticky" rowspan="2">
+                            Tồn năm trước
+                        </th>
+                        <th ng-repeat-start="month in $vm.monthOfYear" style="display: none"></th>
+                        <th class="theader text-center" colspan="2">
+                            Tháng {{$index + 1}}
+                        </th>
+                        <th ng-repeat-end style="display: none"></th>
+                        <th class="theader text-center" rowspan="2">
+                            Còn lại
+                        </th>
+                        <th class="theader text-center" rowspan="2">
+                            Trả thưởng
+                        </th>
+                    </tr>
+                    <tr>
+                        <th ng-repeat-start="month in $vm.monthOfYear" style="display: none"></th>
+                        <th class="theader text-center"  colspan="2">
+                            Hoa hồng ĐST
+                        </th>
+                        <!--<th class="theader text-center">
+                            Bảo hiểm
+                        </th>-->
+                        <th ng-repeat-end style="display: none"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat-start="salePoint in $vm.listData" style="display: none"></tr>
+                    <tr ng-repeat="user in salePoint.Data">
+                        <td class="col1-fund-sticky" ng-if="$index == 0" rowspan="{{salePoint.Data.length}}">
+                            {{salePoint.SalePointName}}
+                        </td>
+                        <td class="col2-fund-sticky text-left" style="word-wrap: break-word">
+                            {{user.Data.FullName}}
+                        </td>
+                        <td class="col3-fund-sticky text-right" style="white-space: nowrap;">
+                            {{user.Data.TotalFirst > 0 ? (user.Data.TotalFirst | formatCurrency) : 0}}
+                            <i class="fa fa-edit fa-lg cursor" style="color: blue; font-size: 20px;" ng-if="$vm.checkShowUpdateTotalFirst" ng-click="$vm.updateTotalFirst(user)"></i>
+                        </td>
+                        <td ng-repeat-start="month in user.Data.DataMonth" style="display: none"></td>
+                        <td class="text-right" style="min-width: 120px" colspan="2">
+                            {{month.CommissionExtra > 0 ? (month.CommissionExtra | formatCurrency) : 0}}
+                        </td>
+
+                        <td ng-repeat-end style="display: none"></td>
+                        <td class="text-right" style="min-width: 120px">
+                            {{user.Data.TotalPriceRemain > 0 ? (user.Data.TotalPriceRemain | formatCurrency) : 0}}
+                        </td>
+                        <td>
+                            <i class="fa fa-plus cursor" style="color: green;" ng-click="$vm.openModalPayFund(user)"></i>
+                        </td>
+                    </tr>
+                    <tr ng-repeat-end style="display: none"></tr>
+                    <tr ng-if="!$vm.listData || $vm.listData.length == 0">
+                        <td colspan="99">
+                            Không có dữ liệu
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+        <div class="table-responsive resize-tb">
+            <h3>BẢO HIỂM</h3>
+            <table class="table" style="width:100%">
+                <thead class="fix-scroll">
+                    <tr>
+                        <th class="theader text-center col1-fund-sticky" rowspan="2">
+                            Điểm bán
+                        </th>
+                        <th class="theader text-center col2-fund-sticky" rowspan="2">
+                            Nhân viên
+                        </th>
+                        <th class="theader text-center col3-fund-sticky" rowspan="2">
+                            Tồn năm trước
+                        </th>
+                        <th ng-repeat-start="month in $vm.monthOfYear" style="display: none"></th>
+                        <th class="theader text-center" colspan="2">
+                            Tháng {{$index + 1}}
+                        </th>
+                        <th ng-repeat-end style="display: none"></th>
+                        <th class="theader text-center" rowspan="2">
+                            Còn lại
+                        </th>
+                        <th class="theader text-center" rowspan="2">
+                            Trả thưởng
+                        </th>
+                    </tr>
+                    <tr>
+                        <th ng-repeat-start="month in $vm.monthOfYear" style="display: none"></th>
+                        <!--<th class="theader text-center">
+                            Hoa hồng ĐST
+                        </th>-->
+                        <th class="theader text-center"  colspan="2">
+                            Bảo hiểm
+                        </th>
+                        <th ng-repeat-end style="display: none"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat-start="salePoint in $vm.listData" style="display: none"></tr>
+                    <tr ng-repeat="user in salePoint.Data">
+                        <td class="col1-fund-sticky" ng-if="$index == 0" rowspan="{{salePoint.Data.length}}">
+                            {{salePoint.SalePointName}}
+                        </td>
+                        <td class="col2-fund-sticky text-left" style="word-wrap: break-word">
+                            {{user.Data.FullName}}
+                        </td>
+                        <td class="col3-fund-sticky text-right" style="white-space: nowrap;">
+                            {{user.Data.TotalFirst > 0 ? (user.Data.Insure | formatCurrency) : 0}}
+                            <i class="fa fa-edit fa-lg cursor" style="color: blue; font-size: 20px;" ng-if="$vm.checkShowUpdateTotalFirst" ng-click="$vm.updateTotalFirst1(user)"></i>
+                        </td>
+                        <td ng-repeat-start="month in user.Data.DataMonth" style="display: none"></td>
+                        <!--<td class="text-right" style="min-width: 120px">
+                            {{month.CommissionExtra > 0 ? (month.CommissionExtra | formatCurrency) : 0}}
+                        </td>-->
+                        <td class="text-right" style="min-width: 120px"  colspan="2">
+                            {{month.Insure > 0 ? (month.Insure | formatCurrency) : 0}}
+                        </td>
+                        <td ng-repeat-end style="display: none"></td>
+                        <td class="text-right" style="min-width: 120px">
+                            {{user.Data.TotalPriceRemain > 0 ? (user.Data.TotalPriceRemain | formatCurrency) : 0}}
+                        </td>
+                        <td>
+                            <i class="fa fa-plus cursor" style="color: green;" ng-click="$vm.openModalPayFund(user)"></i>
+                        </td>
+                    </tr>
+                    <tr ng-repeat-end style="display: none"></tr>
+                    <tr ng-if="!$vm.listData || $vm.listData.length == 0">
+                        <td colspan="99">
+                            Không có dữ liệu
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,170 @@
+﻿<div class="header-sales-activity pb-0 wh-bg">
+    <h2 class="text-center pt-2">Quỹ công đoàn</h2>
+    <!--TAB-->
+    <ul class="nav nav-tabs mx-2" id="iconTab" role="tablist">
+        <li class="nav-item cursor" ng-click="$vm.changeTab(1)">
+            <a class="nav-link py-0" ng-class="{'active': !$vm.tab || $vm.tab == 1}" id="retail" data-toggle="tab" role="tab">
+                Quản lý
+            </a>
+        </li>
+        <li class="nav-item cursor" ng-click="$vm.changeTab(2)">
+            <a class="nav-link py-0" ng-class="{'active':  $vm.tab == 2}" id="wholesale" data-toggle="tab" role="tab">
+                Sử dụng
+            </a>
+        </li>
+    </ul>
+    <div class="col-12 layout-spacing px-2" ng-if="$vm.tab != 2">
+        <div class="container-fluid wh-bg">
+            <div class="row">
+                <div class="mt20 w160px pt-10 mx-3">
+                    <label>Năm</label>
+                    <yearpicker my-class="input-sm datepicker-new" date-format="YYYY" placeholder="All year"
+                                ng-model="$vm.year" on-select="$vm.loadData()" ng-change="$vm.loadData()" output-format="YYYY"></yearpicker>
+                </div>
+            </div>
+            <div class="table-responsive resize-tb">
+                <table class="table" style="width:100%">
+                    <thead class="fix-scroll">
+                        <tr>
+                            <th class="theader text-center col1-fund-sticky" rowspan="1">
+                                Điểm bán
+                            </th>
+                            <th class="theader text-center col2-fund-sticky" rowspan="1">
+                                Nhân viên
+                            </th>
+                            <th ng-repeat-start="month in $vm.monthOfYear" style="display: none"></th>
+                            <th class="theader text-center" colspan="1">
+                                Tháng {{$index + 1}}
+                            </th>
+                            <th ng-repeat-end style="display: none"></th>
+                            <th class="theader text-center" rowspan="1">
+                                Còn lại
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat-start="salePoint in $vm.listUserData" style="display: none"></tr>
+                        <tr ng-repeat="user in salePoint.Data">
+                            <td class="col1-fund-sticky" ng-if="$index == 0" rowspan="{{salePoint.Data.length}}">
+                                {{salePoint.SalePointName}}
+                            </td>
+                            <td class="text-left col2-fund-sticky" style="word-wrap: break-word">
+                                {{user.FullName}}
+                            </td>
+                            <td ng-repeat-start="month in user.DataSend" style="display: none"></td>
+                            <td class="text-right" style="min-width: 120px">
+                                {{month.PriceUnion > 0 ? (month.PriceUnion | formatCurrency) : 0}}
+                            </td>
+                            <td ng-repeat-end style="display: none"></td>
+                            <td class="text-right" rowspan="{{$vm.listUnionInYear.UserData.length}}" ng-if="$index == 0 && $parent.$index == 0" style="min-width: 120px">
+                                {{$vm.listUnionInYear.TotalRemain !=0 ? ($vm.listUnionInYear.TotalRemain | formatCurrency) : 0}}
+                            </td>
+                        </tr>
+                        <tr ng-repeat-end style="display: none"></tr>
+                        <tr ng-if="!$vm.listUserData || $vm.listUserData.length == 0">
+                            <td colspan="99">
+                                Không có dữ liệu
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+    <div class="col-12 layout-spacing px-1" ng-if="$vm.tab == 2">
+        <div class="container-fluid wh-bg py-2">
+            <div>
+                <div ng-show="!$vm.showForm" class="my-2">
+                    <i class="fa fa-plus cursor" style="color: green" ng-click="$vm.showFormUseUnion()">{{'  '}}Trích quỹ công đoàn</i>
+                </div>
+                <div ng-show="$vm.showForm" class="card card-create-container mt-2">
+                    <div class="row p-2">
+                        <div class="mx-3">
+                            <div class="mt20" style="width: 160px;">
+                                <label>Chọn ngày</label>
+                                <datepicker my-class="input-sm datepicker" date-format="DD-MM-YYYY" pick-time="false"
+                                            ng-model="$vm.updateData.Date" output-format="DD-MM-YYYY"
+                                            placeholder="dd/mm/yyyy"></datepicker>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <label class="rq-form">Số tiền</label>
+                            <input type="number" class="form-control" id="quantity" name="numonly" placeholder="Nhập số tiền sử dụng" required
+                                   ng-keypress="inputNumber($event)"
+                                   ng-model="$vm.updateData.Price "
+                                   ng-change="$vm.ChangeInputPrice()">
+                        </div>
+                        <div class="col-4">
+                            <label class="rq-form">Ghi chú</label>
+                            <input type="text" class="form-control" id="quantity" name="numonly"
+                                   placeholder="Nhập ghi chú" required
+                                   ng-model="$vm.updateData.Note ">
+                        </div>
+                    </div>
+
+                    <div class="p-2">
+                        <img src="../images/loading-dot.gif" ng-if="$vm.isSaving" class="float-r" style="height: 45px; width: 120px;">
+                        <button class="float-right  btn btn-success" ng-if="!$vm.isSaving" type="submit" ng-click="$vm.useUnion()">Lưu</button>
+                        <button class="float-right  btn btn-primary mx-3" ng-if="!$vm.isSaving" ng-click="$vm.closeForm()">Đóng</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="mt20 w160px pt-10 mx-3">
+                    <label>Tháng</label>
+                    <monthyearpicker my-class="input-sm datepicker-new" date-format="MM/YYYY" placeholder="All month"
+                                     ng-model="$vm.month" on-select="$vm.filterByMonth()" ng-change="$vm.filterByMonth()" output-format="YYYY-MM"></monthyearpicker>
+                </div>
+            </div>
+            <div class="table-responsive resize-tb">
+                <table class="table" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th class="noselect theader text-center">
+                                No.
+                            </th>
+                            <th class="noselect theader text-center">
+                                Số tiền sử dụng
+                            </th>
+                            <th class="noselect theader text-center">
+                                Ghi chú
+                            </th>
+                            <th class="noselect theader text-center">
+                                Ngày sử dụng
+                            </th>
+                            <th class="noselect theader text-center">
+                                Xóa
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="item in $vm.listDataUse">
+                            <td class="text-center">
+                                {{$index + 1}}
+                            </td>
+                            <td class="text-right">
+                                {{item.Price > 0 ? (item.Price | formatCurrency) : 0}}
+                            </td>
+                            <td class="text-left">
+                                {{item.Note}}
+                            </td>
+                            <td class="text-center">
+                                {{item.Date | formatDate}}
+                            </td>
+                            <td class="text-center">
+                                <i class="fa fa-trash fa-lg cursor" style="color: red" ng-click="$vm.getBootBox(item)"></i>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="99" ng-if="!$vm.listDataUse || $vm.listDataUse.length == 0">
+                                Chưa có dữ liệu
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,15 @@
+﻿<div class="modal-header align-content-center">
+    <h3 class="modal-title" id="modal-title">Ngày {{$vm.dayDisplay}}</h3>
+</div>
+
+<div class="modal-body">
+    <label class="rq-form">Tên ngày lễ</label>
+    <input ng-model="$vm.HolidayName" type="text" class="form-control" required>
+</div>
+<div class="modal-footer">
+    <img src="../images/loading-dot.gif" ng-if="$vm.isSaving" class="float-r" style="height: 45px; width: 120px;">
+    <button class="btn btn-danger" ng-if="!$vm.isSaving && !$vm.isCreate" type="submit" ng-click="$vm.save(true)">Xoá</button>
+    <button class="btn btn-success" ng-if="!$vm.isSaving && !$vm.isCreate" type="submit" ng-click="$vm.save()">Chỉnh sửa</button>
+    <button class="btn btn-success" ng-if="!$vm.isSaving && $vm.isCreate" type="submit" ng-click="$vm.save()">Thêm</button>
+    <button class="btn btn-secondary" ng-if="!$vm.isSaving" type="button" ng-click="$vm.close()">Đóng</button>
+</div>

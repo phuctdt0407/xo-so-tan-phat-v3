@@ -1,0 +1,74 @@
+﻿<div class="header-sales-activity pb-0 wh-bg">
+    
+    <div class="col-12 layout-spacing px-1" >
+        <div class="container-fluid wh-bg py-2">
+            <div>
+                <div class="my-2">
+                    <i class="fa fa-plus cursor" style="color: green" ng-click="$vm.openModalAddRequest()">{{'  '}}Tạo yêu cầu</i>
+                </div>
+            </div>
+            <div class="table-responsive resize-tb">
+                <table class="table" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th class="noselect theader text-center">
+                                STT
+                            </th><!--
+                            <th class="noselect theader text-center">
+                                Chuyển khoản
+                            </th>
+                            <th class="noselect theader text-center">
+                                Tiền mặt
+                            </th>-->
+                            <th class="noselect theader text-center">
+                                Số tiền
+                            </th>
+                            <th class="noselect theader text-center">
+                                Trạng thái
+                            </th>
+                            <th class="noselect theader text-center">
+                                Thời gian
+                            </th>
+                            <th class="noselect theader text-center">
+                                Xóa
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="item in $vm.listBorrow">
+                            <td class="text-center">
+                                {{$index + 1}}
+                            </td>
+                            <!--<td class="text-right">
+                                {{item.Transfer > 0 ? (item.Transfer | formatCurrency) : 0}}
+                            </td>
+                            <td class="text-right">
+                                {{item.Cash > 0 ? (item.Cash | formatCurrency) : 0}}
+                            </td>-->
+                            <td class="text-right">
+                                {{item.TotalPrice > 0 ? (item.TotalPrice | formatCurrency) : 0}}
+                            </td>
+                            <td class="text-center" ng-bind-html="item.ConfirmStatusId | confirmStatus"></td>
+                            <td class="text-center">
+                                {{item.ActionDate | formatDateTime}}
+                            </td>
+                            <td class="text-center">
+                                <i class="fa fa-trash fa-lg cursor" ng-if="item.ConfirmStatusId == 1" style="color: red" ng-click="$vm.getBootBox(item)"></i>
+                                <i class="fa fa-trash fa-lg " ng-if="item.ConfirmStatusId != 1" style="color: dimgray; cursor: not-allowed"></i>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="99" ng-if="!$vm.listBorrow || $vm.listBorrow.length == 0">
+                                Chưa có dữ liệu
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div>
+                    <pagination params="$vm.params" total-row="$vm.totalRow"></pagination>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

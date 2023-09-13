@@ -1,0 +1,275 @@
+﻿[
+  {
+    "outputFileName": "wwwroot/bundle/css/site.min.css",
+    "inputFiles": [
+      "wwwroot/lib/bootstrap/css/bootstrap.min.css",
+      "wwwroot/css/main.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/bundle/js/muer.min.js",
+    "inputFiles": [
+      "wwwroot/app/user/**/*.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/bundle/js/rpt.min.js",
+    "inputFiles": [
+      "wwwroot/app/report/**/*.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/bundle/js/act.min.js",
+    "inputFiles": [
+      "wwwroot/app/activity/**/*.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/bundle/js/stm.min.js",
+    "inputFiles": [
+      "wwwroot/app/system/**/*.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/bundle/js/spt.min.js",
+    "inputFiles": [
+      "wwwroot/app/salepoint/**/*.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/bundle/css/tanphat.min.css",
+    "inputFiles": [
+      "wwwroot/app/**/*.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/bundle/css/datetime.min.css",
+    "inputFiles": [
+      "wwwroot/lib/datepicker/css/datepicker.css",
+      "wwwroot/lib/daterangepicker/daterangepicker.css",
+      "wwwroot/lib/datepicker/css/bootstrap-datepicker.min.css",
+      "wwwroot/lib/datetimepicker/bootstrap-datetimepicker.min.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/bundle/css/slct.min.css",
+    "inputFiles": [
+      "wwwroot/lib/select2/css/select2.css",
+      "wwwroot/lib/select2/css/ui-select.css",
+      "wwwroot/lib/select2/css/ui-select-customize.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/bundle/css/swalert.min.css",
+    "inputFiles": [
+      "wwwroot/lib/sweetalerts/sweetalert.css",
+      "wwwroot/lib/sweetalerts/sweetalert2.min.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/bundle/js/site.min.js",
+    "inputFiles": [
+      "wwwroot/js/site.js",
+      "wwwroot/js/custom.js",
+      "wwwroot/js/linq.js",
+      "wwwroot/lib/utility/jquery.fullscreen.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/bundle/js/agparent.min.js",
+    "inputFiles": [
+      "wwwroot/lib/angular/angular.js",
+      "wwwroot/lib/angular/angular-drag-and-drop-lists.js",
+      "wwwroot/lib/angular/angular-route.js",
+      "wwwroot/lib/angular/angular-ui-router.js",
+      "wwwroot/lib/angular/angular-sanitize.min.js",
+      "wwwroot/lib/angular/mask.js",
+      "wwwroot/lib/bootstrap/js/ui-bootstrap-tpls-2.5.6.min.js",
+      "wwwroot/lib/angular/angularjs-dropdown-multiselect.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/bundle/js/appprt.min.js",
+    "inputFiles": [
+      "wwwroot/app/app.js",
+      "wwwroot/app/app.*.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/bundle/js/appshd.min.js",
+    "inputFiles": [
+      "wwwroot/app/shared/**/*.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/bundle/js/mauthh.min.js",
+    "inputFiles": [
+      "wwwroot/app/auth/**/*.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/bundle/js/merr.min.js",
+    "inputFiles": [
+      "wwwroot/app/error/**/*.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/bundle/js/mdash.min.js",
+    "inputFiles": [
+      "wwwroot/app/dashboard/**/*.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/bundle/js/jqr.min.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery/jquery-3.1.1.min.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/bundle/js/bstr.min.js",
+    "inputFiles": [
+      "wwwroot/lib/bootstrap/js/popper.min.js",
+      "wwwroot/lib/bootstrap/js/bootstrap.min.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/bundle/js/helperlib.min.js",
+    "inputFiles": [
+      "wwwroot/lib/bootbox/bootbox.js",
+      "wwwroot/lib/moment/moment.min.js",
+      "wwwroot/lib/perfect-scrollbar/js/perfect-scrollbar.min.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/bundle/js/datetime.min.js",
+    "inputFiles": [
+      "wwwroot/lib/daterangepicker/daterangepicker.js",
+      "wwwroot/lib/datepicker/js/bootstrap-datepicker.js",
+      "wwwroot/lib/datetimepicker/bootstrap-datetimepicker.min.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/bundle/js/swalert.min.js",
+    "inputFiles": [
+      "wwwroot/lib/sweetalerts/custom-sweetalert.js",
+      "wwwroot/lib/sweetalerts/promise-polyfill.js",
+      "wwwroot/lib/sweetalerts/sweetalert.js",
+      "wwwroot/lib/sweetalerts/sweetalert2.min.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/bundle/js/slct.min.js",
+    "inputFiles": [
+      "wwwroot/lib/select2/js/ui-select.js",
+      "wwwroot/lib/select2/js/select2.full.min.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/bundle/js/afb.min.js",
+    "inputFiles": [
+      "wwwroot/lib/angularfire/angularfire.js",
+      "wwwroot/lib/angularfire/firebase.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/bundle/css/apc.min.css",
+    "inputFiles": [
+      "wwwroot/lib/apexcharts/apexcharts.css"
+    ]
+  }
+]

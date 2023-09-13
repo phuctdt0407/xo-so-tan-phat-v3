@@ -1,0 +1,56 @@
+﻿<div class="col-12 layout-spacing">
+    <div class="container-fluid wh-bg">
+        <div class="row">
+            <div class="mx-2 mt-10">
+                <label>Chọn điểm bán</label>
+                <ui-select ng-model="$vm.params.salePointId" ng-change="$vm.loadData()"
+                           theme="select2" search-enabled="false">
+                    <ui-select-match placeholder="Chọn điểm bán" allow-clear="false">{{$select.selected.Name}}</ui-select-match>
+                    <ui-select-choices position="down" repeat="ele.Id.toString() as ele in $vm.listSalePoint">
+                        {{ele.Name}}
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+
+            <div class="col-4 mx-2 mt-10">
+                <label>Chọn khách nợ</label>
+                <ui-select ng-model="$vm.params.guestId" ng-change="$vm.loadData()"
+                           theme="select2" search-enabled="false">
+                    <ui-select-match placeholder="Chọn khách nợ" allow-clear="false">{{$select.selected.FullName}} - {{$select.selected.Phone}}</ui-select-match>
+                    <ui-select-choices position="down" repeat="ele.GuestId.toString() as ele in $vm.listGuest">
+                        {{ele.FullName}} - {{ele.Phone}}
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </div>
+        <div class="table-responsive resize-tb mt-10">
+            <table class="table" style="width:100%">
+                <thead class="fix-scroll">
+                    <tr>
+                        <th class="noselect theader text-center">STT</th>
+                        <th class="noselect theader text-center">Tên khách hàng</th>
+                        <th class="noselect theader text-center">Điểm bán</th>
+                        <th class="noselect theader text-center">Trạng thái</th>
+                        <th class="noselect theader text-center">Thời gian</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in $vm.listData" ng-click="$vm.openDetail(item)">
+                        <td class="text-left "> {{$index + 1}}</td>
+                        <td class="text-left ">{{item.GuestName}}</td>
+                        <td class="text-left "> {{item.SalePointName}}</td>
+                        <td class="text-center " ng-bind-html="item.ConfirmStatusId | confirmStatus"></td>
+                        <td class="text-center "> {{item.ActionDate| formatDateTime }}</td>
+
+                    </tr>
+                    <tr ng-if="!$vm.listData || $vm.listData.length <= 0">
+                        <td colspan="99">
+                            Không có yêu cầu
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>

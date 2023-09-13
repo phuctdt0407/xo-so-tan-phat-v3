@@ -1,0 +1,203 @@
+﻿<div class="modal-header">
+    <h3 class="modal-title" id="modal-title">Chuyển khoản / Chi phí ngoài</h3>
+</div>
+<div class="modal-body modal-lg">
+    <ul class="nav nav-tabs " id="iconTab" role="tablist">
+        <li ng-click="$vm.changeTab(item.TabId)" class="nav-item cursor" ng-repeat="item in $vm.listTab">
+            <a class="{{$vm.curTab == item.TabId ? 'nav-link active' : 'nav-link'}}" id="activity-log-tab" data-toggle="tab" role="tab"
+               aria-controls="icon-home" aria-selected="true">
+                {{item.TabName}}
+            </a>
+        </li>
+    </ul>
+
+    <!--Chuyển khoản cho khách-->
+    <div ng-if="$vm.curTab == 1" class="ml-3 mr-3">
+        <div class="row">
+            <div class="form-group col-3">
+                <label for="Bank" class="rq-form">Ngân hàng</label>
+                <input type="text" class="form-control" id="Bank" name="Bank" placeholder="Ngân hàng"
+                       ng-model="$vm.saveDataCK.GuestInfo.Bank" required>
+            </div>
+            <div class="form-group col-4">
+                <label for="BankAccount">Số tài khoản</label>
+                <input type="text" class="form-control" id="BankAccount" ng-keypress="inputNumber($event)"
+                       name="BankAccount" placeholder="Nhập số tài khoản" ng-model="$vm.saveDataCK.GuestInfo.BankAccount"
+                       required />
+            </div>
+
+            <div class="form-group col-3 offset-1">
+                <label for="Name">Tên khách hàng</label>
+                <input type="text" class="form-control" id="Name" name="Name" placeholder="Nhập tên khách hàng"
+                       ng-model="$vm.saveDataCK.GuestInfo.Name" required />
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-3">
+                <label for="Phone" class="rq-form">Số điện thoại</label>
+                <input type="text" class="form-control" id="Phone" ng-keypress="inputNumber($event)" name="Phone"
+                       placeholder="Số điện thoại" ng-model="$vm.saveDataCK.GuestInfo.Phone" required>
+            </div>
+
+            <div class="form-group col-4">
+                <label for="Description" class="rq-form">Nội dung chuyển khoản</label>
+                <input type="text" class="form-control" id="Description" name="Description" placeholder="Nội dung"
+                       ng-model="$vm.saveDataCK.GuestInfo.Description" required>
+            </div>
+            <div class="form-group col-4 offset-1">
+                <label for="TotalPrice">Số tiền chuyển</label>
+                <input type="text" class="form-control" id="TotalPrice" ng-keypress="inputNumber($event)" ng-change="numToCurrency( $vm.saveDataCK,'TotalPrice',$vm.saveDataCK.TotalPrice? $vm.saveDataCK.TotalPrice: '0',{{$vm.saveDataCK.TotalPrice? $vm.saveDataCK.TotalPrice: '0'}})"
+                       name="TotalPrice" placeholder="Số tiền chuyển khoản" ng-model="$vm.saveDataCK.TotalPrice" required />
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" type="submit" ng-disabled="$vm.isSaving" ng-click="$vm.save(1)">
+                Tạo yêu cầu
+            </button>
+            <button class="btn btn-secondary" ng-if="!$vm.isSaving" type="button" ng-click="$vm.cancel()">Đóng</button>
+        </div>
+    </div>
+
+
+    <!--Khách thanh toán bằng chuyển khoản-->
+    <div ng-if="$vm.curTab == 2" class="ml-3 mr-3">
+        <div class="row">
+            <div class="form-group col-3">
+                <label for="Bank" class="rq-form">Ngân hàng</label>
+                <input type="text" class="form-control" id="Bank" name="Bank" placeholder="Ngân hàng"
+                       ng-model="$vm.saveDataCK.GuestInfo.Bank" required>
+            </div>
+            <div class="form-group col-4">
+                <label for="BankAccount">Số tài khoản</label>
+                <input type="text" class="form-control" id="BankAccount" ng-keypress="inputNumber($event)"
+                       name="BankAccount" placeholder="Nhập số tài khoản" ng-model="$vm.saveDataCK.GuestInfo.BankAccount"
+                       required />
+            </div>
+
+            <div class="form-group col-3 offset-1">
+                <label for="Name">Tên khách hàng</label>
+                <input type="text" class="form-control" id="Name" name="Name" placeholder="Nhập tên khách hàng"
+                       ng-model="$vm.saveDataCK.GuestInfo.Name" required />
+            </div>
+        </div>
+        <div class="row">
+
+            <div class="form-group col-3">
+                <label for="Phone" class="rq-form">Số điện thoại</label>
+                <input type="text" class="form-control" id="Phone" ng-keypress="inputNumber($event)" name="Phone"
+                       placeholder="Số điện thoại" ng-model="$vm.saveDataCK.GuestInfo.Phone" required>
+            </div>
+
+            <div class="form-group col-4">
+                <label for="Description" class="rq-form">Mã giao dịch</label>
+                <input type="text" class="form-control" id="Description" name="Description" placeholder="Nội dung"
+                       ng-model="$vm.saveDataCK.GuestInfo.Description" required>
+            </div>
+
+            <div class="form-group col-4 offset-1">
+                <label for="TotalPrice">Số tiền chuyển</label>
+                <input type="text" class="form-control" id="TotalPrice" ng-keypress="inputNumber($event)" ng-change="numToCurrency( $vm.saveDataCK,'TotalPrice',$vm.saveDataCK.TotalPrice? $vm.saveDataCK.TotalPrice: '0',{{$vm.saveDataCK.TotalPrice? $vm.saveDataCK.TotalPrice: '0'}})"
+                       name="TotalPrice" placeholder="Số tiền chuyển khoản" ng-model="$vm.saveDataCK.TotalPrice" required />
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" type="submit" ng-disabled="$vm.isSaving" ng-click="$vm.save(2)">
+                Tạo yêu cầu
+            </button>
+            <button class="btn btn-secondary" ng-if="!$vm.isSaving" type="button" ng-click="$vm.cancel()">Đóng</button>
+        </div>
+    </div>
+
+    <!--Chi phí ngoài-->
+    <div ng-if="$vm.curTab == 3">
+        <div class="m-3">
+            <div ng-show="!$vm.showForm" class="mb-3">
+                <i class="fa fa-plus fa-lg cursor" style="color: green" ng-click="$vm.showFormAddFee()">{{'  '}}Thêm mới</i>
+            </div>
+            <div ng-show="$vm.showForm" class="card card-create-container">
+                <div class="row p-2">
+                    <!--<div class="col-4">
+                        <label class="rq-form">Loại chi phí</label>
+                        <ui-select ng-model="$vm.saveData.TypeNameId"
+                                   theme="select2"
+                                   search-enabled="false">
+                            <ui-select-match allow-clear="false" placeholder="Chọn loại chi phí">
+                                {{$select.selected.Name}}
+                            </ui-select-match>
+                            <ui-select-choices position="down" repeat="item.TypeNameId as item in $vm.listTypeOfFee1">
+                                {{item.Name}}
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>-->
+
+                    <div class="col-5">
+                        <label class="rq-form">Chi phí</label>
+                        <input type="text" class="form-control" id="quantity" name="numonly" placeholder="Nhập chi phí" required
+                               ng-keypress="inputNumber($event)"
+                               ng-click="showKeyBoard($event)"
+                               ng-model="$vm.saveData.Price ">
+                    </div>
+
+                    <div class="col-7">
+                        <label class="rq-form">Ghi chú</label>
+                        <input type="text" class="form-control" id="quantity" name="numonly"
+                               placeholder="Nhập ghi chú" required
+                               ng-model="$vm.saveData.Note ">
+                    </div>
+                </div>
+
+
+                <div class="p-2">
+                    <img src="../images/loading-dot.gif" ng-if="$vm.isSaving" class="float-r" style="height: 45px; width: 120px;">
+                    <button class="float-right  btn btn-success" ng-if="!$vm.isSaving" type="submit" ng-click="$vm.addNewFee()">Lưu</button>
+                </div>
+            </div>
+            <div class="m-2">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th class="noselect theader text-center">
+                                Tên chi phí
+                            </th>
+                            <th class="noselect theader text-center">
+                                Tổng chi phí
+                            </th>
+                            <th class="noselect theader text-center">
+                                Ghi chú
+                            </th>
+                            <th class="noselect theader text-center">
+                                Xóa
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="item in $vm.listFee">
+                            <td class="text-left">
+                                {{item.Name}}
+                            </td>
+                            <td class="text-right">
+                                {{item.TotalPrice > 0 ? (item.TotalPrice | formatCurrency) : 0}}
+                            </td>
+                            <td class="text-left">
+                                {{item.Note}}
+                            </td>
+                            <td class="text-center">
+                                <i class="fa fa-trash fa-lg cursor" style="color: red" ng-click="$vm.getBootBox(item)"></i>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="99" ng-if="!$vm.listFee || $vm.listFee.length == 0">
+                                Chưa có chi phí
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" ng-if="!$vm.isSaving" type="button" ng-click="$vm.cancel()">Đóng</button>
+        </div>
+    </div>
+</div>
+    

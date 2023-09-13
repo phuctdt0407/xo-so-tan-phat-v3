@@ -1,0 +1,37 @@
+﻿namespace TANPHAT.CRM.Domain.Models.Report.Enum
+{
+    public enum ReportGetType
+    {
+        GetTotalShiftOfUserInMonth,
+        GetTotalShiftOfUserBySalePointInMonth,
+        GetTotalLotterySellOfUserToCurrentInMonth,
+        GetDataInventoryInMonthOfAllSalePoint,
+        GetDataInventoryInDayOfAllSalePoint,
+        GetTotalLotteryReceiveOfAllAgencyInMonth,
+        GetTotalLotteryReturnOfAllSalePointInMonth,
+        GetTotalWinningOfSalePointInMonth,
+        GetTotalRemainOfSalePoint,
+        GetDataShiftTransFer,
+        GetTotalRemainingOfAllSalePointInDate,
+        GetDataQuantityInteractLotteryByDate,
+        GetDataQuantityInteractLotteryByMonth,
+        GetReportManagerOverall,
+        GetTotalLotteryNotSellOfAllSalePoint,
+        GetTotalLotterySoldOfSalePointThatYouManage,
+        GetAverageLotterySellOfUser,
+        GetLogDistributeForSalepoint,
+        GetListForUpdate,
+        GetFullTotalItemInMonth,
+        GetLotterySellInMonth,
+        GetSaleOfSalePointInMonth,
+        GetTransitonTypeOffset,
+        GetSalaryInMonthOfUser,
+        TotalLotteryReceiveOfAllAgencyInDay,
+        ReportLotteryInADay,
+        ReportRemainingLottery,
+        ReuseReportDataFinishShift,
+        GetListUnsoldLotteryTicket,
+        GetListTotalNumberOfTicketsOfEachManager,
+        GetListExemptKpi
+    }
+}

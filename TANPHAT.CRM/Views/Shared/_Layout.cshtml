@@ -1,0 +1,121 @@
+﻿@using Microsoft.Extensions.Options
+@inject IOptions<Appsettings> appSetting;
+@{
+    string versionTemp = DateTime.Now.ToString("yyyyMMddHH");
+    string currentDomain = "";
+    string currentEvi = appSetting.Value.Current;
+    if (currentEvi.Equals("pro"))
+    {
+        currentDomain = appSetting.Value.ProDomain;
+    }
+
+    else if (currentEvi.Equals("dev"))
+    {
+        currentDomain = appSetting.Value.DevDomain;
+    }
+
+    else
+    {
+        currentDomain = appSetting.Value.LocalDomain;
+    }
+}
+<!DOCTYPE html>
+<html lang="en" ng-app="KTHubApp" ng-cloak>
+<head>
+    <base href="/">
+    <meta charset="utf-8" />
+    <title ng-bind="title">Loading ...</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="~/images/TPIcon.jpeg" type="image/x-icon">
+    <environment include="Development">
+        <link rel="stylesheet" href="~/bundle/css/site.min.css?v=@versionTemp" />
+        <link rel="stylesheet" href="~/bundle/css/tanphat.min.css?v=@versionTemp" />
+        <link rel="stylesheet" href="~/bundle/css/datetime.min.css?v=@versionTemp" />
+        <link rel="stylesheet" href="~/bundle/css/slct.min.css?v=@versionTemp" />
+        <link rel="stylesheet" href="~/bundle/css/swalert.min.css?v=@versionTemp" />
+        <link rel="stylesheet" href="~/bundle/css/apc.min.css?v=@versionTemp" />
+    </environment>
+
+    <environment exclude="Development">
+        <link rel="stylesheet" href="~/bundle/css/site.min.css?v=@versionTemp" />
+        <link rel="stylesheet" href="~/bundle/css/tanphat.min.css?v=@versionTemp" />
+        <link rel="stylesheet" href="~/bundle/css/datetime.min.css?v=@versionTemp" />
+        <link rel="stylesheet" href="~/bundle/css/slct.min.css?v=@versionTemp" />
+        <link rel="stylesheet" href="~/bundle/css/swalert.min.css?v=@versionTemp" />
+        <link rel="stylesheet" href="~/bundle/css/apc.min.css?v=@versionTemp" />
+    </environment>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/lib/calendar/main.min.css" />
+
+</head>
+<body>
+    <div ng-include="'../templates/html/keyboard.html'" id=""></div>
+
+    <div ng-show="!showLoading">
+        @RenderBody()
+    </div>
+
+    <loading ng-if="showLoading"></loading>
+
+    <script type="text/javascript">
+        var baseAppPath = '/app';
+        var routes = {};
+        var versionTemplate = '?v=@versionTemp';
+        var domainUrl = '@currentDomain';
+        var currentEvi = '@currentEvi';
+    </script>
+
+    <script src="~/lib/calendar/main.min.js?v=@versionTemp"></script>
+    <script src="~/lib/calendar/locales-all.min.js?v=@versionTemp"></script>
+    <script src="~/lib/apexcharts/apexcharts.min.js?v=@versionTemp"></script>
+    <script src="~/js/signalr.min.js?v=@versionTemp"></script>
+
+    <environment include="Development">
+        <script src="~/bundle/js/agparent.min.js?v=@versionTemp"></script>
+        <script src="~/bundle/js/appprt.min.js?v=@versionTemp"></script>
+        <script src="~/bundle/js/appshd.min.js?v=@versionTemp"></script>
+        <script src="~/bundle/js/mauthh.min.js?v=@versionTemp"></script>
+        <script src="~/bundle/js/merr.min.js?v=@versionTemp"></script>
+        <script src="~/bundle/js/mdash.min.js?v=@versionTemp"></script>
+        <script src="~/bundle/js/jqr.min.js?v=@versionTemp"></script>
+        <script src="~/bundle/js/bstr.min.js?v=@versionTemp"></script>
+        <script src="~/bundle/js/helperlib.min.js?v=@versionTemp"></script>
+        <script src="~/bundle/js/datetime.min.js?v=@versionTemp"></script>
+        <script src="~/bundle/js/swalert.min.js?v=@versionTemp"></script>
+        <script src="~/bundle/js/slct.min.js?v=@versionTemp"></script>
+        <script src="~/bundle/js/site.min.js?v=@versionTemp"></script>
+        <script src="~/bundle/js/afb.min.js?v=@versionTemp"></script>
+        <script src="~/bundle/js/muer.min.js?v=@versionTemp"></script>
+        <script src="~/bundle/js/act.min.js?v=@versionTemp"></script>
+        <script src="~/bundle/js/stm.min.js?v=@versionTemp"></script>
+        <script src="~/bundle/js/spt.min.js?v=@versionTemp"></script>
+        <script src="~/bundle/js/rpt.min.js?v=@versionTemp"></script>
+    </environment>
+
+    <environment exclude="Development">
+        <script src="~/bundle/js/agparent.min.js?v=@versionTemp"></script>
+        <script src="~/bundle/js/appprt.min.js?v=@versionTemp"></script>
+        <script src="~/bundle/js/appshd.min.js?v=@versionTemp"></script>
+        <script src="~/bundle/js/mauthh.min.js?v=@versionTemp"></script>
+        <script src="~/bundle/js/merr.min.js?v=@versionTemp"></script>
+        <script src="~/bundle/js/mdash.min.js?v=@versionTemp"></script>
+        <script src="~/bundle/js/jqr.min.js?v=@versionTemp"></script>
+        <script src="~/bundle/js/bstr.min.js?v=@versionTemp"></script>
+        <script src="~/bundle/js/helperlib.min.js?v=@versionTemp"></script>
+        <script src="~/bundle/js/datetime.min.js?v=@versionTemp"></script>
+        <script src="~/bundle/js/swalert.min.js?v=@versionTemp"></script>
+        <script src="~/bundle/js/slct.min.js?v=@versionTemp"></script>
+        <script src="~/bundle/js/site.min.js?v=@versionTemp"></script>
+        <script src="~/bundle/js/muer.min.js?v=@versionTemp"></script>
+        <script src="~/bundle/js/afb.min.js?v=@versionTemp"></script>
+        <script src="~/bundle/js/act.min.js?v=@versionTemp"></script>
+        <script src="~/bundle/js/stm.min.js?v=@versionTemp"></script>
+        <script src="~/bundle/js/spt.min.js?v=@versionTemp"></script>
+        <script src="~/bundle/js/rpt.min.js?v=@versionTemp"></script>
+    </environment>
+</body>
+</html>

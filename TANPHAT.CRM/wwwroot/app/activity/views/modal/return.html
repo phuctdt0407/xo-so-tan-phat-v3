@@ -1,0 +1,102 @@
+<div class="modal-header">
+    <h3 class="modal-title" id="modal-title">Trả ế</h3>
+    <div class="mb-1">
+        <label for="channel" class="rq-form">Quản lý</label>
+        <ui-select ng-model="$vm.saveData.ManagerId" theme="select2" search-enabled="false">
+            <ui-select-match allow-clear="false" placeholder="Chọn quản lý lấy vé">
+                {{$select.selected.Name}}
+            </ui-select-match>
+            <ui-select-choices position="down" repeat="item.Id as item in $vm.managerList">
+                {{item.Name}}
+            </ui-select-choices>
+        </ui-select>
+    </div>
+</div>
+<div class="modal-body">
+    <div>
+        <div class="card card-create-container">
+            <div class="mb-4 mt-4">
+                <h3 class="text-center">{{$vm.data.toDay.day}}</h3>
+                <table id="toDay" class="table" style="width:100%">
+                    <thead>
+                    <tr>
+                        <th class="noselect theader text-center"><span>No.</span></th>
+                        <th class="noselect theader">
+                            <div class="d-flex justify-content-center align-items-center">
+                                <span>Đài</span>
+                            </div>
+                        </th>
+                        <th class="noselect theader">
+                            <div class="d-flex justify-content-center align-items-center">
+                                <span>Còn lại dự kiến</span>
+                            </div>
+                        </th>
+                        <th class="noselect theader">
+                            <div class="d-flex justify-content-center align-items-center">
+                                <span>Trả ế</span>
+                            </div>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="noselect" ng-repeat="item in $vm.data.toDay.newLottery">
+                        <td class="noselect w80 text-center" ng-class="{'bg-sky' : $index % 2 == 1}">{{$vm.data.toDay.newLottery.indexOf(item)+1}}</td>
+                        <td class="noselect w120 text-left" ng-class="{'bg-sky' : $index % 2 == 1}">{{item.ShortName}} {{item.type ==2? ' (VTr)':''}}</td>
+
+                        <td class="noselect w120 text-right" ng-class="{'bg-sky' : $index % 2 == 1}">{{item.remaining}} </td>
+                        <td class="noselect w120 text-center" ng-class="{'bg-sky' : $index % 2 == 1}">
+                            <input class="text-center" type="number" id="toDayInputTransfer" name="" min="0" max="999999" ng-model="item.inputReturn" ng-change="$vm.ChangeValueReturn(item,item.inputReturn, {{item.inputReturn}})">
+                        </td>
+
+                    </tr>
+                    <tr ng-if="!$vm.data.toDay.newLottery || $vm.data.toDay.newLottery <=0">
+                        <td colspan="99" class="text-center">Không tìm thấy dữ liệu nào...</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="mb-4 mt-4" ng-if="$vm.data.nextDay.lottery">
+                <h3 class="text-center">{{$vm.data.nextDay.day}}</h3>
+                <table id="nextDay" class="table table-hover" style="width:100%">
+                    <thead>
+                    <tr>
+                        <th class="noselect theader text-center"><span>No.</span></th>
+                        <th class="noselect theader">
+                            <div class="d-flex justify-content-center align-items-center">
+                                <span>Đài</span>
+                            </div>
+                        </th>
+                        <th class="noselect theader">
+                            <div class="d-flex justify-content-center align-items-center text-center">
+                                <span>Còn lại dự kiến</span>
+                            </div>
+                        </th>
+                        <th class="noselect theader">
+                            <div class="d-flex justify-content-center align-items-center">
+                                <span>Trả ế</span>
+                            </div>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="noselect" ng-repeat="item in $vm.data.nextDay.newLottery">
+                        <td class="noselect w80 text-center" ng-class="{'bg-sky' : $index % 2 == 1}">{{$vm.data.nextDay.newLottery.indexOf(item)+1}}</td>
+                        <td class="noselect w120 text-center" ng-class="{'bg-sky' : $index % 2 == 1}">{{item.channel}} {{item.type ==2? ' (VTr)':''}}</td>
+
+                        <td class="noselect w120 text-center" ng-class="{'bg-sky' : $index % 2 == 1}">{{item.remaining}}</td>
+                        <td class="noselect w120 text-center" ng-class="{'bg-sky' : $index % 2 == 1}">
+                            <input class="text-center" type="number" id="nextDayInputTransfer" name="" min="0" max="999999" ng-model="item.inputReturn" ng-change="$vm.ChangeValueReturn(item,item.inputReturn, {{item.inputReturn}})">
+                        </td>
+                    </tr>
+                    <tr ng-if="!$vm.data.nextDay.newLottery || $vm.data.nextDay.newLottery <=0">
+                        <td colspan="99" class="text-center">Không tìm thấy dữ liệu nào...</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <img src="../images/loading-dot.gif" ng-if="$vm.isSaving" class="float-r" style="height: 45px; width: 120px;">
+    <button class="btn btn-success"  ng-if="!$vm.isSaving" type="submit" ng-click="$vm.save()">Xác nhận</button>
+    <button class="btn btn-secondary"  ng-if="!$vm.isSaving" type="button" ng-click="$vm.cancel()">Đóng</button>
+</div>

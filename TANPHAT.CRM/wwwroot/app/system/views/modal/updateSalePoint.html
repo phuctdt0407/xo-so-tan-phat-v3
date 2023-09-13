@@ -1,0 +1,41 @@
+﻿<div class="modal-header align-content-center">
+    <h3 class="modal-title" id="modal-title">Cập nhật thông tin điểm bán</h3>
+</div>
+<form name="formCreate" class="trial-form p-3">
+
+    <div class="row">
+        <div class="col-md-8 offset-2">
+            <label>Tên điểm bán:</label>
+            <input class="form-control " type="text" id="userAccount" name="userAccount" ng-model="$vm.update.Name"
+                   /><br>
+        </div>
+        </div>
+     <div class="row">
+        <div class="col-md-8 offset-2">
+            <label>Địa chỉ:</label>
+            <input class="form-control "  type="text" id="UserTitleName" name="UserTitleName" ng-model="$vm.update.FullAddress"
+                    /><br>
+        </div>
+    </div>
+
+
+
+    <div class="row">
+        <div class="col-md-8 offset-2">
+            <label>Ghi chú: </label>
+            <textarea class="form-control" type="text" id="userName" name="userName"  rows="4" cols="50" ng-model="$vm.update.Note"></textarea>
+        </div>
+        
+    </div>
+
+
+    
+
+   
+
+    <div class="modal-footer">
+        <div class="btn btn-primary " ng-if="!$vm.isSaving" ng-click="$vm.save()"><i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu </div>
+        <img src="../images/loading-dot.gif" ng-if="$vm.isSaving" class="float-r" style="height: 45px; width: 120px;">
+        <button class="btn btn-secondary" type="button" ng-click="$vm.close()">Đóng</button>
+    </div>
+</form>

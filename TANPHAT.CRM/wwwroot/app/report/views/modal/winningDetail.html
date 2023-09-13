@@ -1,0 +1,47 @@
+﻿<div class="modal-header">
+    <h3 class="modal-title" id="modal-title">
+        Chi tiết vé trúng thưởng
+    </h3>
+</div>
+<div class="bodyModalDetail">
+
+    <div class="mb-1 mt-1">
+        <!---->
+        <div class="table-responsive resize-tb">
+            <table class="table">
+                <thead class="fix-scroll">
+                    <tr class="noselect theader">
+                        <th class="text-left w80px">STT</th>
+                        <th class="text-left">Đài bán</th>
+                        <th class="text-center">Loại giải thưởng</th>
+                        <th class="text-center">Số lượng</th>
+                        <th class="text-center">Số tiền</th>
+                        <th class="text-center">Số trúng thưởng</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in $vm.listData track by $index">
+                        <td class="text-left w80px">{{$index + 1}}</td>
+                        <td class="text-left">{{item.LotteryChannelName}}</td>
+                        <td class="text-left">{{item.TypeAwardName}}</td>
+                        <td class="text-right">{{item.Quantity}}</td>
+                        <td class="text-right">{{item.totalPrice | formatCurrency}}</td>
+                        <td class="text-right">{{item.Number}}</td>
+                    </tr>
+                    <tr ng-if="!$vm.listData || $vm.listData.length == 0">
+                        <td colspan="99">
+                            Không có dữ liệu
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+
+    </div>
+</div>
+
+<div class="modal-footer">
+    <button class="btn btn-secondary" type="button" ng-click="$vm.close()">Đóng</button>
+</div>

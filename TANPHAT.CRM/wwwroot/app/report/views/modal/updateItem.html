@@ -1,0 +1,61 @@
+﻿<div class="modal-header">
+    <h3 class="modal-title" id="modal-title" ng-if="$vm.typeOfTransfer == 1">Nhập công cụ vào điểm bán</h3>
+    <h3 class="modal-title" id="modal-title" ng-if="$vm.typeOfTransfer == 2">Chuyển về kho</h3>
+    <h3 class="modal-title" id="modal-title" ng-if="$vm.typeOfTransfer == 3">Sử dụng</h3>
+</div>
+<div>
+    <div class="modal-body">
+        <div class="card card-create-container m-3 modal-body">
+
+            <div class="mb-1 mt-1">
+                <div style="display: flex; justify-content: space-around;">
+                    <h2 class="text-center"> {{$vm.model.Name}}</h2>
+                </div>
+                <!---->
+                <div class="table-responsive resize-tb">
+                    <table class="table">
+                        <thead class="fix-scroll">
+                            <tr class="noselect theader center-align  fix-scroll">
+                                <th>Tên công cụ</th>
+                                <th>Đơn giá</th>
+                                <th ng-if="$vm.typeOfTransfer != 3">Tồn kho</th>
+                                <th>Tồn điểm bán</th>
+
+                                <th>Nhập số lượng {{$vm.typeOfTransfer != 3 ? 'thêm' : 'đã sử dụng'}}</th>
+
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in $vm.listData">
+                                <td class="text-left">{{item.ItemName }}</td>
+                                <td class="text-right" ng-if="$vm.typeOfTransfer == 1">{{item.AVGPrice | formatCurrency}}</td>
+                                <td class="text-right" ng-if="$vm.typeOfTransfer != 1">{{item.AVGPriceInSalePoint | formatCurrency}}</td>
+                                <td class="text-right" ng-if="$vm.typeOfTransfer != 3">{{item.TotalRemaining > 0 ? (item.TotalRemaining | formatCurrency) : 0}}</td>
+                                <td class="text-right">{{item.TotalRemainingInSalePoint != 0 ? (item.TotalRemainingInSalePoint | formatCurrency) : 0}}</td>
+                                <td >
+                                    <input ng-keypress="inputNumber($event)" class="text-align-right" type="number" min="0" max="999999" ng-model="item.input" ng-change="$vm.ChangeValueInput(item, item.input, {{item.input}})">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="{{$vm.typeOfTransfer != 3 ? 4 : 3}}">Thành tiền: </td>
+                                <td>{{$vm.sum | formatCurrency}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+
+<div class="modal-footer">
+    <div class="btn btn-primary " ng-if="!$vm.isSaving" ng-click="$vm.save()"><i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu </div>
+    <img src="../images/loading-dot.gif" ng-if="$vm.isSaving" class="float-r" style="height: 45px; width: 120px;">
+    <button class="btn btn-secondary" type="button" ng-click="$vm.cancel()">Đóng</button>
+</div>

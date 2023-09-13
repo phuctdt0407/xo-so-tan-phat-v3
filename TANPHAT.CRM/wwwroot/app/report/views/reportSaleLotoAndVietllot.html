@@ -1,0 +1,130 @@
+﻿<div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
+
+    <ul class="nav nav-tabs mb-3 mt-3" id="iconTab" role="tablist">
+        <li class="nav-item cursor" ng-click="$vm.changeTab(1)" id="liLoto">
+            <a ng-class="$vm.classItem0 + ' editItem'" data-toggle="tab" role="tab" id="loto">
+                Loto
+            </a>
+        </li>
+        <li class="nav-item cursor" ng-click="$vm.changeTab(2)" id="liVietlott">
+            <a ng-class="$vm.classItem1 + ' editItem'" data-toggle="tab" role="tab" id="vietlott">
+                Vietlott
+            </a>
+        </li>
+    </ul>
+
+    <div class="container-fluid wh-bg mt-10">
+        <div class="row">
+            <div class="col-md-3 col-xs-6 col-lg-2 pt10">
+                <label>Tháng</label>
+                <monthyearpicker my-class="input-sm datepicker-new" date-format="MM/YYYY" placeholder="All month"
+                                 ng-model="$vm.month" output-format="YYYY-MM"></monthyearpicker>
+            </div>
+            <div class="col-md-3 col-xs-6 col-lg-2 pt10">
+                <label>Chọn điểm bán</label>
+                <ui-select ng-model="$vm.params.salePointId" 
+                           theme="select2" search-enabled="false">
+                    <ui-select-match placeholder="Chọn điểm bán" allow-clear="false">{{$select.selected.Name}}</ui-select-match>
+                    <ui-select-choices position="down" repeat="ele.Id.toString() as ele in $vm.listSalePoint">
+                        {{ele.Name}}
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+            <div style="height: 50px; margin-top: 45px;" class="btn btn-primary float-r resizeSchedule" ng-click="$vm.loadData()"> tìm kiếm </div>
+        </div>
+
+        <!--Loto-->
+        <div class="table-responsive resize-tb" ng-if="!$vm.checkShowVietlott">
+            <table class="table w100p table-wrapper-scroll-y my-custom-scrollbar">
+                <thead class="theader text-center fix-scroll">
+                    <tr class="flex flex-wrap ">
+                        <th class="th-none first1-col-sticky" rowspan="2"></th>
+
+                        <th style="width: 10px;" class="sticky-border-1 text-center fix-scroll py-4 resizeSchedule " ng-repeat="item in $vm.listMonth"
+                            ng-class="({{$vm.checkCurrentDate($index)}}&&{{item.IsWeekEnd}}) ? 'bg-current-weekend'
+                                            : {{$vm.checkCurrentDate($index)}} ? 'bg-curentDate'
+                                            : {{item.IsWeekEnd}} ? 'patternsCss' : '' ">
+                            {{$index+1}}
+                        </th>
+                        <th style="width: 10px;" class="sticky-border-1 text-center fix-scroll py-4 resizeSchedule ">
+                         
+                        </th>
+                    </tr>
+                    <tr class="flex flex-wrap ">
+                        <th style="width: 10px;" class="sticky-border-1 text-center fix-scroll py-4 resizeSchedule " ng-repeat="item in $vm.listMonth"
+                            ng-class="({{$vm.checkCurrentDate($index)}}&&{{item.IsWeekEnd}}) ? 'bg-current-weekend'
+                                            : {{$vm.checkCurrentDate($index)}} ? 'bg-curentDate'
+                                            : {{item.IsWeekEnd}} ? 'patternsCss' : '' ">
+                            {{item.DateName}}
+                        </th>
+                        <th style="width: 10px;" class="sticky-border-1 text-center fix-scroll py-4 resizeSchedule ">
+                            Tổng
+                        </th>
+                    </tr>
+                    
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in $vm.data" class="cursor">
+                        <td class="first-col-sticky">
+                            {{item.SalePointName}}
+                        </td>
+                        <td ng-repeat="ele in item.Data" class="text-right" style="min-width: 120px" ng-click="$vm.openModalDetail(ele, item.SalePointName)">{{ele.AllTotalPrice | formatCurrency}}</td>
+        
+                        <td style="color:red" colspan="{{ $vm.listMonth.length + 2 }}">{{$vm.getTotal(item.Data) | formatCurrency}}</td>
+                    </tr>
+                    <tr ng-if="!$vm.data || $vm.data.length == 0">
+                        <td colspan="99">
+                            Không có dữ liệu tại điểm bán
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!--Vietlott-->
+        <div class="table-responsive resize-tb" ng-if="$vm.checkShowVietlott">
+            <table class="table w100p table-wrapper-scroll-y my-custom-scrollbar">
+                <thead class="theader text-center fix-scroll">
+                    <tr class="flex flex-wrap ">
+                        <th class="th-none first1-col-sticky" rowspan="2"></th>
+
+                        <th style="width: 10px;" class="sticky-border-1 text-center fix-scroll py-4 resizeSchedule " ng-repeat="item in $vm.listMonth"
+                            ng-class="({{$vm.checkCurrentDate($index)}}&&{{item.IsWeekEnd}}) ? 'bg-current-weekend'
+                                            : {{$vm.checkCurrentDate($index)}} ? 'bg-curentDate'
+                                            : {{item.IsWeekEnd}} ? 'patternsCss' : '' ">
+                            {{$index+1}}
+                        </th>
+                        <th style="width: 10px;" class="sticky-border-1 text-center fix-scroll py-4 resizeSchedule ">
+
+                        </th>
+                    </tr>
+                    <tr class="flex flex-wrap ">
+                        <th style="width: 10px;" class="sticky-border-1 text-center fix-scroll py-4 resizeSchedule " ng-repeat="item in $vm.listMonth"
+                            ng-class="({{$vm.checkCurrentDate($index)}}&&{{item.IsWeekEnd}}) ? 'bg-current-weekend'
+                                            : {{$vm.checkCurrentDate($index)}} ? 'bg-curentDate'
+                                            : {{item.IsWeekEnd}} ? 'patternsCss' : '' ">
+                            {{item.DateName}}
+                        </th>
+                        <th style="width: 10px;" class="sticky-border-1 text-center fix-scroll py-4 resizeSchedule ">
+                            Tổng
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in $vm.data" class="cursor">
+                        <td class="first-col-sticky">
+                            {{item.SalePointName}}
+                        </td>
+                        <td ng-repeat="ele in item.Data" class="text-right" style="min-width: 120px" ng-click="$vm.openModalDetail(ele, item.SalePointName)">{{ele.AllTotalPrice | formatCurrency}}</td>
+                        <td style="color:red" colspan="{{ $vm.listMonth.length + 2 }}">{{$vm.getTotal(item.Data) | formatCurrency}}</td>
+                    </tr>
+                    <tr ng-if="!$vm.data || $vm.data.length == 0">
+                        <td colspan="99">
+                            Không có dữ liệu tại điểm bán
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

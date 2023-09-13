@@ -1,0 +1,206 @@
+﻿<div class="header-sales-activity pb-0 wh-bg">
+    <h2 class="text-center pt-2">Quản lý chuyển khoản</h2>
+    <!--TAB-->
+<!--    <ul class="nav nav-tabs mx-2" id="iconTab" role="tablist">-->
+<!--        <li class="nav-item cursor" ng-click="$vm.changeTab(1)">-->
+<!--            <a class="nav-link py-0" ng-class="{'active': !$vm.params.tab || $vm.params.tab == 1}" data-toggle="tab"-->
+<!--                role="tab">-->
+<!--                Danh sách chuyển khoản-->
+<!--            </a>-->
+<!--        </li>-->
+<!--        &lt;!&ndash;<li class="nav-item cursor" ng-click="$vm.changeTab(2)">-->
+<!--            <a class="nav-link py-0" ng-class="{'active':  $vm.params.tab == 2}" data-toggle="tab" role="tab">-->
+<!--                Chuyển khoản cho khách-->
+<!--            </a>-->
+<!--        </li>-->
+<!--        <li class="nav-item cursor" ng-click="$vm.changeTab(3)">-->
+<!--            <a class="nav-link py-0" ng-class="{'active':  $vm.params.tab == 3}" data-toggle="tab" role="tab">-->
+<!--                Khách trả tiền bằng chuyển khoản-->
+<!--            </a>-->
+<!--        </li>&ndash;&gt;-->
+<!--    </ul>-->
+    <!--Tab1-->
+    <div class="col-12 layout-spacing px-2" >
+        <div class="container-fluid wh-bg">
+            <div class="row">
+                <div class="mx-2 mt-10">
+                    <label>Chọn điểm bán</label>
+                    <ui-select ng-model="$vm.params.salePointId" ng-change="$vm.loadData()" theme="select2"
+                        search-enabled="false">
+                        <ui-select-match placeholder="Chọn điểm bán" allow-clear="false">{{$select.selected.Name}}
+                        </ui-select-match>
+                        <ui-select-choices position="down" repeat="ele.Id.toString() as ele in $vm.listSalePoint">
+                            {{ele.Name}}
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+
+                <div class="wh-bg mt-10">
+                    <div class="mt20" padding-left: 15px;">
+                        <label>Chọn ngày</label>
+                        <datepicker my-class="input-sm datepicker" date-format="DD/MM/YYYY" pick-time="false"
+                            on-select="$vm.getData(date)" ng-model="$vm.params.date" output-format="DD/MM/YYYY"
+                            ng-change="$vm.loadData()" placeholder="dd/mm/yyyy"></datepicker>
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive resize-tb">
+                <table class="table" style="width:100%">
+                    <thead class="fix-scroll">
+                        <tr>
+                            <th class="noselect theader text-center">STT</th>
+                            <th class="noselect theader text-center">Tên khách hàng</th>
+                            <th class="noselect theader text-center">Điểm bán</th>
+                            <th class="noselect theader text-center">Số tiền</th>
+                            <th class="noselect theader text-center">Loại chuyển khoản</th>
+                            <th class="noselect theader text-center">Trạng thái</th>
+                            <th class="noselect theader text-center">Thời gian</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="item in $vm.listPayment" ng-click="$vm.openDetail(item)">
+                            <td class="text-left "> {{$index + 1}}</td>
+                            <td class="text-left ">{{item.FullName}}</td>
+                            <td class="text-left "> {{item.SalePointName}}</td>
+                            <td class="text-right "> {{item.TotalPrice > 0 ? (item.TotalPrice | formatCurrency) : 0}}
+                            </td>
+                            <td class="text-left "> {{item.TypeName}}</td>
+                            <td style="cursor:pointer" class="text-center " ng-bind-html="item.DoneTransfer | confirmPayment"></td>
+                            <td class="text-center "> {{item.CreatedDate| formatDateTime }}</td>
+                        </tr>
+                        <tr ng-if="!$vm.listPayment || $vm.listPayment.length == 0">
+                            <td colspan="99"> Không có yêu cầu</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+    <!--Tab 2-->
+<!--    <div class="col-12 layout-spacing" ng-if="$vm.params.tab == 2">
+        <div class="row">
+            <div class="form-group col-3 offset-1">
+                <label for="SalePoint">Chọn điểm bán</label>
+                <ui-select ng-model="$vm.saveData.SalePointId" theme="select2" search-enabled="false">
+                    <ui-select-match allow-clear="false" placeholder="Chọn điểm bán">
+                        {{$select.selected.Name}}
+                    </ui-select-match>
+                    <ui-select-choices position="down" repeat="item.Id as item in $vm.listSalePointBK">
+                        {{item.Name}}
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+            <div class="form-group col-3">
+                <label for="Bank" class="rq-form">Ngân hàng</label>
+                <input type="text" class="form-control" id="Bank" name="Bank" placeholder="Ngân hàng"
+                    ng-model="$vm.saveData.GuestInfo.Bank" required>
+            </div>
+            <div class="form-group col-3">
+                <label for="BankAccount">Số tài khoản</label>
+                <input type="text" class="form-control" id="BankAccount" ng-keypress="inputNumber($event)"
+                    name="BankAccount" placeholder="Nhập số tài khoản" ng-model="$vm.saveData.GuestInfo.BankAccount"
+                    required />
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="form-group col-3 offset-1">
+                <label for="Name">Tên khách hàng</label>
+                <input type="text" class="form-control" id="Name" name="Name" placeholder="Nhập tên khách hàng"
+                    ng-model="$vm.saveData.GuestInfo.Name" required />
+            </div>
+
+            <div class="form-group col-3">
+                <label for="Phone" class="rq-form">Số điện thoại</label>
+                <input type="text" class="form-control" id="Phone" ng-keypress="inputNumber($event)" name="Phone"
+                    placeholder="Số điện thoại" ng-model="$vm.saveData.GuestInfo.Phone" required>
+            </div>
+
+            <div class="form-group col-3">
+                <label for="Description" class="rq-form">Nội dung chuyển khoảng</label>
+                <input type="text" class="form-control" id="Description" name="Description" placeholder="Nội dung"
+                    ng-model="$vm.saveData.GuestInfo.Description" required>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="form-group col-3 offset-1">
+                <label for="TotalPrice">Số tiền chuyển</label>
+                <input type="text" class="form-control" id="TotalPrice" ng-keypress="inputNumber($event)"
+                    name="TotalPrice" placeholder="Số tiền chuyển khoản" ng-model="$vm.saveData.TotalPrice" required />
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-2 offset-8">
+                <button class="btn btn-primary" type="submit" ng-disabled="$vm.isSaving" ng-click="$vm.save(1)">Tạo
+                    yêu cầu
+                </button>
+            </div>
+        </div>
+    </div>-->
+    <!--Tab 3-->
+    <!--<div class="col-12 layout-spacing mt-2" ng-if="$vm.params.tab == 3">
+        <div class="row">
+            <div class="form-group col-3 offset-1">
+                <label for="SalePoint">Chọn điểm bán</label>
+                <ui-select ng-model="$vm.saveData.SalePointId" theme="select2" search-enabled="false">
+                    <ui-select-match allow-clear="false" placeholder="Chọn điểm bán">
+                        {{$select.selected.Name}}
+                    </ui-select-match>
+                    <ui-select-choices position="down" repeat="item.Id as item in $vm.listSalePointBK">
+                        {{item.Name}}
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+            <div class="form-group col-3">
+                <label for="Bank" class="rq-form">Ngân hàng</label>
+                <input type="text" class="form-control" id="Bank" name="Bank" placeholder="Ngân hàng"
+                    ng-model="$vm.saveData.GuestInfo.Bank" required>
+            </div>
+            <div class="form-group col-3">
+                <label for="BankAccount">Số tài khoản</label>
+                <input type="text" class="form-control" id="BankAccount" ng-keypress="inputNumber($event)"
+                    name="BankAccount" placeholder="Nhập số tài khoản" ng-model="$vm.saveData.GuestInfo.BankAccount"
+                    required />
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="form-group col-3 offset-1">
+                <label for="Name">Tên khách hàng</label>
+                <input type="text" class="form-control" id="Name" name="Name" placeholder="Nhập tên khách hàng"
+                    ng-model="$vm.saveData.GuestInfo.Name" required />
+            </div>
+
+            <div class="form-group col-3">
+                <label for="Phone" class="rq-form">Số điện thoại</label>
+                <input type="text" class="form-control" id="Phone" ng-keypress="inputNumber($event)" name="Phone"
+                    placeholder="Số điện thoại" ng-model="$vm.saveData.GuestInfo.Phone" required>
+            </div>
+
+            <div class="form-group col-3">
+                <label for="Description" class="rq-form">Mã giao dịch</label>
+                <input type="text" class="form-control" id="Description" name="Description" placeholder="Nội dung"
+                    ng-model="$vm.saveData.GuestInfo.Description" required>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="form-group col-3 offset-1">
+                <label for="TotalPrice">Số tiền chuyển</label>
+                <input type="text" class="form-control" id="TotalPrice" ng-keypress="inputNumber($event)"
+                    name="TotalPrice" placeholder="Số tiền chuyển khoản" ng-model="$vm.saveData.TotalPrice" required />
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-2 offset-8">
+                <button class="btn btn-primary" type="submit" ng-disabled="$vm.isSaving" ng-click="$vm.save(2)">Tạo
+                    yêu cầu
+                </button>
+            </div>
+        </div>
+    </div>-->
+</div>

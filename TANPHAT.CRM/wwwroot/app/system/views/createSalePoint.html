@@ -1,0 +1,55 @@
+﻿<div class="col-12 layout-spacing">
+    <div class="container-fluid wh-bg mt-10 pt-10">
+
+        <form class="col-12" name="formCreate" id="myform" ng-submit="$vm.save()" novalidate>
+            <div>
+                <div class="col-12 layout-spacing">
+                    <div id="general-info">
+                        <div class="info">
+                            <hr />
+                            <h5 class="">Thông tin điểm bán</h5>
+                            <div class="row" style="margin-top:36px"></div>
+                            <div class="row">
+                                <div class="form-group col-md-3 col-sm-12"></div>
+                                <div class="form-group col-md-6 col-sm-12">
+                                    <label for="Name" class="rq-form">Tên điểm bán:</label>
+                                    <input type="text" class="form-control" id="Name"
+                                           name="Name" placeholder="vd: TP1,TP2..."
+                                           ng-class="{'invalid-input': $vm.IsCheck && formCreate.Name.$invalid && formCreate.$submitted }"
+                                           ng-model="$vm.update.Name" required>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-3 col-sm-12"></div>
+                                <div class="form-group col-md-6 col-sm-12">
+                                    <label for="Address">Địa chỉ:</label>
+                                    <input class="form-control" type="text" id="Address"
+                                           name="Address" placeholder="vd: 30 Đỗ Xuân Hợp,Quận 9..."
+                                           ng-class="{'invalid-input': $vm.IsCheck && formCreate.Address.$invalid && formCreate.$submitted }"
+                                           ng-model="$vm.update.Address" required />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-3 col-sm-12"></div>
+                                <div class="form-group col-md-6 col-sm-12">
+                                    <label for="Note">Ghi chú:</label>
+                                    <textarea class="form-control" type="text" id="Note" rows="4" cols="50"
+                                              name="Note" placeholder="Ghi chú..."
+                                              ng-class="{'invalid-input': $vm.IsCheck && formCreate.Note.$invalid && formCreate.$submitted }"
+                                              ng-model="$vm.update.Note"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" type="submit" ng-disabled="$vm.isSaving">Lưu</button>
+            </div>
+        </form>
+
+    </div>
+</div>

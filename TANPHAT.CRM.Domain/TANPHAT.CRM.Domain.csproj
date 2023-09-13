@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Commons\" />
+    <None Remove="Models\" />
+    <None Remove="Models\Auth\" />
+    <None Remove="Models\Auth\Enum\" />
+    <None Remove="Models\BaseDDL\" />
+    <None Remove="Models\BaseDDL\Enum\" />
+    <None Remove="KTHub.Core.Client" />
+    <None Remove="Models\User\" />
+    <None Remove="Models\User\Enum\" />
+    <None Remove="Models\Activity\" />
+    <None Remove="Models\Activity\Enum\" />
+    <None Remove="Models\Report\" />
+    <None Remove="Models\Report\Enum\" />
+    <None Remove="Models\SalePoint\" />
+    <None Remove="Models\SalePoint\Enum\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Commons\" />
+    <Folder Include="Models\Auth\" />
+    <Folder Include="Models\Auth\Enum\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="KTHub.Core.Client">
+      <HintPath>..\DLLpackages\KTHub.Core.Client.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>

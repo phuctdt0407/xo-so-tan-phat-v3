@@ -1,0 +1,66 @@
+<div class="modal-header align-content-center">
+    <h3 class="modal-title" id="modal-title">Chi tiết ca làm việc</h3>
+</div>
+<form  name="formCreate" class="trial-form p-3">
+
+
+    <div class="row">
+        <div class="col-md-6">
+            <label>Tên nhân viên</label>
+            <input class="form-control" type="text" id="studentName" name="studentName" ng-model="$vm.userOnShift.name"
+                   ng-disabled="true" /><br>
+        </div>
+        <div class="col-md-6">
+            <label>Ca làm việc</label>
+            <div ng-bind-html="$vm.shift | shift"></div><br>
+        </div>
+    </div>
+    <div class="row " style=" padding-left: 16px; padding-bottom: 16px;">
+        <span>Áp dụng đến cuối tháng: </span>
+        <div style="flex-grow:1;">
+
+            <div class="custom-control " style="float:left">
+                <input type="checkbox" style="width:16px;height:16px" ng-model="$vm.isApplyAll" ng-change="$vm.changeCheck()" />
+                <!--<input type="checkbox" class="custom-control-input" id="customSwitches" ng-model="$vm.update.isApplyAll">
+                <label class="custom-control-label" for="customSwitches" ng-show="$vm.update.IsActive">Hoạt động</label>-->
+            </div>
+        </div>
+
+
+    </div>
+    <div>
+        <label>Nhân viên thay thế</label>
+        <ui-select ng-model="$vm.selectedStaff"
+                   theme="select2" search-enabled="true">
+            <ui-select-match allow-clear="true" placeholder="Chọn nhân viên thay thế">{{$select.selected.Name}}</ui-select-match>
+            <ui-select-choices position="down" repeat="item in $vm.listStaff | filter: $select.search.toUnaccent()">
+                {{item.Name}}
+            </ui-select-choices>
+        </ui-select>
+    </div>
+
+    <!--<div>
+        <label>Trạng thái</label>
+        <ui-select ng-model="$vm.selectedStatus"  theme="select2"
+                   search-enabled="false">
+            <ui-select-match allow-clear="true" placeholder="Chọn trạng thái ">{{$select.selected.Name}}</ui-select-match>
+            <ui-select-choices position="down" repeat="item in $vm.listStatus">
+                {{item.Name}}
+            </ui-select-choices>
+        </ui-select>
+    </div>-->
+
+    <div>
+        <label>Ghi chú</label>
+        <textarea class="form-control" type="text" name="goingTime" ng-model="$vm.note"></textarea>
+    </div>
+
+    <div class="modal-footer">
+        <button class="btn btn-success" type="button" ng-click="$vm.save()"
+                ng-if="$vm.selectedStaff.Id  && $vm.userOnShift.Id != $vm.selectedStaff.Id">
+            Lưu
+        </button>
+        <button ng-if="$vm.isIntern==true" class="btn btn-danger" type="button" ng-click="$vm.deleteInter()">Xóa</button>
+        <button class="btn btn-secondary" type="button" ng-click="$vm.close()">Đóng</button>
+    </div>
+</form>

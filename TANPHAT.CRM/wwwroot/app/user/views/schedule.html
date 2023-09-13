@@ -1,0 +1,35 @@
+<div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
+    <div class="container-fluid wh-bg pb-10 mt-10">
+
+        <div class="row pl-10">
+            <div class="col-md-3 col-xs-6 col-lg-2 pt10">
+                <label>Tháng</label>
+                <monthyearpicker my-class="input-sm datepicker-new" date-format="MM-YYYY" placeholder="All month"
+                                 ng-model="$vm.month" on-select="$vm.loadData()" output-format="YYYY-MM"></monthyearpicker>
+            </div>
+            <div class="col-md-3 col-xs-6 col-lg-2 pt10">
+                <label>Chọn điểm bán</label>
+                <ui-select ng-model="$vm.params.salePointId" ng-change="$vm.loadData()"
+                           theme="select2" search-enabled="false">
+                    <ui-select-match placeholder="Chọn điểm bán" allow-clear="false">{{$select.selected.Name}}</ui-select-match>
+                    <ui-select-choices position="down" repeat="ele.Id.toString() as ele in $vm.listSalePoint">
+                        {{ele.Name}}
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </div>
+        <div class="pt-10 shift-descript-0">
+            <div class="morning-shift shift-descript" style="display: flex; justify-content: space-between; padding: 4px 8px; align-items: center;">
+                <span>Ca sáng</span>
+                <span>6:00 - 13:30</span>
+            </div>
+            <div class="evening-shift shift-descript mt-10" style="display: flex; justify-content: space-between; padding: 4px 8px; align-items: center;">
+                <span>Ca chiều</span>
+                <span>13:30 - 21:00</span>
+            </div>
+        </div>
+        <div class="m10">
+            <div id="calendar"></div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,104 @@
+﻿<div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
+    <div class="container-fluid mt-10 pt-10 pb-10 mt-10 px-4 wh-bg">
+        <div class="row">
+            <div class="col-md-3 col-sx-6 col-lg-2 pt-10">
+                <label>Tháng</label>
+                <monthyearpicker my-class="input-sm datepicker-new" date-format="MM/YYYY" placeholder="All month"
+                                 ng-model="$vm.month" on-select="$vm.loadData()" ng-change="$vm.loadData()" output-format="YYYY-MM"></monthyearpicker>
+            </div>
+        </div>
+
+        <div ng-repeat=" CoreI in $vm.typeOfItem" ng-show="$vm.checkRole().includes(CoreI.Id)">
+            <div style="display:flex; margin-top: 10px; justify-content:space-between">
+                <label class="mt-20">Quản lý {{CoreI.Name}}</label>
+                <span class="btn btn-nextday mb-10" ng-click="$vm.openAddNewItem({}, CoreI.Id)">Thêm mới</span>
+            </div>
+
+            <div class="table-responsive resize-tb">
+                <table class="table">
+                    <thead class="fix-scroll">
+                        <tr class="noselect theader center-align  fix-scroll">
+                            <th rowspan="2" class=" center-align first-colunm-sticky-custom " style="background-color: #476fbf ; ">STT</th>
+                            <th rowspan="2" class=" center-align  second-colunm-sticky-custom" style="background-color: #476fbf">Danh mục công cụ</th>
+                            <th rowspan="2" class=" center-align third-colunm-sticky-custom " style="background-color: #476fbf ">DVT</th>
+                            <th rowspan="2" class=" center-align fourth-colunm-sticky-custom " style="background-color: #476fbf ">Giá TB</th>
+                            <th rowspan="2" class=" center-align w80px">Tồn đầu</th>
+                            <th rowspan="2" class=" center-align w80px ">Nhập</th>
+                            <th rowspan="2" class=" center-align w120px ">Ngày cập nhật</th>
+                            <th rowspan="2" class=" center-align w120px ">Người nhập</th>
+                            <th rowspan="2" class=" center-align w80px ">Xuất</th>
+                            <th rowspan="2" class=" center-align w80px ">Tồn cuối</th>
+                            <th rowspan="2" class=" center-align w120px ">Thành tiền</th>
+                            <th rowspan="2" class=" center-align w120px ">Tiêu chuẩn</th>
+                            <th rowspan="2" class=" center-align w100px ">Tình trạng kho</th>
+                            <th colspan="3" class=" center-align w100" style=" border-left: 1px solid #000; " ng-repeat="item in $vm['type'+ CoreI.Id].listSalePoint">
+                                <div style="display:flex; justify-content:space-around">
+                                    <span>{{item.Name}}</span>
+                                    <label title="Trả về kho">
+                                        <i class="fa fa-arrow-circle-left cursor" aria-hidden="true" ng-click="$vm.openTransferSalePoint(item, 4, $index)"></i>
+                                    </label>
+                                    <label title="Nhập vào điểm bán">
+                                        <i class="fa fa-arrow-circle-right cursor" aria-hidden="true" ng-click="$vm.openTransferSalePoint(item, 1, $index)"></i>
+                                    </label>
+                                    <label title="Sử dụng">
+                                        <i class="fa fa-american-sign-language-interpreting cursor" aria-hidden="true" ng-click="$vm.openTransferSalePoint(item, 3, $index)"></i>
+                                    </label>
+                                </div>
+                            </th>
+                        </tr>
+                        <tr class="noselect theader center-align">
+                            <th ng-repeat-start="item in $vm['type'+ CoreI.Id].listSalePoint" style="display:none"></th>
+                            <th class="" style=" border-left: 1px solid #000;">
+                                Tồn ĐB
+                            </th>
+                            <th class="" style="min-width: 120px; border-left: 1px solid #000;">Đã dùng</th>
+                            <th class="" style="min-width: 120px; border-left: 1px solid #000;">Đơn giá</th>
+                            <th ng-repeat-end="" style="display:none"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="item in $vm['type'+ CoreI.Id].listItemBK1">
+                            <td class=" center-align first-colunm-sticky-custom " style="background-color: #f4f4f4;z-index: 1 ">{{$index+1}}</td>
+                            <td class="  text-align-left link  second-colunm-sticky-custom" style="background-color: #f4f4f4; z-index:1 ">
+                                <div style="display:flex; justify-content:space-between; align-items:center">
+                                    <span class="text-align-left">{{item.ItemName}}</span>
+                                    <div>
+                                        <i class="fa fa-cart-arrow-down cursor" style="margin-right:16px" ng-click="$vm.openImportForStorage(item,CoreI.Id)" aria-hidden="true"></i>
+                                        <i class="fa fa-pencil-square-o cursor" ng-click="$vm.openAddNewItem(item, CoreI.Id)" aria-hidden="true"></i>
+                                    </div>
+
+                                </div>
+                            </td>
+                            <td class=" center-align  third-colunm-sticky-custom" style="background-color: #f4f4f4; z-index: 1 ">{{item.UnitName}}</td>
+                            <td class=" text-align-right  fourth-colunm-sticky-custom" style="background-color: #f4f4f4; z-index: 1 ">{{item.AVGPrice | formatCurrency}}</td>
+                            <td class="text-align-right">{{item.TotalReceive }}</td>
+                            <!--<td class="text-align-right">{{item.ImportPrice | formatCurrency}}</td>-->
+                            <td class="text-align-right">{{item.Import}}</td>
+                            <td>{{item.ActionDate | formatDateTime}}</td>
+                            <td>{{item.ActionByName}}</td>
+                            <td class="text-align-right">{{item.Export}}</td>
+                            <td class="text-align-right">{{item.TotalRemaining}} </td>
+                            <td class="text-align-right">{{(item.TotalRemaining*item.AVGPrice) | formatCurrency}}</td>
+                            <td class="text-right">{{item.Quotation}}</td>
+                            <td class="text-align-left" style="min-width:120px">{{item.Note}}</td>
+
+
+                            <td ng-repeat-start="ele in item.SalePoint" style="display:none"></td>
+                            <td class="text-align-right " style="min-width: 120px;" ng-click="$vm.openTransferSalePoint(item,$index)">
+                                {{ele.TotalRemaining}}
+                            </td>
+                            <td class="text-align-right" style="min-width: 120px">{{ele.Use | formatCurrency}}</td>
+                            <td class="text-align-right" style="min-width: 120px">{{ele.ImportPrice | formatCurrency}}</td>
+                            <td ng-repeat-end="" style="display:none"></td>
+                        </tr>
+
+                        <tr ng-if="!$vm['type'+ CoreI.Id].listItemBK1 || $vm['type'+ CoreI.Id].listItemBK1.length ==0">
+                            <td colspan="99">Chưa có mặt hàng trong kho </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+    </div>

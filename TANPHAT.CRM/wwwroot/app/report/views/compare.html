@@ -1,0 +1,71 @@
+﻿<div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
+    <div class="container-fluid wh-bg mt-10">
+        <div class="row">
+            <div class="wh-bg ">
+                <div class="mt20 w160px pt-10">
+                    <label>Tháng</label>
+                    <monthyearpicker my-class="input-sm datepicker-new" date-format="MM/YYYY" placeholder="All month"
+                                     ng-model="$vm.month" on-select="$vm.loadData()" ng-change="$vm.loadData()" output-format="YYYY-MM"></monthyearpicker>
+                </div>
+            </div>
+
+            <div class="ml-auto mr-3" style="padding-top: 50px;">
+                <img src="../images/loading-dot.gif" ng-if="$vm.isSaving" class="float-r" style="height: 45px; width: 120px;">
+                <span ng-if="!$vm.isSaving" ng-click="$vm.save()" class="btn btn-primary">Lưu toàn bộ</span>
+            </div>
+
+        </div>
+        <div class="table-responsive resize-tb">
+            <div id="calendar">
+                <table class="table w100p table-wrapper-scroll-y my-custom-scrollbar">
+                    <thead class="theader text-center fix-scroll ">
+                        <tr class="flex flex-wrap sticky-border-1">
+                            <th class="th-none first1-col-sticky" rowspan="2"></th>
+                            <th style="width: 10px;" class="text-center fix-scroll py-4 resizeSchedule " ng-repeat="item in $vm.listMonth"
+                                ng-class="({{$vm.checkCurrentDate($index)}}&&{{item.IsWeekEnd}}) ? 'bg-current-weekend'
+                                            : {{$vm.checkCurrentDate($index)}} ? 'bg-curentDate'
+                                            : {{item.IsWeekEnd}} ? 'patternsCss' : '' ">
+                                {{$index+1}}
+                            </th>
+                        </tr>
+                        <tr class="flex flex-wrap sticky-border-1">
+                            <th style="width: 10px;" class="text-center fix-scroll py-4 resizeSchedule " ng-repeat="item in $vm.listMonth"
+                                ng-class="({{$vm.checkCurrentDate($index)}}&&{{item.IsWeekEnd}}) ? 'bg-current-weekend'
+                                            : {{$vm.checkCurrentDate($index)}} ? 'bg-curentDate'
+                                            : {{item.IsWeekEnd}} ? 'patternsCss' : '' ">
+                                {{item.DateName}}
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!--<tr ng-repeat-start="type in $vm.typeUser" style="display:none"> </tr>
+                        <tr ng-repeat="user in type.ListUser">
+                            <td ng-if="!type.isStaff">{{$index+1}}</td>
+                            <td colspan="{{type.isStaff?2:1 }}">{{user.Data.SalePointName}}</td>
+                            <td>{{user.FullName}}</td>
+                            <td class="text-right" ng-repeat="display in $vm.listDisplay">{{user.Data[display.DisplayName] | formatCurrency}}</td>
+                        </tr>
+                        <tr ng-repeat-end="" style="display:none"> </tr>-->
+
+                        <tr ng-repeat="salepoint in $vm.listSalePoint">
+                            <td class="td-none col-sticky cus-extra-payment-1">{{salepoint.Name}} </td>
+                            <td class="w180" ng-repeat="date in salepoint.listMonth">
+                                <div class="row">
+                                    <div class="col-10">
+                                        <input type="text" class="form-control text-right h30px center-block"
+                                               style="font-size: 15px;"
+                                               id="amountPrice"
+                                               ng-model="date.TotalPrice"
+                                               ng-change="numToCurrency(date,'TotalPrice',date.TotalPrice,{{date.TotalPrice}});">
+                                    </div>
+                                    <div class="col-2" ng-bind-html="$vm.getStatus(date) | typeCheckStatus"  ng-click="$vm.showInfo(date)"></div>
+                                </div>
+                            </td>
+
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

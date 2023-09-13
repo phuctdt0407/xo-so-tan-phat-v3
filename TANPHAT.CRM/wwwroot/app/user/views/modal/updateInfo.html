@@ -1,0 +1,148 @@
+﻿<div class="modal-header align-content-center">
+    <h3 class="modal-title" id="modal-title">Cập nhật thông tin nhân viên</h3>
+</div>
+<form name="formCreate" class="trial-form p-3">
+    <div class="row">
+        <div class="col-md-6">
+            <label>Tên tài khoản</label>
+            <input class="form-control disable-text" type="text" id="userAccount" name="userAccount" ng-model="$vm.update.Account"
+                   ng-disabled="true" /><br>
+        </div>
+        <div class="col-md-6">
+            <label>Email</label>
+            <input class="form-control disable-text" type="text" id="userEmail" name="userEmail" ng-model="$vm.update.Email"
+                   ng-disabled="true" /><br>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <label class="link">Tên nhân viên (*có thể sửa đổi)</label>
+            <input class="form-control" type="text" id="userName" name="userName" ng-model="$vm.update.FullName" /><br>
+        </div>
+        <div class="col-md-6">
+            <label class="link">Chọn điểm bán</label>
+            <ui-select ng-model="$vm.update.SalePointId" theme="select2" search-enabled="false">
+                <ui-select-match class="text-center" placeholder="Chọn điểm bán" allow-clear="false">
+                    {{$select.selected.Name}}
+                </ui-select-match>
+                <ui-select-choices position="down" repeat="ele.Id as ele in $vm.listSalePoint">
+                    {{ele.Name}}
+                </ui-select-choices>
+            </ui-select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <label class="link">Số điện thoại: </label>
+            <input class="form-control" type="text" id="Phone" name="Phone" ng-model="$vm.update.Phone" /><br>
+        </div>
+        <div class="col-md-6">
+            <label class="link">Địa chỉ: </label>
+            <input class="form-control" type="text" id="Address" name="Address" ng-model="$vm.update.Address" /><br>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <label class="link">Số CMNN</label>
+            <input class="form-control" type="text" id="NumberIdentity" name="NumberIdentity" ng-model="$vm.update.NumberIdentity" /><br>
+        </div>
+        <div class="col-md-6">
+            <label class="link">Tài khoản ngân hàng: </label>
+            <input class="form-control" type="text" id="BankAccount" name="BankAccount" ng-model="$vm.update.BankAccount" /><br>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <label class="link">
+                Ngày bắt đầu (31/12/2021)
+            </label>
+            <input type="text" class="form-control"
+                   id="startDay"
+                   name="startDay"
+                   ng-model="$vm.update.StartDayDisplay" ng-pattern="DDMMYYYY_Pattern">
+            <span ng-show="$vm.update.StartDayDisplay.length==0" style="color:red">
+                ...Vui lòng điền ngày
+            </span>
+            <span ng-show="formCreate.startDay.$error.pattern" style="color:red">
+                ...Chưa đúng định dạng
+            </span>
+            <br />
+        </div>
+
+        <div class="col-md-6">
+            <label class="link">Lương căn bản</label>
+            <input type="text" class="form-control text-right "
+                   id="amountPrice"
+                   name="amountPrice"
+                   ng-model="$vm.update.SalaryDisplay"
+                   ng-change="numToCurrency($vm.update,'SalaryDisplay',$vm.update.SalaryDisplay? $vm.update.SalaryDisplay: '0',{{$vm.update.SalaryDisplay? $vm.update.SalaryDisplay: '0'}})"><br>
+        </div>
+
+        <div ng-if="!$vm.update.IsActive" class="col-md-6">
+            <label class="link">
+                Ngày nghỉ việc
+            </label>
+            <input type="text" class="form-control"
+                   id="endDay"
+                   name="endDay"
+                   ng-model="$vm.update.EndDayDisplay" ng-pattern="DDMMYYYY_Pattern">
+            <span ng-show="$vm.update.EndDayDisplay.length==0" style="color:red">
+                ...Vui lòng điền ngày nghỉ
+            </span>
+            <span ng-show="formCreate.endDay.$error.pattern" style="color:red">
+                ...Chưa đúng định dạng
+            </span>
+
+            <span ng-show="formCreate.endDay.$valid && $vm.update.EndDayDisplay.length>0 && !$vm.checkDate()" style="color:red">
+                ...Kết thúc sớm hơn bắt đầu
+            </span>
+            <br />
+        </div>
+
+    </div>
+    <div>
+        <div class="row col-md-6" style="justify-content:space-between">
+            <span class="link">Thử việc: </span>
+            <div style="flex-grow:1; margin-left:1rem">
+
+                <span class="custom-control custom-switch" style="float:left">
+                    <input type="checkbox" class="custom-control-input" id="customSwitchesIntern" ng-model="$vm.update.IsIntern">
+                    <label class="custom-control-label" for="customSwitchesIntern" ng-show="$vm.update.IsIntern">Thử việc</label>
+                    <label class="custom-control-label" for="customSwitchesIntern" ng-show="!$vm.update.IsIntern">Chính thức</label>
+                </span>
+            </div>
+        </div>
+
+    </div>
+
+    <div>
+        <div class="row col-md-6" style="justify-content:space-between">
+            <span class="link">Trạng thái: </span>
+            <div style="flex-grow:1; margin-left:1rem">
+
+                <span class="custom-control custom-switch" style="float:left">
+                    <input type="checkbox" class="custom-control-input" id="customSwitches" ng-model="$vm.update.IsActive">
+                    <label class="custom-control-label" for="customSwitches" ng-show="$vm.update.IsActive">Hoạt động</label>
+                    <label class="custom-control-label" for="customSwitches" ng-show="!$vm.update.IsActive">Ngưng Hoạt động</label>
+                </span>
+            </div>
+        </div>
+
+    </div>
+
+    <!--<div>
+        <label>Ghi chú</label>
+        <textarea class="form-control" type="text" name="goingTime" ng-model="$vm.note"></textarea>
+    </div>-->
+
+    <div class="modal-footer">
+        <div class="btn btn-primary "
+             ng-if="!$vm.isSaving && ($vm.update.IsActive || (!$vm.update.IsActive && $vm.update.EndDayDisplay.length >0 && formCreate.endDay.$valid &&  $vm.checkDate() ) )"
+             ng-click="$vm.save()">
+            <i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu
+        </div>
+        <img src="../images/loading-dot.gif" ng-if="$vm.isSaving" class="float-r" style="height: 45px; width: 120px;">
+        <button class="btn btn-secondary" type="button" ng-click="$vm.close()">Đóng</button>
+    </div>
+</form>

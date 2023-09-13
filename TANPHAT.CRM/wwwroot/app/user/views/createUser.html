@@ -1,0 +1,110 @@
+﻿<div class="col-12 layout-spacing">
+    <div class="container-fluid wh-bg mt-10 pt-10">
+
+        <form class="col-12" name="formCreate" id="myform" ng-submit="$vm.save()" novalidate>
+            <div>
+                <div class="col-12 layout-spacing">
+                    <div id="general-info">
+                        <div class="info">
+                            <hr />
+                            <h5 class="">Thông tin người dùng</h5>
+                            <div style="margin-top:36px"></div>
+                            <div class="row">
+                                <div class="col-md-3 col-xs-6 col-lg-2">
+                                    <label>Chọn điểm bán</label>
+                                    <ui-select ng-model="$vm.update.SalePointId" theme="select2" search-enabled="false">
+                                        <ui-select-match class="text-center" placeholder="Chọn điểm bán" allow-clear="false">
+                                            {{$select.selected.Name}}
+                                        </ui-select-match>
+                                        <ui-select-choices position="down" repeat="ele.Id as ele in $vm.listSalePoint">
+                                            {{ele.Name}}
+                                        </ui-select-choices>
+                                    </ui-select>
+                                </div>
+                                <div class="col-md-3 col-xs-6 col-lg-2">
+                                    <label for="perEmail">Chọn Quyền :</label>
+                                    <select class="form-control" id="Role" name="Role" ng-model="$vm.update.Role" required>
+                                        <option value="">Chọn quyền</option>
+                                        <option value="2">Quản lý</option>
+                                        <option value="3">Người chia vé</option>
+                                        <option value="4">Trưởng nhóm</option>
+                                        <option value="5">Nhân viên</option>
+                                        <option value="6">Quản lý nhân sự</option>
+                                        <option value="7">Quản lý công cụ</option>
+                                        <option value="8">Quản lý máy móc</option>
+                                        <option value="9">Kế toán</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-4 col-sm-6">
+                                    <label for="userName">Tên tài khoản:</label>
+                                    <input type="text" class="form-control" id="Account"
+                                           name="Account" placeholder="vd: admin"
+                                           ng-class="{'invalid-input':  formCreate.Account.$invalid && formCreate.$submitted }"
+                                           ng-model="$vm.update.Account" required />
+                                </div>
+                                <div class="form-group col-md-4 col-sm-6">
+                                    <label for="FullName" class="rq-form">Họ & Tên:</label>
+                                    <input type="text" class="form-control" id="FullName"
+                                           name="FullName" placeholder="vd: Nguyễn Văn Tấn Phát"
+                                           ng-class="{'invalid-input': $vm.IsCheck && formCreate.FullName.$invalid && formCreate.$submitted }"
+                                           ng-model="$vm.update.FullName" required>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group col-md-4 col-sm-6 offset-lg-2 offset-sm-6">
+                                    <label for="perEmail">Số điện thoại:</label>
+                                    <input class="form-control" type="text" id="Phone"
+                                           name="Phone" placeholder="vd: 0965894322"
+                                           ng-class="{'invalid-input': $vm.IsCheck && formCreate.Phone.$invalid && formCreate.$submitted }"
+                                           ng-model="$vm.update.Phone" required />
+                                </div>
+                                <div class="form-group col-md-4 col-sm-6">
+                                    <label for="password">Số CMNN:</label>
+                                    <input class="form-control" type="number" id="NumberIdentityCard"
+                                           name="identityCard" placeholder="vd: 2125672478"
+                                           ng-class="{'invalid-input': $vm.IsCheck && formCreate.NumberIdentityCard.$invalid && formCreate.$submitted }"
+                                           ng-model="$vm.update.NumberIdentityCard" required />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-4 col-sm-6 offset-lg-2 offset-sm-6">
+                                    <label for="password">Tài khoản ngân hàng: </label>
+                                    <input class="form-control" type="text" id="BankAccount"
+                                           name="BankAccount" placeholder="vd: 45148351387"
+                                           ng-class="{'invalid-input': $vm.IsCheck && formCreate.BankAccount.$invalid && formCreate.$submitted }"
+                                           ng-model="$vm.update.BankAccount" required />
+                                </div>
+                                <div class="form-group col-md-4 col-sm-6 ">
+                                    <label for="perEmail">Địa chỉ:</label>
+                                    <input class="form-control" type="text" id="Address"
+                                           name="Address" placeholder="vd: tp.HCM"
+                                           ng-class="{'invalid-input': $vm.IsCheck && formCreate.Address.$invalid && formCreate.$submitted }"
+                                           ng-model="$vm.update.Address" required />
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group col-md-4 col-sm-6 offset-lg-2 offset-sm-6">
+                                    <label for="perEmail">Email:</label>
+                                    <input class="form-control" type="email" id="Email"
+                                           name="Email" placeholder="vd: abcxyz@gmail.com"
+                                           ng-class="{'invalid-input': $vm.IsCheck && formCreate.Email.$invalid && formCreate.$submitted }"
+                                           ng-model="$vm.update.Email" required />
+                                </div>
+                                <div class="form-group col-md-4 col-sm-6">
+                                    <label for="password">Mật Khẩu: (mặc định)</label>
+                                    <input ng-disabled="true" class="form-control ng-untouch disable-text" type="text" id="password"
+                                           name="password" placeholder="tanphat123" disabled />
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" type="submit" ng-disabled="$vm.isSaving">Lưu</button>
+            </div>
+        </form>
+    </div>
+</div>

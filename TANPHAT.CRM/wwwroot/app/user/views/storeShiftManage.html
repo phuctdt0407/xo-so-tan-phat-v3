@@ -1,0 +1,63 @@
+<div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
+    <div class="container-fluid wh-bg pb-1 pt-10 mt-10 ">
+
+            <div class="mt20 " style="width: 160px;">
+                <label>Chọn ngày làm việc</label>
+                <datepicker my-class="input-sm datepicker" date-format="DD-MM-YYYY" pick-time="false"
+                            ng-model="$vm.params.day" output-format="DD-MM-YYYY"
+                            ng-change="$vm.changeDate()"
+                            placeholder="dd/mm/yyyy"></datepicker>
+            </div>
+
+            <span class="btn btn-today" ng-click="$vm.clickToday()">Hôm nay</span>
+            <span class="btn btn-tomorrow" ng-click="$vm.clickToday(1)">Ngày mai</span>
+            <span class="btn btn-nextday" ng-click="$vm.clickToday(2)">Ngày kia</span>
+        
+        <div class="">
+            <h3 class="text-center">{{$vm.dayDisplay}}</h3>
+
+            <table id="default-ordering" class="table" style="width:100%">
+                <thead>
+                    <tr class="fix-scroll">
+                        <!--<th class="noselect theader text-center"><span>STT</span></th>-->
+                        <th class="noselect theader fix-scroll">
+                            <div class="d-flex justify-content-center align-items-center">
+                                <span>Cửa hàng</span>
+                            </div>
+                        </th>
+                        <th class="noselect theader fix-scroll">
+                            <div class="d-flex justify-content-center align-items-center">
+                                <span>Quản lý</span>
+                            </div>
+                        </th>
+                        <th class="noselect theader">
+                            <div class="d-flex justify-content-center align-items-center">
+                                <span>Ca sáng</span>
+                            </div>
+                        </th>
+                        <th class="noselect theader">
+                            <div class="d-flex justify-content-center align-items-center">
+                                <span>Ca chiều</span>
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="noselect" ng-repeat="item in $vm.listForManager">
+                       <!-- <td class="noselect w80">{{$vm.listStore.indexOf(item)+1}}</td>-->
+                        <td class="noselect text-center w220">
+                            <a class="link" href="#"
+                               ng-click="goToPage('root.user.schedule', { salePointId: item.SalePointId , distributeMonth: item.DistributeMonth}, 1)">{{item.SalePointName}}</a>
+                        </td>
+                        <td class="noselect w120 text-left">{{item.ManagerName}}</td>
+                        <td class="noselect w120 text-left">{{item.ShiftUser1Name}}</td>
+                        <td class="noselect w120 text-left">{{item.ShiftUser2Name}}</td>
+
+                    </tr>
+                    <tr ng-if="!$vm.listForManager || $vm.listForManager.length <=0">
+                        <td colspan="99" class="text-center">Không tìm thấy dữ liệu nào...</td>
+                    </tr>
+            </table>
+        </div>
+    </div>
+    </div>

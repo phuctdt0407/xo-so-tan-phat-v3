@@ -1,0 +1,32 @@
+﻿<div class="modal-header align-content-center">
+    <h3 class="modal-title" id="modal-title">Ngày {{$vm.date.DateDisplay}}</h3>
+</div>
+<form name="formCreate" class="trial-form p-3">
+
+    <div>
+        <label>Chọn trưởng nhóm vắng mặt</label>
+        <ui-select ng-model="$vm.selectedLeader"
+                   theme="select2" search-enabled="true">
+            <ui-select-match allow-clear="true" placeholder="Chọn trưởng nhóm">{{$select.selected.Name}}</ui-select-match>
+            <ui-select-choices position="down" repeat="item in $vm.listLeader | filter: $select.search.toUnaccent()">
+                {{item.Name}}
+            </ui-select-choices>
+        </ui-select>
+    </div>
+
+    <div>
+        <label>Ghi chú</label>
+        <textarea class="form-control" type="text" name="goingTime" ng-model="$vm.Note"></textarea>
+    </div>
+
+    <div class="modal-footer">
+        <button class="btn btn-success" type="button" ng-click="$vm.isSaving= false;$vm.save()"
+                ng-if="$vm.selectedLeader.Id && !$vm.isSaving">
+            Lưu
+        </button>
+        <img src="../images/loading-dot.gif" ng-if="$vm.isSaving" class="float-r" style="height: 45px; width: 120px;">
+
+
+        <button class="btn btn-secondary" type="button" ng-click="$vm.close()">Đóng</button>
+    </div>
+</form>

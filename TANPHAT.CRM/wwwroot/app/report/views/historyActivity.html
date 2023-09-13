@@ -1,0 +1,166 @@
+﻿<div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
+    <div class="container-fluid wh-bg mt-10">
+        <!--<div class="table-responsive resize-tb">-->
+        <div class="wh-bg mt-10 title-flex">
+
+            <div class="mt20" style="width: 220px; padding-left: 15px;">
+                <label>Chọn ngày</label>
+                <datepicker my-class="input-sm datepicker" date-format="DD/MM/YYYY" pick-time="false"
+                            on-select="$vm.getData(date)"
+                            ng-model="$vm.params.date" output-format="DD/MM/YYYY"
+                            ng-change="$vm.changeDate() "
+                            placeholder="dd/mm/yyyy"></datepicker>
+            </div>
+            <div class="mt20" style="width: 220px; padding-left: 15px;">
+                <label>Chọn điểm bán</label>
+                <ui-select ng-model="$vm.params.salePointId" ng-change="$vm.changeDate()"
+                           theme="select2" search-enabled="true">
+                    <ui-select-match placeholder="Chọn điểm bán" allow-clear="false">{{$select.selected.Name}}</ui-select-match>
+                    <ui-select-choices position="down" repeat="ele.Id.toString() as ele in $vm.listSalePoint | filter: $select.search.toUnaccent()">
+                        {{ele.Name}}
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+            <div class="mt20" style="width: 220px; padding-left: 15px;">
+                <label>Chọn ca làm việc</label>
+                <ui-select ng-model="$vm.params.shiftId" ng-change="$vm.changeDate()"
+                           theme="select2" search-enabled="false">
+                    <ui-select-match placeholder="Chọn ca làm việc" allow-clear="false">{{$select.selected.Name}}</ui-select-match>
+                    <ui-select-choices position="down" repeat="ele.Id.toString() as ele in $vm.shiftStatus2">
+                        {{ele.Name}}
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+                <div class=" mt20" style="padding-left:15px; padding-top: 38px">
+                    <button class="btn btn-danger"
+                            ng-if="($vm.salePointInfo.IsEndOfShift && $vm.checkClicked)"
+                            ng-click="($vm.salePointInfo.IsEndOfShift && $vm.checkClicked) ? $vm.rmShistTransfer():return;">Xoá kết ca</button>
+                </div>
+
+        </div>
+
+
+        <h3 class=" text-center mt-10">Lịch sử hoạt động </h3>
+
+        <div class="row">
+            <!--box 1-->
+            <div class="col-md-5 col-sm-12 pr0">
+                <div class="card card-create-container table-roll" style="border:none !important">
+
+                    <table class="table" >
+                        <thead>
+                            <tr>
+                                <th rowspan="2" class="noselect theader text-center"> Ngày xổ </th>
+                                <th rowspan="2" class="noselect theader text-center">Đài bán</th>
+                                <th colspan="2" class="noselect theader text-center">Còn lại</th>
+
+                                <th class="bor-none top0 pl1"> </th>
+
+                            </tr>
+                            <tr>
+                                <th class="noselect theader text-center ng-binding ng-scope"> Vé thường</th>
+                                <th class="noselect theader text-center ng-binding ng-scope"> Vé trùng</th>
+                            </tr>
+                        </thead>
+                        <tbody ng-repeat-end>
+                            <tr ng-repeat="item in $vm.lotteryInfo">
+                                <td class="" style="min-width: 150px !important; color: #2196f3 !important;cursor:pointer">
+                                    <div style="display: flex;justify-content: space-between;">
+                                        <div style="text-align: left;" ng-click="$vm.openModal(item)" ng-if="!item.IsScratchcard">{{item.LotteryDateBk}}</div>
+                                        <div style="text-align: left;" ng-click="$vm.openModal(item)"ng-if="item.IsScratchcard">Vé cào:</div>
+                                    </div>
+                                </td>
+                                
+                                <td class="" style="min-width:100px!important">
+                                    <div style="display: flex;justify-content: space-between;">
+                                        <div style="text-align: left;"><strong> {{item.ShortName}}</strong></div>
+
+                                    </div>
+                                </td>
+                                <td class=" ">
+
+                                    <div style="text-align: right;"><strong> {{item.TotalRemaining}}</strong></div>
+
+                                </td>
+
+                                <td class="text-align-right ng-scope" style="min-width:125px">
+                                    <div style="text-align: right;"><strong> {{item.TotalDupRemaining}}</strong></div>
+
+                                </td>
+                                <!--<td class=" bor-none pl0 bl-1" style="padding-left: 0;"><div ng-if="$vm.mainIndex+1==$index" class="arrow-left-1"></div> </td>-->
+                            </tr>
+                            <tr ng-if="!$vm.lotteryInfo ||$vm.lotteryInfo && $vm.lotteryInfo.length<=0 ">
+                                <td colspan=4" class="text-align-center ng-scope">Chưa có dữ liệu</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!--box 2-->
+            <div class="col-md-7 col-sm-12 pr0">
+                <div class="card card-create-container table-roll"style="border:none !important" >
+
+                    <table class="table" style="width:100%">
+                        <thead class="fix-scroll">
+                            <tr>
+                                <th rowspan="2" class="noselect theader text-center"> Action Date </th>
+                                <th colspan="3" class="noselect theader text-center ng-binding ng-scope">Số lượng bán</th>
+                                <th rowspan="2" class="noselect theader text-center ng-binding ng-scope">Số Seri</th>
+                                <th rowspan="2" class="noselect theader text-center ng-binding ng-scope">Tổng tiền</th>
+                                <th rowspan="2" class="noselect theader text-center ng-binding ng-scope" style="max-width:70px"></th>
+                            </tr>
+                            <tr>
+                                <th  class="noselect theader text-center ng-binding ng-scope">Đài bán</th>
+                                <th class="noselect theader text-center ng-binding ng-scope"> Loại vé</th>
+                                <th class="noselect theader text-center ng-binding ng-scope"> Số lượng</th>
+
+                            </tr>
+                        </thead>
+                        <tbody ng-repeat-end>
+                            <tr ng-if="$vm.historyInfo" ng-repeat="item in $vm.historyInfo">
+                                <td class=" " style="min-width:220px">
+                                    <div style="display: flex;justify-content: space-between;">
+                                        <div style="text-align: left;" ng-if="!item.IsScratchcard">{{item.ActionDateBk}}</div>
+                                        <div style="text-align: left;" ng-if="item.IsScratchcard">Vé cào:</div>
+                                    </div>
+                                </td>
+                                <td class="mw-220 ">
+                                    <div style="display: flex;justify-content: space-between;">
+                                        <div style="text-align: left;"><strong> {{item.ShortName}}</strong></div>
+
+                                    </div>
+                                </td>
+                                <td class="text-align-right ng-scope ">
+                                    <div style="text-align: left;" ng-if="!item.IsScratchcard"><strong> {{item.LotteryTypeName}}</strong></div>
+                                    <div style="text-align: left;" ng-if="item.IsScratchcard"><strong> Vé Cào</strong></div>
+
+                                </td>
+                                <td class="text-align-right ng-scope ">
+                                    <div style="text-align: right;"><strong> {{item.Quantity}}</strong></div>
+                                </td>
+                                <td class="text-align-right ng-scope ">
+                                    <div style="text-align: right;"><strong> {{item.FourLastNumber}}</strong></div>
+                                </td>
+                                <td class="text-align-right ng-scope ">
+                                    <div style="text-align: right;"><strong> {{item.TotalValue | formatCurrency}}</strong></div>
+                                </td>
+                                <td class="text-align-right ng-scope " style="max-width:70px;cursor:pointer" ng-click="$vm.getBootBox(item)">
+                                    <div style="text-align: center;">
+                                        <i class="fa fa-trash" aria-hidden="true"></i>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr ng-if="!$vm.historyInfo ||$vm.historyInfo && $vm.historyInfo.length<=0 ">
+                                <td colspan="6" class="text-align-center ng-scope">Chưa có dữ liệu</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+            
+        </div>
+
+        
+    </div>
+</div>    

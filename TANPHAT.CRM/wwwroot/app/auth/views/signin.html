@@ -1,0 +1,51 @@
+﻿<div class="login-container">
+    <div class="container-login" id="container">
+        <div class="form-container sign-up-container">
+            <form class="form-login" name="fromLogin" novalidate>
+                <h2 class="forgot-password-title subtitle-login">
+                    Forgot your password?
+                </h2>
+                <input class="input-login" type="text" placeholder="Email" name="account" required
+                       ng-class="{'invalid-input': fromLogin.$submitted && fromMakeup.account.$invalid}"
+                       ng-model="$vm.loginInfo.Email" />
+                <button ng-click="$vm.FgPassword($vm.loginInfo.Email)" class="button-login" ng-if="!$vm.isSaving">Send</button>
+                <img src="../images/loading-dot.gif"  ng-if="$vm.isSaving" style="height: 45px; width: 120px;">
+
+                <label class="link back_login" ng-click="$vm.backLG()">  <i>Back Sign In</i></label>
+
+            </form>
+        </div>
+        <div class="form-container sign-in-container">
+            <form class="form-login" name="fromLogin" novalidate ng-submit="$vm.login()">
+                <img style="height:55px" src="../images/TPIcon.jpeg" alt="Icon">
+                <h1 class="title-login">Sign in</h1>
+                <input class="input-login" type="text" placeholder="Account" name="account" required autocomplete="username"
+                       ng-class="{'invalid-input': fromLogin.$submitted && fromMakeup.account.$invalid}"
+                       ng-model="$vm.loginInfo.Account" />
+                <input class="input-login" type="password" placeholder="Password" name="password" required autocomplete="current-password"
+                       ng-class="{'invalid-input': fromLogin.$submitted && fromMakeup.password.$invalid}"
+                       ng-model="$vm.loginInfo.Password" />
+                <button class="sign-in-btn button-login" ng-if="!$vm.isSaving" type="submit">Sign In</button>
+                <img src="../images/loading-dot.gif" ng-if="$vm.isSaving" style="height: 45px; width: 120px;">
+
+
+                <label class="link forgot_password" ng-click=" $vm.clickFg()">  <i>Forgot password</i></label>
+
+            </form>
+        </div>
+        <div class="overlay-container">
+            <div class="overlay-login">
+                <div class="overlay-panel-login overlay-left-login">
+                    <h1 class="title-login">Welcome Back!</h1>
+                    <p class="paragraph-login">To the most mordern CRM system in the world.</p>
+                    <button class="ghost button-login" id="signIn">Sign In</button>
+                </div>
+                <div class="overlay-panel-login overlay-right-login">
+                    <img class="logo-enest" width="200" src="./images/bird.png" alt="">
+                    <h1 class="title-login-right">Tan Phat CRM</h1>
+                    <button class="ghost button-login" id="signUp">Forgot password ?</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

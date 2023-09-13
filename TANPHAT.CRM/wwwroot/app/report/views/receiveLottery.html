@@ -1,0 +1,49 @@
+﻿<div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
+    <div class="container-fluid wh-bg mt-10">
+
+        <div class="row">
+            <div class="col-md-3 col-xs-6 col-lg-2 pt10">
+                <label>Tháng</label>
+                <monthyearpicker my-class="input-sm datepicker-new" date-format="MM/YYYY" placeholder="All month"
+                                 ng-model="$vm.month" on-select="$vm.loadData()" ng-change="$vm.loadData()" output-format="YYYY-MM"></monthyearpicker>
+            </div>
+        </div>
+        <h3 class="text-center">Số lượng vé nhận từ đại lý {{$vm.thisMonth}}</h3>
+        <div class="table-responsive resize-tb">
+            <div id="chartColunm" class="minWidthChart"></div>
+        </div>
+        <h3 class="text-center pt-4">Số lượng vé nhận từng ngày trong tháng {{$vm.thisMonth}}</h3>
+<!--        <div class="table-responsive resize-tb">-->
+<!--            <div id="chartline" class="minWidthChart"></div>-->
+<!--        </div>-->
+
+        <div class="table-responsive resize-tb">
+            <table class="table">
+                <thead class="fix-scroll">
+                <tr>
+                    <th class="theader first-col-sticky"></th>
+                    <th class="theader text-center" ng-repeat="item in $vm.listDate">{{item.time}}</th>
+                </tr>
+                </thead>
+                <tbody class="">
+                    <tr ng-repeat="ele in $vm.dataLine" ng-click="checkPermission('root.report.agencyReport')? goToPage('root.report.agencyReport', { month: $vm.month, agencyId: ele.id, agencyName: ele.name }, 1): return">
+                        <td class="first-col-sticky link ">
+                            {{ele.name}}
+
+                        </td>
+                        <td ng-repeat="item in ele.data track by $index" class="w100">
+                            {{item | formatCurrency}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="first-col-sticky">Tổng cộng</td>
+                        <td ng-repeat="item in $vm.listDate" class="w100">
+                            {{getTotalForColumn($index) | formatCurrency}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>     

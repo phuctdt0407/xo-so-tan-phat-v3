@@ -1,0 +1,238 @@
+
+<div style="overflow: auto">
+    <div class="modal-header" style="zoom: 60%">
+        <h3 class="modal-title" id="modal-title">Tổng kết</h3>
+        <h4 style="text-align:left; padding: 2px; color:red" ng-if="$vm.totalConfirming1 != 0">Bạn có yêu cầu cho trưởng nhóm chưa được xác nhận!!! Vui lòng liên hệ trưởng nhóm để hoàn thành tác vụ...</h4>
+    </div>
+    <div class="d-flex mx-2 mb-3 row" style="zoom:60%">
+        <div class=" col-6 flex-column justify-content-between">
+            <div class="">Nhập doanh thu Vietlott</div>
+            <input ng-keypress="inputNumber($event)" ng-change="numToCurrency( $vm.revenue,'Vietlott',$vm.revenue.Vietlott? $vm.revenue.Vietlott: '0',{{$vm.revenue.Vietlott? $vm.revenue.Vietlott: '0'}}); $vm.editNumber1()" class="text-right form-control" type="text"
+                   ng-model="$vm.revenue.Vietlott">
+        </div>
+        <div class="col-6 flex-column justify-content-between ">
+            <div class="">Nhập doanh thu Loto</div>
+            <input ng-keypress="inputNumber($event)" ng-change="numToCurrency( $vm.revenue,'Loto',$vm.revenue.Loto? $vm.revenue.Loto: '0',{{$vm.revenue.Loto? $vm.revenue.Loto: '0'}}); $vm.editNumber2()" class="text-right form-control" type="text"
+                   ng-model="$vm.revenue.Loto">
+
+
+        </div>
+
+    </div>
+
+    <div class="mx-2 ml-4" style="width: 95%;zoom:65%">
+        <div>
+            <div class="table-responsive resize-tb">
+                <table id="toDay" class="table table-hover " style="width:100%; height: 100%; pointer-events: none">
+                    <thead class="fix-scroll theader">
+                        <tr>
+                            <th class="text-left py-1 bnor" style="width: 230px">
+                                Trả về
+                            </th>
+                            <th ng-if="$vm.total == 0" class="text-right py-1 bnor" style="width: 250px">
+                                {{$vm.TotalReturnBK != 0 ? ($vm.TotalReturnBK | formatCurrency) : 0}}
+                            </th>
+                            <th ng-if="$vm.total != 0" class="text-right py-1 bnor" style="width: 250px">
+                                {{$vm.total != 0 ? ($vm.total | formatCurrency) : 0}}
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="noselect">
+                            <td class="text-left py-1">
+                                Trả thưởng
+                            </td>
+                            <td class="text-right py-1">
+                                {{$vm.summaryMoney.WinningPrice != 0 ? ($vm.summaryMoney.WinningPrice | formatCurrency) : 0}}
+                            </td>
+                        </tr>
+                        <tr class="noselect">
+                            <td class="text-left py-1">
+                                Khách trả
+                            </td>
+                            <td class="text-right py-1">
+                                {{$vm.summaryMoney.TotalGuestPay != 0 ? ($vm.summaryMoney.TotalGuestPay | formatCurrency) : 0}}
+                            </td>
+                        </tr>
+                        <tr class="noselect">
+                            <td class="text-left py-1">
+                                Bán vé
+                            </td>
+                            <td class="text-right py-1">
+                                {{$vm.summaryMoney.TotalSoldMoney != 0 ? ($vm.summaryMoney.TotalSoldMoney | formatCurrency) : 0}}
+                            </td>
+                        </tr>
+                        <tr class="noselect">
+                            <td class="text-left py-1">
+                                Chi phí ngoài
+                            </td>
+                            <td class="text-right py-1">
+                                {{$vm.summaryMoney.TotalFeeOutSite != 0 ? ($vm.summaryMoney.TotalFeeOutSite | formatCurrency) : 0}}
+                            </td>
+                        </tr>
+                        <!--                        <tr class="noselect">-->
+                        <!--                            <td class="text-left py-1">-->
+                        <!--                                Trả khách-->
+                        <!--                            </td>-->
+                        <!--                            <td class="text-right py-1">-->
+                        <!--                                {{$vm.summaryMoney.TotalPayForGuest != 0 ? ($vm.summaryMoney.TotalPayForGuest | formatCurrency) : 0}}-->
+                        <!--                            </td>-->
+                        <!--                        </tr>-->
+                        <tr class="noselect">
+                            <td class="text-left py-1">
+                                Khách chuyển khoản chưa xác nhận
+                            </td>
+                            <td class="text-right py-1">
+                                {{$vm.summaryMoney.TotalGuestTransferNotConfirm != 0 ? ($vm.summaryMoney.TotalGuestTransferNotConfirm | formatCurrency) : 0}}
+                            </td>
+                        </tr>
+                        <tr class="noselect">
+                            <td class="text-left py-1">
+                                Khách chuyển khoản đã xác nhận
+                            </td>
+                            <td class="text-right py-1">
+                                {{$vm.summaryMoney.TotalGuestTransferConfirm != 0 ? ($vm.summaryMoney.TotalGuestTransferConfirm | formatCurrency) : 0}}
+                            </td>
+                        </tr>
+                        <tr class="noselect">
+                            <td class="text-left py-1">
+                                Chuyển khoản cho khách chưa xác nhận
+                            </td>
+                            <td class="text-right py-1">
+                                {{$vm.summaryMoney.TotalTranferForGuestNotConfirm != 0 ? ($vm.summaryMoney.TotalTransferForGuestNotConfirm | formatCurrency) : 0}}
+                            </td>
+                        </tr>
+                        <tr class="noselect">
+                            <td class="text-left py-1">
+                                Chuyển khoản cho khách đã xác nhận
+                            </td>
+                            <td class="text-right py-1">
+                                {{$vm.summaryMoney.TotalTranferForGuestConfirm != 0 ? ($vm.summaryMoney.TotalTransferForGuestConfirm | formatCurrency) : 0}}
+                            </td>
+                        </tr>
+                    <tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+    <div class="card card-create-container m-3" style=" max-height: auto; padding: 15px; zoom: 60%">
+
+        <div class="mb-1 mt-1">
+            <!--            <h3 class="text-center">{{$vm.data.toDay.day}}</h3>-->
+            <table id="toDay" class="table table-hover " style="width:100%; pointer-events: none">
+                <thead>
+                <tr>
+                    <th class="noselect theader text-center"><span>Đài</span></th>
+                    <th class="noselect theader">
+                        <div class="d-flex justify-content-center align-items-center">
+                            <span>Tồn</span>
+                        </div>
+                    </th>
+                    <th class="noselect theader">
+                        <div class="d-flex justify-content-center align-items-center">
+                            <span>Đã bán</span>
+                        </div>
+                    </th>
+                    <th class="noselect theader">
+                        <div class="d-flex justify-content-center align-items-center">
+                            <span>Vé nhận</span>
+                        </div>
+                    </th>
+                    <th class="noselect theader">
+                        <div class="d-flex justify-content-center align-items-center">
+                            <span>Vé chuyển</span>
+                        </div>
+                    </th>
+                    <th class="noselect theader">
+                        <div class="d-flex justify-content-center align-items-center">
+                            <span>Còn lại</span>
+                        </div>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr class="noselect" ng-class="{'bg-sky' : $index % 2 == 1}" ng-repeat="item in $vm.listReportLotteryForView">
+                        <td ng-if="item.LotteryTypeId!=3" class="noselect w100 text-left">{{item.LotteryTypeId==1?item.LotteryChannelName:item.LotteryChannelName+' (VTr)'}}</td>
+                        <td class="noselect w100 text-right">{{item.Stock > 0 ? (item.Stock | formatCurrency) : 0}}</td>
+                        <td class="noselect w100 text-right">{{((item.SoldRetail + item.SoldWholeSale)  | formatCurrency)}}</td>
+                        <td class="noselect w100 text-right">{{item.Received > 0 ? (item.Received | formatCurrency) : 0}}</td>
+                        <td class="noselect w100 text-right">{{item.Transfer > 0 ? (item.Transfer | formatCurrency) : 0}}</td>
+                        <td class="noselect w100 text-right">{{item.Remaining > 0 ? (item.Remaining | formatCurrency) : 0}}</td>
+
+                    </tr>
+                   
+                    <tr ng-if="(!$vm.lotterySummaryData && !$vm.scratchSummaryData) || ($vm.scratchSummaryData.length < 0 && $vm.scratchSummaryData.length < 0)">
+                        <td colspan="99" class="text-center">Không tìm thấy dữ liệu nào...</td>
+                    </tr>
+<tbody>
+            </table>
+        </div>
+    </div>
+    <div class="card card-create-container m-3" style=" max-height: 35vh; padding: 15px; zoom: 65%">
+
+        <div class="mb-1 mt-1">
+            <!--            <h3 class="text-center">{{$vm.data.toDay.day}}</h3>-->
+            <table id="toDay" class="table table-hover " style="width:100%; pointer-events: none">
+                <thead>
+                    <tr>
+                        <th class="noselect theader text-center"><span>Đài</span></th>
+                        <th class="noselect theader">
+                            <div class="d-flex justify-content-center align-items-center">
+                                <span>Tồn đầu ca</span>
+                            </div>
+                        </th>
+                        <th class="noselect theader">
+                            <div class="d-flex justify-content-center align-items-center">
+                                <span>Chuyển vé đi</span>
+                            </div>
+                        </th>
+                        <th class="noselect theader">
+                            <div class="d-flex justify-content-center align-items-center">
+                                <span>Nhận vé về</span>
+                            </div>
+                        </th>
+                        <!--<th class="noselect theader">
+                            <div class="d-flex justify-content-center align-items-center">
+                                <span>Trả ế cho đại lý (Hoàn vé)</span>
+                            </div>
+                        </th>-->
+                        <th class="noselect theader">
+                            <div class="d-flex justify-content-center align-items-center">
+                                <span>Bán</span>
+                            </div>
+                        </th>
+                        <th class="noselect theader">
+                            <div class="d-flex justify-content-center align-items-center">
+                                <span>Còn</span>
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                
+                    <tr class="noselect" ng-repeat="item in $vm.scratchSummaryData">
+                        <td  ng-if="item.LotteryTypeId==3" class="noselect w120 text-left">{{item.ShortName}}</td>
+                        <td class="noselect w120 text-right">{{(item.TotalStocks +item.TotalSold) | formatCurrency : 0}}</td>
+                        <td class="noselect w120 text-right">{{item.TotalTrans > 0 ? (item.TotalTrans | formatCurrency) : 0}}</td>
+                        <td class="noselect w120 text-right">{{item.TotalReceived > 0 ? (item.TotalReceived | formatCurrency) : 0}}</td>
+                        <!--<td class="noselect w120 text-right">{{item.TotalReturns > 0 ? (item.TotalReturns | formatCurrency) : 0}}</td>-->
+                        <td class="noselect w120 text-right">{{item.TotalSold > 0 ? (item.TotalSold | formatCurrency) : 0}}</td>
+                        <td class="noselect w120 text-right">{{item.TotalStocks > 0 ? (item.TotalStocks | formatCurrency) : 0}}</td>
+                    </tr>
+                    <tr ng-if="(!$vm.lotterySummaryData && !$vm.scratchSummaryData) || ($vm.scratchSummaryData.length < 0 && $vm.scratchSummaryData.length < 0)">
+                        <td colspan="99" class="text-center">Không tìm thấy dữ liệu nào...</td>
+                    </tr>
+                <tbody>
+            </table>
+        </div>
+    </div>
+
+
+    
+    <div class="modal-footer">
+        <img src="../images/loading-dot.gif" ng-if="$vm.isSaving" class="float-r" style="height: 45px; width: 120px; zoom: 65%">
+        <button class="btn btn-success" ng-disabled="$vm.totalConfirming1 != 0" ng-if="!$vm.isSaving&&$vm.flag" type="submit" ng-click="$vm.getBootBox(1)">Xác nhận chuyển ca</button>
+        <button class="btn btn-secondary" ng-if="!$vm.isSaving" type="button" ng-click="$vm.cancel()">Đóng</button>
+    </div>
+</div>

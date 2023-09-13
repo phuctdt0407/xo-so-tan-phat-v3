@@ -1,0 +1,68 @@
+﻿<div class="modal-header text-center">
+    <h3 class="modal-title" id="modal-title">Xác nhận chuyển khoản</h3>
+</div>
+
+
+<div>
+    <div class="modal-body">
+        <div class="table-responsive resize-tb px-3">
+            <table style="width:100%" class="tableEdit">
+                <thead>
+                </thead>
+                <tbody>
+                    <tr class="trEdit">
+                        <td class="noselect bnor text-left tdEdit"><strong>Thời gian</strong> </td>
+                        <td class="noselect bnor text-left tdEdit">{{$vm.paymentData.CreatedDate| formatDateTime}}</td>
+
+                        <td class="noselect bnor text-left tdEdit"></td>
+                    </tr>
+
+                    <tr class="trEdit"> 
+                        <td class="noselect bnor text-left tdEdit"><strong>Khách hàng</strong> </td>
+                        <td class="noselect bnor text-left tdEdit">{{$vm.paymentData.FullName }}</td>
+                    </tr>
+
+                    <tr class="trEdit">
+                        <td class="noselect bnor text-left tdEdit"><strong>Điểm bán</strong> </td>
+                        <td class="noselect bnor text-left tdEdit">{{$vm.paymentData.SalePointName }}</td>
+                    </tr>
+
+                    <tr class="trEdit">
+                        <td class="noselect bnor text-left tdEdit"><strong>Loại chuyển khoản</strong> </td>
+                        <td class="noselect bnor text-left tdEdit">{{$vm.paymentData.TypeName }}</td>
+                    </tr>
+
+                    <tr class="trEdit" ng-show="$vm.paymentData.GuestActionTypeId == 1 ">
+                        <td class="noselect bnor text-left tdEdit"><strong>Số tài khoản</strong> </td>
+                        <td class="noselect bnor text-left tdEdit">{{$vm.paymentData.BankAccount }}</td>
+                    </tr>
+
+                    <tr class="trEdit">
+                        <td class="noselect bnor text-left tdEdit"><strong>Số tiền</strong> </td>
+                        <td class="noselect bnor text-left tdEdit">{{$vm.paymentData.TotalPrice > 0 ? ($vm.paymentData.TotalPrice | formatCurrency) : 0 }}</td>
+                    </tr>
+
+                    <tr class="trEdit" ng-show="$vm.paymentData.GuestActionTypeId == 1 ">
+                        <td class="noselect bnor text-left tdEdit"><strong>Nội dung chuyển khoản</strong> </td>
+                        <td class="noselect bnor text-left tdEdit">{{$vm.paymentData.Description }}</td>
+                    </tr>
+
+                    <tr class="trEdit">
+                        <td class="noselect bnor text-left tdEdit"><strong>Mã giao dịch</strong> </td>
+                        <td class="noselect bnor text-left tdEdit">{{$vm.paymentData.Note }}</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal-footer">
+
+    <button class="btn btn-success" type="button" ng-if="$vm.paymentData.DoneTransfer == false && sessionInfo.UserRoleId != 4" ng-click="$vm.getBootBox(2)" ng-disabled="!$vm.checkCanClick()">Xác nhận</button>
+    <button class="btn btn-danger" type="button" ng-if="$vm.paymentData.DoneTransfer == false" ng-click="$vm.getBootBox(1)">Huỷ</button>
+
+    <button class="btn btn-secondary" type="button" ng-click="$vm.cancel()">Đóng</button>
+</div>

@@ -1,0 +1,36 @@
+﻿<div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
+    <div style="float: right; margin: 20px 40px 15px 20px;" ng-if="!$vm.isSaving" ng-click="$vm.save()" class="btn btn-primary">Lưu toàn bộ</div>
+    <img src="../images/loading-dot.gif" ng-if="$vm.isSaving" class="float-r" style="height: 45px; width: 120px;">
+    <div class="container-fluid wh-bg mt-10">
+
+        <div class="table-responsive">
+            <div class="table-responsive resize-tb">
+                <div id="calendar">
+                    <table class="table w100p table-wrapper-scroll-y my-custom-scrollbar">
+                        <thead class=" text-center fix-scroll bg-white">
+                            <tr>
+                                <th style="border-color: white !important" ng-repeat="attd in $vm.listAttendent" ng-click="$vm.changeTab(attd.TriggerSalePoint)" ng-class="{'th-active': $vm.currentTab.TriggerSalePoint == attd.TriggerSalePoint, 'th-none': !($vm.currentTab.TriggerSalePoint == attd.TriggerSalePoint) }">
+                                    <span style="font-size: 15px;">
+                                        <strong>{{attd.FullName}} </strong>
+                                        {{$index>0? ($index== $vm.currentTabId? ' ('+ $vm.listAttendent[0].ListUser[$index-1].SalePointIds.length+') ' :' ('+ $vm.listAttendent[$vm.currentTabId].ListUser[$index-1].SalePointIds.length+') ') :''}}
+                                    </span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="salepoint in $vm.listSalePoint">
+                                <td>{{salepoint.SalePointName}} </td>
+                                <td ng-repeat="user in $vm.listAttendent[$vm.currentTabId].ListUser" ng-click="$vm.CheckIn(user.SalePointIds, salepoint.SalePointId)? $vm.removeArr(user.SalePointIds, salepoint.SalePointId): $vm.addArr(user.SalePointIds, salepoint.SalePointId)">
+                                    <i ng-if="$index== $vm.currentTabId-1? $vm.CheckIn($vm.listAttendent[0].ListUser[$index].SalePointIds, salepoint.SalePointId) :$vm.CheckIn(user.SalePointIds, salepoint.SalePointId)" style="{{$index== $vm.currentTabId-1 ?'color:orange':'color:green' }}" class="fa fa-check" aria-hidden="true"></i>
+                                </td>
+                                <!--//vm.currentTabId-->
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

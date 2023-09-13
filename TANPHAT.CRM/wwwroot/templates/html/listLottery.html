@@ -1,0 +1,121 @@
+﻿<div ng-repeat=" CoreI in $vm.typeOfLottery">
+    <div class="mb-4 mt-4" ng-if="$vm.data[CoreI.JSName].lottery">
+        <table class="table" style="width:100%">
+            <thead>
+                <tr>
+<!--                    <th class="noselect theader">-->
+<!--                        <div class="d-flex justify-content-center align-items-center">-->
+<!--                            <span>Ngày</span>-->
+<!--                        </div>-->
+<!--                    </th>-->
+                    <th class="noselect theader">
+                        <div class="d-flex justify-content-center align-items-center">
+                            <span>Đài</span>
+                        </div>
+                    </th>
+                    <th class="noselect theader">
+                        <div class="d-flex justify-content-center align-items-center">
+                            <span>Còn lại</span>
+                        </div>
+                    </th>
+                    <th class="noselect theader txt160-center" ng-if="$vm.data[CoreI.JSName].isShowDup && $vm.params.clientType!=2">
+                        <div class="d-flex justify-content-center align-items-center">
+                            <span>Vé trùng <br /> (10 tặng 1) </span>
+                        </div>
+                    </th>
+                    <th class="noselect theader flex-column justify-content-center align-items-center" ng-if="$vm.data[CoreI.JSName].isShowDup">
+                        <div class="text-center justify-content-center align-items-center">
+                            <span class="m-center mx-auto">Vé trùng</span> <br />
+
+                        </div>
+                    </th>
+                    <th class="noselect theader">
+                        <div class="text-center justify-content-center align-items-center">
+                            <span class="m-center mx-auto">Vé thường</span> <br />
+
+                        </div>
+                    </th>
+
+                    <th class="noselect theader">
+                        <div class="d-flex justify-content-center align-items-center">
+                            <span>Thành tiền</span>
+                        </div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="noselect styleMain" ng-repeat="item in $vm.data[CoreI.JSName].lottery" ng-if="item.totalRemainingBK != 0  || item.TotalDupRemainingBK != 0">
+                <!--<tr class="noselect styleMain" ng-repeat="item in $vm.data[CoreI.JSName].lottery" ng-if="item.inputSale_2 == 0 || item.inputSale_2">-->
+<!--                    <td class="noselect w120 text-left">{{$vm.data[CoreI.JSName].day}}</td>-->
+                    <td class="noselect text-left">{{item.ShortName}}</td>
+
+                    <td class="noselect w120 text-left">
+                        
+
+                        <div class="font-weight-bold d-flex justify-content-between align-items-center">
+                            <div class="text-left">Thường:</div>
+                            <div class="text-right">{{item.remaining}}</div>
+                        </div>
+
+                        <div ng-if="item.TotalDupRemaining" class="d-flex justify-content-between align-items-center">
+                            <div class="text-left">Trùng:</div>
+                            <div class="text-right">{{item.TotalDupRemaining}}</div>
+                        </div>
+                    </td>
+
+                    <td class="noselect w120 text-center styleMain" ng-if="$vm.data[CoreI.JSName].isShowDup && $vm.params.clientType!=2">
+                        <input class="text-right" ng-disabled="item.remainingDupBK == 0" type="number" name="" min="0" max="999999"
+                               ng-model="item.inputTemp"
+                               ng-keypress="inputNumber($event)"
+                               ng-change="$vm.ChangeValueSaleModify(item,item.inputTemp, {{item.inputTemp}})"
+                               ng-click="showKeyBoard($event)">
+
+                        <span> x 11 = {{item.inputSale_0}}</span>
+                        <!--ng-change="$vm.ChangeValueSale(item, 1,0,item.inputSale_0, {{item.inputSale_0}})">-->
+                    </td>
+                    <td class="noselect w120 text-center" ng-if="$vm.data[CoreI.JSName].isShowDup">
+                        <input class="text-right" ng-disabled="item.remainingDupBK == 0" type="number" name="" min="0" max="999999"
+                               ng-model="item.inputSale_1"
+                               ng-keypress="inputNumber($event)"
+                               ng-change="$vm.ChangeValueSale(item, 0,1,item.inputSale_1, {{item.inputSale_1}})"
+                               ng-click="showKeyBoard($event)">
+                    </td>
+                    <td class="noselect w120 text-center">
+                        <input ng-if="$vm.params.clientType!=2 && !item.isScratchCard" class="text-right" type="number" ng-disabled="true" name="" min="0" max="999999"
+                               ng-model="item.inputSale_2"
+                               ng-change="$vm.ChangeValueSale(item, 0,2,item.inputSale_2, {{item.inputSale_2}})">
+                        <i ng-if="$vm.params.clientType!=2 && !item.isScratchCard" class="fa fa-edit cursor fa-lg" aria-hidden="true" style="color: blue; font-size: 50px; align-self: center; line-height: revert" ng-click="$vm.openModalInput4LastNum(item, CoreI.JSName, $index)"></i>
+                        <input ng-if="$vm.params.clientType==2 || item.isScratchCard" class="text-right" type="number" ng-disabled="item.remainingBK == 0" name="" min="0" max="999999"
+                               ng-model="item.inputSale_2"
+                               ng-keypress="inputNumber($event)"
+                               ng-change="$vm.ChangeValueSale(item, 0,2,item.inputSale_2, {{item.inputSale_2}})"
+                               ng-click="showKeyBoard($event)">
+                    </td>
+
+
+                    <td class="noselect text-right"> {{item.Sum | formatCurrency}}</td>
+                </tr>
+                <!--Total-->
+                <tr>
+                    <td class="noselect text-center " colspan="1">Tổng cộng</td>
+                    <td class="noselect w120 text-right font-weight-bold">
+                        {{$vm['typeData'+($index+1)].Total}}
+                    </td>
+
+                    <td class="noselect text-center" ng-if="$vm.data[CoreI.JSName].isShowDup&& $vm.params.clientType!=2">
+                    </td>
+                    <td class="noselect text-center" ng-if="$vm.data[CoreI.JSName].isShowDup">
+                    </td>
+                    <td class="noselect text-center">
+                    </td>
+                    <td class="text-right font-weight-bold"> {{$vm['typeData'+($index+1)].TotalMoney | formatCurrency}}</td>
+                </tr>
+
+                <tr ng-if="!$vm.data[CoreI.JSName].lottery || $vm.data[CoreI.JSName].lottery.length == 0">
+                    <td colspan="99" class="text-center">Không tìm thấy dữ liệu nào...</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+</div>

@@ -1,0 +1,71 @@
+﻿<div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
+    <!--TAB-->
+
+    <ul class="nav nav-tabs mx-2" id="iconTab" role="tablist" >
+       
+        <li class="nav-item cursor" ng-click="$vm.changeTab(item.Id)" ng-repeat="item in $vm.tabName">
+            <a class="nav-link p-3" ng-class="{'active': !$vm.curTab || $vm.curTab == item.Id}" id="retail" data-toggle="tab" role="tab">
+                {{item.Name}}
+            </a>
+        </li>
+        
+    </ul>
+    <div class="container-fluid wh-bg pb-10 pt-3">
+        <div class="card card-create-container table-responsive resize-tb align-middle">
+            <table id="default-ordering" class="table align-middle" style="width:100%">
+                <thead class="align-middle">
+                    <tr class="align-middle fix-scroll">
+                        <th class="noselect theader stricky-th center-align align-middle">STT</th>
+                        <th class="noselect theader stricky-th center-align align-middle">Tên tài khoản</th>
+                        <th class="noselect theader stricky-th center-align align-middle">Họ và tên</th>
+                        <th class="noselect theader stricky-th center-align align-middle">Email</th>
+                        <th class="noselect theader stricky-th center-align align-middle" ng-if=" $vm.curTab == 1">Điểm bán</th>
+                        <!--<th class="noselect theader stricky-th center-align align-middle">Vai trò</th>-->
+                        <th class="noselect theader stricky-th center-align align-middle">Lương căn bản</th>
+                        <th class="noselect theader stricky-th center-align align-middle">Ngày bắt đầu</th>
+                        <th class="noselect theader stricky-th center-align align-middle">Ngày kết thúc</th>
+                        <th class="noselect theader stricky-th center-align align-middle">Trạng thái</th>
+                        <th class="noselect theader stricky-th center-align align-middle">Thử việc</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="noselect" ng-repeat="item in $vm.listUserBK">
+                        <td class="noselect">{{$index + 1}}</td>
+                        <td class="noselect text-left">{{item.Account}}</td>
+                        <td class="noselect text-left link" ng-click="$vm.openModal(item)">
+                            <div class="d-flex justify-content-between">
+                                <div class="td-style-custom d-inline-block my-auto mr-3">
+                                    {{item.FullName}}
+                                </div>
+                                <div class="my-auto d-inline-block">
+                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                </div>
+                            </div>
+
+                        </td>
+                        <td class="noselect text-left">{{item.Email}}</td>
+                        <td class="noselect text-center" ng-if=" $vm.curTab == 1"><div class="mw-max-content">{{item.SalePointName}}</div></td>
+                        <!--<td class="noselect text-left"><div class="mw-max-content">{{item.UserTitleName}}</div></td>-->
+                        <td class="noselect text-right">{{item.BasicSalary | formatCurrency}}</td>
+                        <td class="noselect text-left">{{item.StartDate | formatDate}}</td>
+                        <td class="noselect text-left">{{ !item.IsActive? (item.EndDate | formatDate) :'' }}</td>
+                        <td class="noselect text-left btn-center" ng-bind-html="item.IsActive |userStatus"></td>
+                        <td class="noselect text-left btn-center">{{item.IsIntern?'Thử việc':'Chính thức'}}</td>
+
+                    </tr>
+                </tbody>
+            </table>
+
+
+        </div>
+
+        <!--Phân trang-->
+        <!--<div class="mb-4 mt-4">
+            <div class="user-font">
+                <pagination params="$vm.params" total-row="$vm.totalRow"></pagination>
+            </div>
+        </div>-->
+
+
+    </div>
+</div>

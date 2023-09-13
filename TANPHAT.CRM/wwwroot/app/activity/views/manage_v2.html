@@ -1,0 +1,150 @@
+﻿<div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
+    <div style="padding-bottom: 60px;" class="container-fluid mt-10 pt-10 pb-10 mt-10 px-4 wh-bg">
+        <div class="row">
+            <div class="wh-bg mt-10 col-6">
+                <div class="mt20" style="width: 160px; padding-left: 15px;">
+                    <label>Chọn ngày xổ số</label>
+                    <datepicker my-class="input-sm datepicker" date-format="DD/MM/YYYY" pick-time="false"
+                                on-select="$vm.getData(date)"
+                                ng-model="$vm.params.day" output-format="DD/MM/YYYY"
+                                ng-change="$vm.changeDate()"
+                                placeholder="dd/mm/yyyy"></datepicker>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="table-responsive resize-tb py-4 note">
+                    <table class="table table-wrapper-scroll-y my-custom-scrollbar">
+                        <thead class="theader text-center fix-scroll ">
+                            <tr>
+                                <th colspan="2" class="text-center py-4">CHÚ GIẢI</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="py-4">
+                                    <i class="fa fa-lock" aria-hidden="true"></i>
+                                </td>
+                                <td class="py-4 text-12 text-left">
+                                    Đóng nhập vé trùng cho điểm bán
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="py-4">
+                                    <i class="fa fa-unlock text-align-right" aria-hidden="true"></i>
+                                </td>
+                                <td class="py-4 text-12 text-left">
+                                    Mở nhập vé trùng cho điểm bán
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <span class="btn btn-today" ng-click="$vm.clickToday()">Hôm nay</span>
+        <span class="btn btn-tomorrow" ng-click="$vm.clickToday(1)">Ngày mai</span>
+        <span class="btn btn-nextday" ng-click="$vm.clickToday(2)">Ngày kia</span>
+
+
+        <div style="display: flex; justify-content: space-between;">
+
+            <h3 style="text-align: left;"><strong>Ngày xổ số: {{$vm.dayDisplay}}</strong></h3>
+            <div class="btn btn-primary float-r  mb-10" ng-if="!$vm.isSaving&& $vm.isCanChangeData" ng-click="$vm.save()"><i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu </div>
+            <img src="../images/loading-dot.gif" ng-if="$vm.isSaving" class="float-r" style="height: 45px; width: 120px;">
+        </div>
+
+        <div class="table-responsive resize-tb">
+            <table id="default-ordering" class="table" style="width:100%">
+                <thead class="fix-scroll">
+                    <tr class="fix-scroll">
+                        <th rowspan="3" class="noselect theader center-align first-col-sticky bg-total"> Tổng cộng </th> <!-- add class sticky-border-2 to set border -->
+                        <!--Modify-->
+
+                        <th colspan="2" class="noselect theader center-align detail-col-sticky bg-total"> Vé chưa chia từ đại lý</th> <!-- add class sticky-border-2 to set border -->
+
+                        <th class="noselect theader center-align h-25" ng-repeat="diemban in $vm.listInit1" colspan="{{diemban.isCheckDupVal || diemban.isClose ? '2' : '1' }}">
+                            <!-- add class sticky-border-2 to set border -->
+                            {{$index +1}}. {{diemban.SalePointName}}
+                            <div class="d-inline-flex" ng-if="$vm.isCanChangeData">
+                                <i ng-if="!(diemban.isCheckDupVal || diemban.isClose)" class="fa fa-lock" aria-hidden="true" style="float: right" ng-click="diemban.isClose= true"></i>
+                                <i ng-if="diemban.isCheckDupVal || diemban.isClose" class="fa fa-unlock text-align-right" aria-hidden="true" style="float: right" ng-click="diemban.isClose= false"></i>
+                            </div>
+
+                        </th>
+
+                    </tr>
+                    <tr>
+                        <th rowspan="2" class="noselect theader center-align detail-col-sticky bg-total ">
+                            <div ng-repeat="daiban in $vm.listLotteryBk" class="d-flex justify-content-between">
+                                <div><strong>{{daiban.ShortName}}</strong></div>
+                                <div>{{daiban.TotalRemaining? (daiban.TotalRemaining | formatCurrency) : 0}}</div>
+                            </div>
+                        </th>
+
+                        <th rowspan="2" class="noselect theader center-align total-col-sticky bg-total"> {{$vm.Total ? ($vm.Total | formatCurrency) : 0}} </th>
+
+                        <th class="noselect theader center-align" ng-repeat="diemban in $vm.listInit1" colspan="{{diemban.isCheckDupVal || diemban.isClose ? '2' : '1' }}">
+                            <div ng-repeat="daiban in diemban.detail" class="d-flex justify-content-between">
+                                <div><strong>{{daiban.ShortName}}</strong></div>
+                                <div>{{daiban.total? (daiban.total | formatCurrency) : 0}}</div>
+                            </div>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th ng-hide="true" ng-repeat-start="diemban in $vm.listInit1"></th>
+                        <th class="noselect theader center-align">
+                            {{ diemban.isClose || diemban.isCheckDupVal ? 'Vé thường: '+ (diemban.TotalRemaining?(diemban.TotalRemaining| formatCurrency) : 0) : (diemban.TotalRemaining?(diemban.TotalRemaining| formatCurrency) : 0)}}
+                        </th>
+                        <th class="noselect theader center-align" ng-if="diemban.isCheckDupVal || diemban.isClose">
+                            {{ 'Vé trùng: '}} <br /> {{diemban.TotalDupRemaining ? (diemban.TotalDupRemaining | formatCurrency) : 0}}
+                        </th>
+                        <th ng-hide="true" ng-repeat-end></th>
+                    </tr>
+                </thead>
+                <tbody ng-repeat-end>
+                    <tr ng-hide="true" ng-repeat-start="agency in $vm.listAgency"></tr>
+                    <tr>
+                        <td rowspan="{{$vm.listLottery.length+1}}" class="noselect center-align first-col-sticky border-bt border-t">{{agency.Name}}</td>
+                        <td ng-hide="true" class="noselect center-align detail-col-sticky">{{$vm.listInitDaiBan1[$index*$vm.listLottery.length].Name}}</td>
+                        <td ng-hide="true" class="noselect center-align total-col-sticky">{{$vm.listInitDaiBan1[$index*$vm.listLottery.length].TotalRemaining}}</td>
+                        <td ng-hide="true" ng-repeat-start="diemban in $vm.listInit1"></td>
+                        <td ng-hide="true"></td>
+                        <td ng-hide="true"></td>
+                        <td ng-hide="true" ng-repeat-end></td>
+                    </tr>
+                    <tr ng-repeat="item in $vm.listLottery" class="border-t">
+                        <td class="noselect center-align detail-col-sticky text-left" ng-class="$parent.$index%2==1?'':''"><strong>{{$vm.listInitDaiBan1[$index].ShortName}}</strong></td>
+                        <td class="noselect center-align total-col-sticky" ng-class="$index%2==0?'border-t':''">{{$vm.listInitDaiBan1[$parent.$index*$vm.listLottery.length+$index].TotalRemaining ? ($vm.listInitDaiBan1[$parent.$index*$vm.listLottery.length+$index].TotalRemaining | formatCurrency) : 0}}</td>
+                        <td ng-hide="true" ng-repeat-start="diemban in $vm.listInit1"></td>
+                        <td class="text-align-right"
+                            ng-class="diemban.Info[$parent.$parent.$index*$vm.listLottery.length+$parent.$index].TotalRemaining!==0?'bg-color':''"
+                            ng-click="$vm.onClick($index,$parent.$parent.$index*$vm.listLottery.length+$parent.$index)">
+                            <input class="text-align-right" type="number" id="quantity_{{$index}}_{{$parent.$parent.$index*$vm.listLottery.length+$parent.$index}}" name="" min="0" max="999999"
+                                   ng-model="diemban.Info[$parent.$parent.$index*$vm.listLottery.length+$parent.$index].TotalRemaining"
+                                   ng-change="$vm.ChangeValueNumber1(diemban.Info[$parent.$parent.$index*$vm.listLottery.length+$parent.$index],{{diemban.Info[$parent.$parent.$index*$vm.listLottery.length+$parent.$index]}}, diemban, $index,$parent.$parent.$index*$vm.listLottery.length+$parent.$index)"
+                                   ng-disabled="!$vm.isCanChangeData"
+                                   ng-keypress="inputNumber($event)"
+                                   ng-class="diemban.Info[$parent.$parent.$index*$vm.listLottery.length+$parent.$index].TotalRemaining!==0?['bg-color', 'border-input']:'border-input'">
+                        </td>
+                        <td ng-if="(diemban.isCheckDupVal || diemban.isClose)" class="text-align-right"
+                            ng-class="diemban.Info[$parent.$parent.$parent.$index*$vm.listLottery.length+$parent.$parent.$index].TotalDupRemaining!==0?'bg-color':''"
+                            ng-click="$vm.onClickDup($index,$parent.$parent.$parent.$index*$vm.listLottery.length+$parent.$parent.$index)">
+                            <input class="text-align-right" type="number" id="quantity_dup_{{$index}}_{{$parent.$parent.$parent.$index*$vm.listLottery.length+$parent.$parent.$index}}" name="" min="0" max="999999"
+                                   ng-model="diemban.Info[$parent.$parent.$parent.$index*$vm.listLottery.length+$parent.$parent.$index].TotalDupRemaining"
+                                   ng-change="$vm.ChangeValueNumber2(diemban.Info[$parent.$parent.$parent.$index*$vm.listLottery.length+$parent.$parent.$index],{{diemban.Info[$parent.$parent.$parent.$index*$vm.listLottery.length+$parent.$parent.$index]}}, diemban, $index,$parent.$parent.$parent.$index*$vm.listLottery.length+$parent.$parent.$index)"
+                                   ng-disabled="!$vm.isCanChangeData"
+                                   ng-keypress="inputNumber($event)"
+                                   ng-class="diemban.Info[$parent.$parent.$parent.$index*$vm.listLottery.length+$parent.$parent.$index].TotalDupRemaining!==0?['bg-color', 'border-input']:'border-input'">
+                        </td>
+                        <td ng-hide="true" ng-repeat-end></td>
+                    </tr>
+                    <tr ng-hide="true" ng-repeat-end></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="btn btn-primary float-r pt-10 mb-10 mt-10" ng-if="!$vm.isSaving && $vm.isCanChangeData" ng-click="$vm.save()"><i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu </div>
+        <img src="../images/loading-dot.gif" ng-if="$vm.isSaving" class="float-r" style="height: 45px; width: 120px;">
+    </div>
+</div>

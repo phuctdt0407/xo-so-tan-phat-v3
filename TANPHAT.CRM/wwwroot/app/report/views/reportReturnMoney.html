@@ -1,0 +1,59 @@
+<div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
+    <div class="container-fluid wh-bg mt-10">
+
+        <div class="col-md-3 col-xs-6 col-lg-2">
+            <label>Chọn ngày</label>
+            <datepicker my-class="input-sm datepicker" date-format="DD/MM/YYYY" pick-time="false"
+                        ng-model="$vm.params.Date" output-format="DD/MM/YYYY"
+                        placeholder="dd/mm/yyyy"
+                        ng-change="$vm.changeDate()"
+            ></datepicker>
+        </div>
+
+
+        <div class="table-responsive resize-tb">
+            <table class="table">
+                <thead class="fix-scroll">
+                    <tr>
+                        <th class="theader first-col-sticky">TP</th>
+                        <th class="theader text-center">Ca 1</th>
+                        <th class="theader text-center">Ca 2</th>
+                    </tr>
+                </thead>
+                <tbody class="">
+                    <tr ng-repeat="ele in $vm.listSalePoint">
+                        <td class="first-col-sticky link ">
+                            {{ele.Name}}
+
+                        </td>
+                        <td class="w100 text-right">
+                            {{ele.shift1 | formatCurrency}}
+                            <i ng-if="ele.shift1" class="fa fa-edit cursor fa-lg" aria-hidden="true" style="color: blue; font-size: 20px; align-self: center; line-height: revert" ng-click="$vm.openUpdateReturnMoney(ele, 1)"></i>
+                        </td>
+                        <td class="w100 text-right">
+                            {{ele.shift2 | formatCurrency}}
+                            <i ng-if="ele.shift2" class="fa fa-edit cursor fa-lg" aria-hidden="true" style="color: blue; font-size: 20px; align-self: center; line-height: revert" ng-click="$vm.openUpdateReturnMoney(ele, 2)"></i>
+                        </td>
+
+
+                    </tr>
+                    <tr>
+                        <td class="first-col-sticky link " style="font-weight:bold">
+                            Tổng
+                        </td>
+                        <td class="w100 text-right" style="color:red; font-weight:bold">
+                            {{sumShift1 | formatCurrency}}
+
+                        </td>
+                        <td class="w100 text-right" style="color: red; font-weight: bold">
+                            {{sumShift2| formatCurrency}}
+                           
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div>
+            </div>
+        </div>
+    </div>
+</div>     

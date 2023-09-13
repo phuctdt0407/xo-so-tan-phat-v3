@@ -1,0 +1,49 @@
+﻿<div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
+    <div class="container-fluid wh-bg mt-10">
+        <h3 class="text-left pt-4 mb-3">{{$vm.params.agencyName}}</h3>
+
+        <div class="row">
+            <div class="col-md-3 col-xs-6 col-lg-2 pt10">
+                <label>Tháng</label>
+                <monthyearpicker my-class="input-sm datepicker-new" date-format="MM/YYYY" placeholder="All month"
+                                 ng-model="$vm.month" on-select="$vm.loadData()" ng-change="$vm.loadData()" output-format="YYYY-MM"></monthyearpicker>
+            </div>
+        </div>
+         <div class="table-responsive resize-tb">
+            <div id="chartColunm" class="minWidthChart"></div>
+        </div>
+        <div class="table-responsive resize-tb">
+            <table class="table">
+                <thead class="fix-scroll">
+                    <tr>
+                        <th style=" min-width: 225px;" class="theader text-center" ng-repeat="item in $vm.listMonth">{{item.time}}</th>
+                    </tr>
+                </thead>
+                <tbody class="">
+                    <tr >
+                        <td ng-repeat="ele in $vm.dataLine" style="white-space: nowrap; min-width: 225px;">
+                            <div class="row" ng-repeat="items in ele.data">
+                                <div class="col-6 p-2" style="text-align: left">{{items.lotteryChannelName}}: </div>
+                                <div class="col-6 p-2" style="text-align: right"> {{items.quantity}}</div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr >
+                        <td ng-repeat="ele1 in $vm.dataTotal" style="white-space: nowrap; min-width: 180px; line-height: 40px">
+                            <div class="row" ng-if="ele1.total != 0">
+                                <div class="col-6 text-left p-2">TC:</div>
+                                <div class="col-6 text-right p-2">{{ele1.total}}</div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr ng-if="!$vm.listTotalLottery" >
+                        <td class="mw-220" colspan="{{$vm.listMonth.length}}">
+                            <div style="text-align: center;">Không có dữ liệu</div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>     

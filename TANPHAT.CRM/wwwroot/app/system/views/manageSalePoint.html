@@ -1,0 +1,37 @@
+﻿<div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
+    <div class="container-fluid wh-bg pt-10 pb-10 mt-10">
+            <div class="card card-create-container table-responsive resize-tb align-middle ">
+                <table id="default-ordering" class="table align-middle" style="width:100%">
+                    <thead class="align-middle">
+                        <tr class="align-middle fix-scroll">
+                            <th class="noselect theader stricky-th center-align align-middle">STT</th>
+                            <th class="noselect theader stricky-th center-align align-middle">Tên điểm bán</th>
+                            <th class="noselect theader stricky-th center-align align-middle">Địa chỉ</th>
+                            <th class="noselect theader stricky-th center-align align-middle">Ghi chú</th>
+                            <th class="noselect theader stricky-th center-align align-middle">Trạng thái</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="noselect" ng-repeat="item in $vm.listSalePoint">
+                            <td class="noselect">{{$index + 1}}</td>
+                            <td class="noselect text-left link" ng-click="$vm.openModal(item)">
+                                <div style="display: flex; justify-content: space-between; color: #2196f3 !important;">
+                                    {{item.Name}}
+                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                </div>
+                            </td>
+                            <td class="noselect text-left">{{item.FullAddress}}</td>
+                            <td class="noselect text-left">{{item.Note}}</td>
+                            <td class="noselect text-left btn-center" ng-bind-html="item.IsActive |userStatus"></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+
+            </div>
+     </div>
+        
+       
+    
+
+</div>

@@ -1,0 +1,60 @@
+﻿<div class="modal-header align-content-center">
+    <h3 class="modal-title text-left" id="modal-title">{{$vm.userInfo.FullName}} - {{$vm.dateInfo.DateName}}, ngày {{$vm.dateInfo.Date | formatDate}} </h3>
+</div>
+
+<div class="modal-body">
+    <!--TAB-->
+    <ul class="nav nav-tabs mt-2" id="iconTab" role="tablist">
+        <li class="nav-item cursor w150px" ng-repeat="typeOf in $vm.extraPaymentType" ng-click="$vm.changeTab(typeOf.Id, typeOf.TransactionTypeId)">
+            <span class="{{'circle-payment '+ typeOf.Css}}"> </span>
+            <a style="height: 30px; padding-top: 5px !important;" class="nav-link py-0" ng-class="{'active': $vm.currentTab.Id == typeOf.Id}" id="{{'tab_'+  typeOf.Id}}" data-toggle="tab" role="tab">
+                {{typeOf.Name}}
+            </a>
+        </li>
+    </ul>
+    <div class="row ">
+        <div class="col-4 pt30">
+            <label>Chọn hình thức {{$vm.currentTab.Name.toLowerCase()}}</label>
+            <ui-select ng-model="$vm.saveInfo.typeTransactionId" ng-change="$vm.changePrice($select.selected)"
+                       theme="select2" search-enabled="false">
+                <ui-select-match placeholder="Chọn hình thức" allow-clear="false"> {{$select.selected.Name}}</ui-select-match>
+                <ui-select-choices position="down" repeat="ele as ele in $vm.listSelected">
+                    {{ele.Name}}
+                </ui-select-choices>
+            </ui-select>
+        </div>
+
+        <div class="col-4 pt30">
+            <label style="margin-bottom: 3px;">Chọn điểm bán</label>
+            <ui-select ng-model="$vm.saveInfo.ShiftDistributeId" ng-change="$vm.changeShiftDistribute($select.selected)"
+                       theme="select2" search-enabled="false">
+                <ui-select-match placeholder="Chọn điểm bán" allow-clear="false"> {{$select.selected.SalePointName}}{{$select.selected.ShiftDistributeId>0 ? (' - Ca: '+$select.selected.ShiftId):''  }}</ui-select-match>
+                <ui-select-choices position="down" repeat="ele as ele in $vm.listShiftActive">
+                    {{ele.SalePointName}}{{ele.ShiftDistributeId>0 ? (' - Ca: '+ele.ShiftId) :'' }}
+                </ui-select-choices>
+            </ui-select>
+        </div>
+        <div class="col-4 pt30">
+            <label  style="margin-bottom: 3px;">Nhập số tiền </label>
+            <input type="text" class="form-control text-right"
+                   ng-disabled="!$vm.saveInfo.isChangePrice"
+                   id="amountPrice"
+                   ng-model="$vm.saveInfo.PriceDisplay"
+                   ng-change="numToCurrency($vm.saveInfo,'PriceDisplay',$vm.saveInfo.PriceDisplay? $vm.saveInfo.PriceDisplay: '0',{{$vm.saveInfo.PriceDisplay? $vm.saveInfo.PriceDisplay: '0'}})">
+        </div>
+    </div>
+    <div class="row">
+       
+
+        <div class="col-12">
+            <label class="pt10">Ghi chú </label>
+            <textarea ng-model="$vm.saveInfo.Note" type="text" class="form-control" id="amountPrice" rows="4">    
+            </textarea>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <img src="../images/loading-dot.gif" ng-if="$vm.isSaving" class="float-r" style="height: 45px; width: 120px;">
+    <button class="btn btn-success" ng-if="!$vm.isSaving && $vm.saveInfo.PriceDisplay.length >0 &&  $vm.saveInfo.PriceDisplay!='0'" type="submit" ng-click="$vm.save()">Thêm</button>
+    <button class="btn btn-secondary" ng-if="!$vm.isSaving" type="button" ng-click="$vm.close()">Đóng</button>
+</div>

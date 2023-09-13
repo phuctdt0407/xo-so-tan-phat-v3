@@ -1,0 +1,30 @@
+﻿<div class="modal-header text-center">
+    <h3 class="modal-title" id="modal-title">Tạo yêu cầu nợ riêng</h3>
+</div>
+
+<div class="m-2">
+    <div class="card card-create-container mx-2">
+        <div class="col-7 mx-auto my-3">
+            <label class="rq-form">Số tiền</label>
+            <input type="text" class="form-control" id="quantity" name="numonly" placeholder="Nhập tiền mặt" required
+                   ng-keypress="inputNumber($event)"
+                   ng-model="$vm.cash.value "
+                   ng-change="numToCurrency( $vm.cash,'value',$vm.cash.value? $vm.cash.value: '0',{{$vm.cash.value? $vm.cash.value: '0'}})">
+        </div>
+
+        <!--<div class="col-7 mx-auto my-3">
+        <label class="rq-form">Chuyển khoản</label>
+        <input type="number" class="form-control" id="quantity" name="numonly" placeholder="Số tiền chuyển khoản" required
+                min="0" max="999999999999999999999999999"
+                ng-keypress="inputNumber($event)"
+                ng-model="$vm.transfer"
+                ng-change="$vm.ChangeInputPrice()">
+    </div>-->
+    </div>
+</div>
+
+<div class="modal-footer">
+    <img src="../images/loading-dot.gif" ng-if="$vm.isSaving" class="float-r" style="height: 45px; width: 120px;">
+    <button class="float-right  btn btn-success" ng-if="!$vm.isSaving" type="submit" ng-click="$vm.addRequest()">Tạo yêu cầu</button>
+    <button class="float-right  btn btn-warning mx-3" ng-if="!$vm.isSaving" ng-click="$vm.cancel()">Đóng</button>
+</div>

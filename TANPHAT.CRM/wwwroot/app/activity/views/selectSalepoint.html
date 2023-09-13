@@ -1,0 +1,54 @@
+﻿<div class="col-12 layout-spacing">
+    <div class="container-fluid wh-bg mt-10 pt-10">
+        <!--<div class="mt20" style="width: 160px;">
+        <label>Chọn ngày xổ số:</label>
+        <datepicker my-class="input-sm datepicker" date-format="DD-MM-YYYY" pick-time="false"
+                    ng-model="$vm.params.day" output-format="DD-MM-YYYY"
+                    ng-change="$vm.changeDate()"
+                    placeholder="dd/mm/yyyy"></datepicker>
+    </div>-->
+
+
+        <h2 class="text-center pt-10 pb-10">Danh sách ca làm việc hôm nay</h2>
+
+        <h4 ng-if="$vm.listData.length ==0" class="text-center" style="font-style: italic;"> (Không có ca làm việc)</h4>
+
+        <div class="row">
+            <div ng-repeat="item in $vm.listData" class="col-sm-6 col-xs-12 container-card pr-10" ng-click="item.CanClick?goToPage('root.activity.salesActivity', {  shiftDistributeId: item.ShiftDistributeId,shiftId:item.ShiftId}, 0):''">
+                <div class="cus-card" ng-class="{'disable not-active':!item.CanClick }">
+                    <div class="row">
+                        <!--<div class="col-4">
+                            <strong>Tên nhân viên</strong>
+                        </div>
+                        <div class="col-6 text-left">
+                            {{item.FullName}}
+                        </div>-->
+
+                        <div class="col-4">
+                            <strong>Điểm bán</strong>
+                        </div>
+                        <div class="col-6 text-left">
+                            {{item.SalePointName}}
+                        </div>
+
+                        <div class="col-4">
+                            <strong>Ca làm việc</strong></div>
+                        <div class="col-6 text-left">
+                            {{item.ShiftId==1? 'Ca sáng': 'Ca chiều' }}
+                        </div>
+
+                        <div class="col-4">
+                            <strong>Thời gian</strong>
+                        </div>
+                        <div class="col-6 text-left">
+                            {{item.WorkingTime}}
+                        </div>
+
+                        <div class="text-center col-12" style="color: red;"><br /> {{item.CanClick?'': item.Message}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+      
+    </div>
+</div>

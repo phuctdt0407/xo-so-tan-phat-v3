@@ -1,0 +1,34 @@
+﻿namespace TANPHAT.CRM.Domain.Models.Activity.Enum
+{
+    public enum ActivityPostType
+    {
+        ReceiveLotteryFromAgency,
+        DistributeForSalesPoint,
+        SellLottery,
+        InsertTransitionLog,
+        InsertRepayment,
+        InsertWinningLottery,
+        ShiftTransfer,
+        ReceiveScratchcardFromAgency,
+        DistributeScratchForSalesPoint,
+        ConfirmTransition,
+        CreateSalePoint,
+        UpdateLotteryPriceAgency,
+        ReturnLottery,
+        UpdateConstantPrice,
+        DeleteLogWinning,
+        UpdateReportMoneyInAShift,
+        UpdateIsdeletedSalepointLog,
+        UpdateActivityGuestAction,
+        UpdatePriceForGuest,
+        DeleteGuestAction,
+        DistributeForSubAgency,
+        UpdatePriceForSubAgency,
+        InsertOrUpdateAgency,
+        InsertOrUpdateSubAgency,
+        UpdateLotteryPriceSubAgency,
+        UpdateStaticFee,
+        DistributeScratchForSubAgency,
+        UpdateDebt
+    }
+}

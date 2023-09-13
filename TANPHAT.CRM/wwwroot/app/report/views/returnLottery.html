@@ -1,0 +1,53 @@
+﻿<div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
+    <div class="container-fluid wh-bg mt-10">
+
+        <div class="row">
+            <div class="col-md-3 col-xs-6 col-lg-2 pt10">
+                <label>Tháng</label>
+                <monthyearpicker my-class="input-sm datepicker-new" date-format="MM/YYYY" placeholder="All month"
+                                 ng-model="$vm.month" output-format="YYYY-MM"></monthyearpicker>
+            </div>
+            <div class="col-md-3 col-xs-6 col-lg-2 pt10">
+                <label>Chọn điểm bán</label>
+                <ui-select ng-model="$vm.params.salePointId"
+                           theme="select2" search-enabled="false">
+                    <ui-select-match placeholder="Chọn điểm bán" allow-clear="false">{{$select.selected.Name}}</ui-select-match>
+                    <ui-select-choices position="down" repeat="ele.Id.toString() as ele in $vm.listSalePointDropDown">
+                        {{ele.Name}}
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+            <div style="height: 50px; margin-top: 45px;" class="btn btn-primary float-r resizeSchedule" ng-click="$vm.loadData()"> tìm kiếm </div>
+        </div>
+        <h3 class="text-center">Số lượng trả ế từng điểm bán {{$vm.thisMonth}}</h3>
+        <div class="table-responsive resize-tb">
+            <div id="chartColunm" class="minWidthChart"></div>
+        </div>
+        <h3 class="text-center pt-4">Số lượng trả ế từng ngày trong tháng {{$vm.thisMonth}}</h3>
+<!--        <div class="table-responsive resize-tb">-->
+<!--            <div id="chartline" class="minWidthChart"></div>-->
+<!--        </div>-->
+        <div class="table-responsive resize-tb">
+            <table class="table">
+                <thead class="fix-scroll">
+                <tr>
+                    <th class="theader first-col-sticky"></th>
+                    <th class="theader text-center" ng-repeat="item in $vm.listDate">{{item.time}}</th>
+                </tr>
+                </thead>
+                <tbody class="">
+                <tr ng-repeat="ele in $vm.dataTable">
+                    <td class="first-col-sticky link ">
+                        {{ele.name}}
+
+                    </td>
+                    <td ng-repeat="item in ele.data track by $index" class="w100">
+                        {{item  | formatCurrency}}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>     

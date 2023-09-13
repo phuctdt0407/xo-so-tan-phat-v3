@@ -1,0 +1,236 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+        .ticket {
+            margin-left: 0px;
+            margin-right: 0px;
+            font-size: 12px;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .bill-title {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .bill-subtitle {
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: normal;
+            margin-bottom: 4px;
+        }
+
+        .bill-subtitle-phone {
+            font-weight: 600;
+            font-size: 18px;
+            margin-bottom: 4px;
+        }
+
+        .bill-tiltle-sub {
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .bill-info {
+            margin-bottom: 8px !important;
+        }
+
+        .bill-vien {
+            margin-bottom: 10px;
+            border-bottom: 1px solid black;
+        }
+
+        .bill-award {
+            font-size: 9px;
+            display: flex;
+            width: 170px;
+            justify-content: space-between;
+            margin-bottom: 4px;
+            font-weight: 500;
+        }
+
+            .bill-award > span {
+                font-size: 9px;
+                font-weight: 500;
+            }
+
+        .bill-award-last {
+            font-size: 9px;
+            font-weight: 500;
+            line-height: 1.6;
+        }
+
+        td,
+        th,
+        tr,
+        table {
+            border: 1px dotted black;
+            border-collapse: collapse;
+        }
+
+            td.description,
+            th.description {
+                width: 75px;
+                max-width: 75px;
+                font-size: 12px;
+                font-family: "Arial";
+            }
+
+            td.quantity,
+            th.quantity {
+                width: 30px;
+                max-width: 30px;
+                word-break: break-all;
+                font-size: 12px;
+                font-family: "Arial";
+            }
+
+            td.price,
+            th.price {
+                width: 60px;
+                max-width: 60px;
+                word-break: break-all;
+                font-size: 12px;
+                font-family: "Arial";
+            }
+
+        .t-right {
+            text-align: right
+        }
+
+        .t-center {
+            text-align: center;
+        }
+
+        .t-left {
+            text-align: left;
+        }
+
+        .centered {
+            text-align: center;
+            align-content: center;
+            margin-top: 0cm;
+        }
+
+        .ticket {
+            /* text-align: center; */
+            width: 180px;
+            max-width: 170px;
+            margin-bottom: 20px;
+        }
+
+        .bill-total-quantity {
+            margin-top: 4px;
+            margin-bottom: 8px;
+        }
+
+        .bill-total {
+            font-weight: 700;
+            font-size: 18px
+        }
+
+        img {
+            max-width: inherit;
+            width: inherit;
+        }
+
+        @media print {
+            .ticket {
+                padding: 0 -10px;
+                margin: 0 auto;
+            }
+        }
+
+        @media screen {
+            .ticket {
+                display: none;
+            }
+        }
+    </style>
+    <title>VeSoTanPhat</title>
+</head>
+
+<body>
+    <div class="ticket" id="bill">
+        <p class="centered bill-title">VESOTANPHAT.COM</p>
+        <p class="centered bill-subtitle" id="BillAddress"></p>
+        <p class="centered bill-subtitle-phone">0983 593 597</p>
+        <p class="centered bill-tiltle-sub">Chúc Quý Khách May Mắn</p>
+        <div class="d-flex justify-content-between">
+            <span class="bill-info" style="float:left;">Ngày: <span id="DatePrint"></span></span>
+            <span class="bill-info" style="float: right;" id="BillNumber"></span>
+        </div>
+        <div class="bill-info" style="clear: both"><span id="ActionName"></span> <span style="float: right;" id="SalePoint"></span></div>
+        <div class="bill-info" style="clear: both"><span id="CustomerName"></span><span style="float: right;" id="DateTime"></span></div>
+        <div class="bill-info" style="clear: both"><span >Thời gian in</span><span style="float: right;" id="PrintTime"></span>
+      
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th class="description">Loại Vé</th>
+                        <th class="quantity">SL</th>
+                        <th class="price t-left">T.Tiền</th>
+                    </tr>
+                </thead>
+                <tbody id="Detail_Bill">
+                </tbody>
+            </table>
+
+            <div class="bill-total">Tổng SL: <span style="float: right;" id="TotalQuatity"></span></div>
+            <div class="bill-vien"></div>
+            <div class="bill-total">Tổng: <span style="float: right;" id="Sum"></span></div>
+        
+            <div id="History_Debt"></div>
+
+            <div class="bill-award">
+                <span>2 VÉ-10N</span>
+                <span>CẶP NGUYÊN</span>
+            </div>
+            <div class="bill-award">
+                <span>1,5 triệu</span>
+                <span>&lt; 4 số cuối ĐB + An ủi &gt;</span>
+                <span> 125 triệu</span>
+            </div>
+            <div class="bill-award">
+                <span>600 ngàn</span>
+                <span>&lt; 3 số cuối ĐB &gt;</span>
+                <span> 35 triệu</span>
+            </div>
+            <div class="bill-award">
+                <span>Hoàn vé</span>
+                <span>&lt; 2 số cuối ĐB &gt;</span>
+                <span>Hoàn vé</span>
+            </div>
+            <div class="bill-award">
+                <span>Hoàn vé</span>
+                <span>&lt; 4 số cuối trong lô &gt;</span>
+                <span>Hoàn vé</span>
+            </div>
+            <div class="centered bill-award-last">
+                Phiếu có giá trị 3 ngày kể từ ngày mở kết quả. Vé trúng giải công ty XSKT không thưởng, chỉ lãnh thưởng giải có giá trị cao nhất, xem thể lệ chi tiết tại cửa hàng.
+            </div>
+        <div id="promotion">
+            <div class="bill-info" style="clear: both"><span >Mã dự thưởng:</span></div>
+            <div><span style="float: left;"  class="bill-total" id="PromotionCode"></span></div>
+            <div class="bill-info" style="clear: both"><span >Đài tham gia dự thưởng:</span></div>
+            <div><span style="float: left;" class="bill-total" id="ChannelName"></span></div>
+            <div class="bill-award" style="clear: both"><span >Trùng 5 số cuối ĐB : 30.000.000đ</span></div>
+            <div class="bill-award" style="clear: both"><span >Có giá trị 3 ngày kể từ ngày mở kết quả, quá thời gian trên giải thưởng không còn giá trị.</span></div>
+
+        </div>
+        
+            <div style="margin-top: 56px; color: #bbbbbb">
+                .
+            </div>
+        </div>
+</body>
+
+</html>

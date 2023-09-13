@@ -1,0 +1,23 @@
+﻿<div class="modal-header align-content-center">
+    <h3 class="modal-title" id="modal-title">Cập nhật doanh thu loto và vietlott</h3>
+</div>
+<form name="formUpdate" class="trial-form p-3">
+    <div class="col-12 mb-10">
+        <label class="rq-form">Doanh thu</label>
+        <!--<input type="text" class="form-control" id="commission" name="numonly"
+               ng-keypress="inputNumber($event)"
+               ng-model="$vm.model.TotalPrice">-->
+
+        <input ng-change="numToCurrency( $vm.model,'TotalPrice',$vm.model.TotalPrice? $vm.model.TotalPrice: '0',{{$vm.model.TotalPrice? $vm.model.TotalPrice: '0'}}); $vm.editNumber()" type="text" class="form-control" id="commission" name="numonly"
+               ng-model="$vm.model.TotalPrice">
+    </div>
+
+    <div class="modal-footer">
+        <div ng-if="!$vm.isSaving" class="btn btn-primary "
+             ng-click="$vm.save()">
+            <i class="fa fa-floppy-o" aria-hidden="true"></i> Cập nhật
+        </div>
+        <img src="../images/loading-dot.gif" ng-if="$vm.isSaving" class="float-r" style="height: 45px; width: 120px;">
+        <button class="btn btn-secondary" type="button" ng-click="$vm.close()">Đóng</button>
+    </div>
+</form>

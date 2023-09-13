@@ -1,0 +1,20 @@
+﻿<div class="modal-header align-content-center">
+    <h3 class="modal-title" id="modal-title">Cập nhật số lượng vé</h3>
+</div>
+<form name="formUpdate" class="trial-form p-3">
+    <div class="col-12 mb-10">
+        <label class="rq-form">Số vé</label>
+        <input type="text" class="form-control" id="quantity" name="numonly" placeholder="Nhập số lượng vé" required
+               ng-keypress="inputNumber($event)"
+               ng-model="$vm.RevisionNumberUpdate">
+    </div>
+
+    <div class="modal-footer">
+        <div class="btn btn-primary "
+             ng-click="$vm.save()">
+            <i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu
+        </div>
+        <img src="../images/loading-dot.gif" ng-if="$vm.isSaving" class="float-r" style="height: 45px; width: 120px;">
+        <button class="btn btn-secondary" type="button" ng-click="$vm.close()">Đóng</button>
+    </div>
+</form>

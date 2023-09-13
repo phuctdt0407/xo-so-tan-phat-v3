@@ -1,0 +1,64 @@
+﻿<div class="modal-header text-center">
+    <h3 class="modal-title" id="modal-title">Xác nhận lương nhân viên</h3>
+</div>
+
+<div>
+    <div class="modal-body">
+        <div class="card card-create-container m-3 modal-body">
+
+            <div class="mb-1 mt-1">
+                <div class="table-responsive resize-tb">
+                    <table class="table">
+                        <thead></thead>
+                        <tbody>
+                            <tr>
+                                <td class="bnor text-left ">Tên</td>
+                                <td class="bnor text-left ">{{$vm.data.FullName}}</td>
+                            </tr>
+                            <tr>
+                                <td class="bnor text-left ">Điểm bán</td>
+                                <td class="bnor text-left ">{{$vm.data.Data.SalePointName}}</td>
+                            </tr>
+
+                            <tr>
+                                <td class="bnor text-left ">Trích bảo hiểm</td>
+                                <td class="bnor text-left ">
+                                    <input class="text-right" type="number" min="0" max="999999999999999999" 
+                                           ng-keypress="inputNumber($event)"
+                                           ng-model="$vm.data.Data.Insure"
+                                          ng-change="$vm.changeValue($vm.data.Data.Insure, 'Insure')" />
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="bnor text-left ">Công đoàn</td>
+                                <td class="bnor text-left ">
+                                    <input class="text-right" type="number" min="0" max="999999999999999999"
+                                           ng-keypress="inputNumber($event)"
+                                           ng-model="$vm.data.Data.PriceUnion"
+                                          ng-change="$vm.changeValue($vm.data.Data.PriceUnion, 'PriceUnion')" />
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="bnor text-left ">Lương thực lãnh</td>
+                                <td class="bnor text-left ">{{$vm.data.Data.RealSalary !=0 ? ($vm.data.Data.RealSalary| formatCurrency) : 0}}</td>
+                            </tr>   
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+
+<div class="modal-footer">
+    <button class="btn btn-success" type="button" ng-if="!$vm.data.Data.SalaryConfirmId" ng-click="$vm.save()">Xác nhận</button>
+
+    <button class="btn btn-secondary" type="button" ng-click="$vm.cancel()">Đóng</button>
+</div>

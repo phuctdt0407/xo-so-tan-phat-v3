@@ -1,0 +1,45 @@
+﻿<div class="header-container fixed-top content-TP" id="header">
+    <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
+        <a href="/" class="navbar-brand d-flex d-lg-none me-4">
+            <h2 class="text-primary mb-0"> <img class="rounded-circle" src="../images/TPIcon.jpeg" alt="" style="width: 40px; height: 40px;"></h2>
+        </a>
+        <a href="#" class="sidebar-toggler flex-shrink-0" ng-click="$vm.changeState()">
+            <i class="fa fa-bars"></i>
+        </a>
+        <div class="d-none d-md-flex ms-4 header_title">{{headerTitle}}</div>
+        <div class="navbar-nav align-items-center ms-auto">
+            <div class="nav-item dropdown mr-5">
+                <a class="nav-link dropdown-toggle user cursor" id="userProfileDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    <img class="rounded-circle me-lg-2" src="../images/KTIcon.png" alt="" style="width: 40px; height: 40px;">
+                    <span class="d-none d-lg-inline-flex">{{sessionInfo.FullName}}</span>
+                </a>
+                <div class="dropdown-menu position-absolute" aria-labelledby="userProfileDropdown">
+                    <div class="pr-5">
+                        <div class="dropdown-item cursor">
+                            <a><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>&nbsp;Quyền: {{sessionInfo.UserTitleName}}</a>
+                        </div>
+                        <div class="dropdown-item cursor">
+                            <a ng-click="$vm.changePassword()"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-key"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"></path></svg>&nbsp;Đổi mật khẩu</a>
+                        </div>
+                        <div class="dropdown-item cursor" ng-click="$vm.logOut()">
+                            <a ng-click=""><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-log-out"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>&nbsp;Đăng xuất</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div id="content" class="main-content " style="height: 90vh; overflow: auto">
+        <div class="layout-px-spacing">
+            <div class="">
+                <ui-view class="content"></ui-view>
+            </div>
+        </div>
+        <div class="footer-wrapper float-r">
+            <div class="footer-section f-section-1">
+                <p>Copyright © 2022 <a target="_blank" class="link" href="">Tan Phat</a>, All rights reserved.</p>
+                <p>Version 1.0.1</p>
+            </div>
+        </div>
+    </div>
+</div>

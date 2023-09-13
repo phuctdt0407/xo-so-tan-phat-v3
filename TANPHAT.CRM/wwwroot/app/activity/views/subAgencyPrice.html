@@ -1,0 +1,36 @@
+﻿<div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
+
+    <div style="padding-bottom: 60px;" class="container-fluid mt-10 pt-10 pb-10 mt-10 px-4 wh-bg">
+        <div style="overflow: auto">
+            <div class="table-responsive resize-tb">
+                <table class="table" style="width:100%">
+                    <thead class="table" style="width:100%">
+                        <tr>
+                            <th class="noselect theader text-center sticky">Thứ</th>
+                            <th class="noselect theader text-center sticky">Đài</th>
+                            <th class="noselect theader text-center sticky w100" ng-repeat="agency in $vm.listSubAgency">{{agency.AgencyName}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="display:none" ng-repeat-start="day in $vm.listLotteryOnWeek">
+                        <tr ng-repeat="lottery in day.LotteryData">
+                            <td ng-class="[day.isColor?'blue-bg':'']" rowspan="{{day.LotteryData.length}}" ng-if="$index==0">{{day.SName}}</td>
+                            <td ng-class="[day.isColor?'blue-bg':'']">{{lottery.ShortName}}</td>
+
+                            <td ng-class="[agency.PriceDisplay &&agency.PriceDisplay!=0 ?'check-input-success':'check-input-warning']" class="w100 text-right" ng-repeat="agency in lottery.listSubAgency">
+                                <input ng-change="numToCurrency(agency,'PriceDisplay',agency.PriceDisplay? agency.PriceDisplay: '0',{{agency.PriceDisplay? agency.PriceDisplay: '0'}});agency.isChange= true" type="text" class="form-control text-right" id="amountPrice" name=""
+                                       ng-model="agency.PriceDisplay">
+                            </td>
+                        </tr>
+                        <tr style="display:none" ng-repeat-end="">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div style="margin-top: 10px">
+            <div class="btn btn-primary" style="float:right" ng-if="!$vm.isSaving" ng-click="$vm.save()"><i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;Lưu</div>
+            <img src="../images/loading-dot.gif" ng-if="$vm.isSaving" class="float-r" style="height: 45px; width: 120px;">
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,139 @@
+﻿<div class="col-12 layout-spacing">
+    <div class="container-fluid wh-bg mt-10 pt-10">
+        <div class="row">
+            <div class="col-5">
+                <div class="mt20" style="width: 160px;">
+                    <label>Chọn ngày xổ số:</label>
+                    <datepicker my-class="input-sm datepicker" date-format="DD-MM-YYYY" pick-time="false"
+                                ng-model="$vm.params.day" output-format="DD-MM-YYYY"
+                                ng-change="$vm.changeDate()"
+                                placeholder="dd/mm/yyyy"></datepicker>
+                </div>
+
+                <span class="btn btn-today" ng-click="$vm.clickToday()">Hôm nay</span>
+                <span class="btn btn-tomorrow" ng-click="$vm.clickToday(1)">Ngày mai</span>
+                <span class="btn btn-nextday" ng-click="$vm.clickToday(2)">Ngày kia</span>
+            </div>
+            <div class="col-7">
+                <div class="table-responsive resize-tb">
+                    <table class="table">
+                        <thead class="theader text-center fix-scroll ">
+                            <tr>
+                                <th class="text-12 w80px">Vé nhận</th>
+                                <th ng-repeat="item in $vm.listAgency" class="text-12 w80px">{{item.Name}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="lottery in $vm.listLottery">
+                                <td class="text-12 w80px">
+                                    {{lottery.ShortName}}
+                                </td>
+                                <td style="display:none" ng-repeat-start="agency in lottery.listAgency"> </td>
+                                <td class="text-12 text-right w80px">
+                                    {{agency.TotalReceiced}}
+                                </td>
+                                <td style="display:none" ng-repeat-end=""> </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <h2>Ngày xổ số: {{$vm.dayDisplay}}</h2>
+        <div ng-repeat="CoreI in $vm.TypeLottery">
+            <h2> {{CoreI.Type}}</h2>
+            <div style="overflow: auto">
+                <div class="table-responsive resize-tb">
+                    <table class="table" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th class="noselect theader text-center sticky w80px ">Đài bán</th>
+                                <!--<th class="noselect theader text-center sticky w150">Kho chuyển, nhận còn lại</th>-->
+                                <th class="noselect theader text-center sticky w150">TC</th>
+                                <th ng-repeat="item in $vm.listAgency" class="noselect theader text-center sticky w150">{{item.Name}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="lottery in $vm[CoreI.Name]">
+                                <td class="w80">{{lottery.ShortName}}</td>
+                                <!--<td class="w150">
+                                    <div class="d-flex justify-content-between">
+                                        <div><strong>Thường</strong></div>
+                                        <div ><strong>{{lottery.TotalTrans}}</strong></div>
+                                    </div>
+
+                                    <div class="d-flex justify-content-between">
+                                        <div>Trùng</div>
+                                        <div class="pt5px">{{lottery.TotalTransDup}}</div>
+                                    </div>
+                                </td>-->
+                                <td class="w150">
+                                    <div class="d-flex justify-content-between">
+                                        <div><strong>Đã trả</strong></div>
+                                        <div> <strong>{{$vm.getHaveReturned(CoreI.Name,$index)}}</strong></div>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <div>Còn lại</div>
+                                        <div class="pt5px"> {{lottery.Sum}}</div>
+                                    </div>
+                                </td>
+                                <td style="display:none" ng-repeat-start="agency in lottery.listAgency"> </td>
+                                <td ng-class="[agency.TotalHaveReturned!=0 || agency.Receiced!=0 ?'check-input-success':'check-input-warning']" class="w150" >
+                                    <div class="d-flex justify-content-right">
+                                        <div class="pt5px pr11px"><strong>{{agency.TotalHaveReturned}}</strong></div>
+                                    </div>
+                                    <div class="d-flex justify-content-right">
+                                        <input type="text" class="form-control text-right h30px "
+                                               id="amountPrice"
+                                               ng-model="agency.ReceicedDisplay"
+                                               ng-change="numToCurrency(agency,'ReceicedDisplay',agency.ReceicedDisplay? agency.ReceicedDisplay: '0',{{agency.ReceicedDisplay? agency.ReceicedDisplay: '0'}}); $vm.OnChangeValue(CoreI.Name,$parent.$index, $index)">
+                                    </div>
+                                </td>
+
+                                <td style="display:none" ng-repeat-end=""> </td>
+                            </tr>
+                            <!--Total-->
+                            <tr>
+                                <td class="w80  bg-sum"> TC </td>
+                                <!--<td class="w150 bg-sum">
+                                    <div class="d-flex justify-content-between">
+                                        <div><strong>Thường</strong></div>
+                                        <div><strong>{{$vm.getSumAgency(CoreI.Name, 'TotalTrans')}}</strong></div>
+                                    </div>
+
+                                    <div class="d-flex justify-content-between">
+                                        <div>Trùng</div>
+                                        <div class="pt5px">{{$vm.getSumAgency(CoreI.Name, 'TotalTransDup')}}</div>
+                                    </div>
+                                </td>-->
+                                <td class="w150 bg-num">
+                                    <div class="d-flex justify-content-between">
+                                        <div><strong>Đã trả</strong></div>
+                                        <div> <strong>{{$vm.getHaveReturned(CoreI.Name)}}</strong></div>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <div>Còn lại</div>
+                                        <div class="pt5px"> {{$vm.getSumAgency(CoreI.Name,'Sum')}}</div>
+                                    </div>
+                                </td>
+                                <td class="w150 bg-num" ng-repeat="agency in $vm.listAgency">
+                                    <div class="d-flex justify-content-right">
+                                        <div class="pt5px pr11px"><strong> {{$vm.getSumAgency(CoreI.Name,'TotalHaveReturned', $index)}}</strong></div>
+                                    </div>
+                                    <div class="d-flex justify-content-right">
+                                        <div class="pt5px pr11px"><strong> {{$vm.getSumAgency(CoreI.Name,'Receiced', $index)}}</strong></div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div ng-if="$index==0">
+                    <div class="btn btn-primary float-r pt-10 mb-10" ng-if="!$vm.isSaving" ng-click="$vm.save()"><i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;Lưu</div>
+                    <img src="../images/loading-dot.gif" ng-if="$vm.isSaving" class="float-r" style="height: 45px; width: 120px;">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,124 @@
+﻿<div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
+    <div class="container-fluid wh-bg mt-10">
+        <div class="row ml-2">
+            <div class="wh-bg ">
+                <div class="mt20 w160px pt-10">
+                    <label>Tháng</label>
+                    <monthyearpicker my-class="input-sm datepicker-new" date-format="MM/YYYY" placeholder="All month"
+                                     ng-model="$vm.month" on-select="$vm.loadData()" ng-change="$vm.loadData()" output-format="YYYY-MM"></monthyearpicker>
+                </div>
+            </div>
+            <div class="wh-bg ml-5" ng-if="!$vm.checkStaff">
+                <div class="mt20 w160px pt-10">
+                    <label style="padding-bottom:2px">Chọn đối tượng</label>
+                    <ui-select ng-model="$vm.selectedUserTitleId" ng-change="$vm.changeUserTitle($select.selected.Id)"
+                               theme="select2" search-enabled="false">
+                        <ui-select-match placeholder="Chọn hình thức" allow-clear="false"> {{$select.selected.Name}}</ui-select-match>
+                        <ui-select-choices position="down" repeat="ele as ele in $vm.listOfUserTitle">
+                            {{ele.Name}}
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
+            <div class="wh-bg ml-5" ng-if="!$vm.checkStaff">
+                <div class="mt20 w160px pt-10">
+                    <label style="padding-bottom:2px">Chọn điểm bán</label>
+                    <ui-select ng-model="$vm.selectedSalePointId" ng-change="$vm.changeSalePoint($select.selected.Id)"
+                               theme="select2" search-enabled="false">
+                        <ui-select-match placeholder="Chọn điểm bán" allow-clear="false">{{$select.selected.Name}}</ui-select-match>
+                        <ui-select-choices position="down" repeat="ele.Id.toString() as ele in $vm.listSalePointDropDown">
+                            {{ele.Name}}
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
+            <div class="col-1"></div>
+            <div class="ml-auto mr-3" style="padding-top: 50px;" ng-if="!$vm.checkStaff">
+                <img src="../images/loading-dot.gif" ng-if="$vm.isSaving" class="float-r" style="height: 45px; width: 120px;">
+                <span ng-if="!$vm.isSaving" ng-click="$vm.save()" class="btn btn-primary">Lưu toàn bộ</span>
+            </div>
+        </div>
+
+        <!--TAB-->
+        <ul class="nav nav-tabs mt-2" id="iconTab" role="tablist">
+            <li class="nav-item cursor w150px" ng-repeat="week in $vm.listWeek" ng-click="$vm.changeTab(week.WeekId)">
+                <div style="height: 60px; padding-top: 5px !important;" class="nav-link py-0" ng-class="{'active': $vm.currentTab.WeekId == week.WeekId }" data-toggle="tab" role="tab">
+                    <span class="row" style="padding-left:5px">
+                        <span><strong>Tuần {{week.WeekId}}</strong></span>
+                        <span style="font-size: 15px;">{{week.NameDislay}}</span>
+
+                    </span>
+
+                </div>
+            </li>
+        </ul>
+
+        <div class="table-responsive">
+            <div class="table-responsive resize-tb">
+                <div id="calendar">
+                    <table class="table w100p table-wrapper-scroll-y my-custom-scrollbar">
+                        <thead class="theader text-center fix-scroll ">
+                            <tr class="flex flex-wrap sticky-border-1">
+                                <!--<th colspan="{{$vm.listOfUserTitle[$vm.CoreIndex].isGetSP ?2 :1}}" class="text-center first1-col-sticky fix-scroll py-4 resizeSchedule"></th>-->
+                                <th colspan="2" class="text-center first1-col-sticky fix-scroll py-4 resizeSchedule"></th>
+                                <th class="fw-n text-center fix-scroll py-4">Tính điểm</th>
+                                <th class="fw-n text-center fix-scroll py-4">Điểm bán</th>
+                                <th class="fw-n text-center fix-scroll py-4 bg-sum sticky">KPI</th>
+                                <th class="fw-n text-center fix-scroll py-4">TB</th>
+                                <th class="fw-n text-center fix-scroll py-4">TC</th>
+
+
+                                <th class="fw-n text-center fix-scroll py-4" ng-repeat="item in $vm.listOfUserTitle[$vm.CoreIndex].listSelected"> {{item.CriteriaName}} <span ng-if="item.Coef==2"> <strong>(x2)</strong></span></th>
+                            </tr>
+
+                        </thead>
+                        <tbody>
+                            <tr style="display:none" ng-repeat-start="user in $vm.listOfUserTitle[$vm.CoreIndex].listUser"> </tr>
+                            <tr ng-repeat="salepoint in user.ListSalePoint" ng-if="user.SalePointId==$vm.SalePointID ||  $vm.SalePointID==0" ng-show="$vm.checkStaff && user.UserId == $vm.staffId || !$vm.checkStaff">
+                                <td class="w80px" ng-if="$index==0" rowspan="{{user.ListSalePoint.length}}">{{user.index +1}}</td>
+                                <td class="w150" ng-if="$index==0" rowspan="{{user.ListSalePoint.length}}"> {{user.FullName}}</td>
+                                <td class="w100" ng-if="$vm.CoreIndex==0" rowspan="{{user.ListSalePoint.length}}">
+                                    <input ng-disabled="$vm.checkStaff" ng-change="$vm.checkAll(user.UserId, salepoint.listWeek[$vm.currentTab.Index].WeekId, salepoint.listWeek[$vm.currentTab.Index].month, salepoint.listWeek[$vm.currentTab.Index].check); $vm.getTotalUser($vm.CoreIndex, user.index, $parent.$index)" type="checkbox" ng-model="salepoint.listWeek[$vm.currentTab.Index].check" style="margin-bottom: 12px; width: 20px; height: 20px;" />
+                                </td>
+                                <td class="w100" ng-if="$vm.CoreIndex==0" rowspan="{{user.ListSalePoint.length}}"> {{user.SalePointName}}</td>
+                                <td class="w100" ng-if="$vm.CoreIndex==1">{{salepoint.SalePointName}}</td>
+                                <!--<td ng-if="$vm.listOfUserTitle[$vm.CoreIndex].isGetSP"> {{salepoint.SalePointName}}</td>-->
+                                <!--KPI-->
+                                <td class="cus-size-kpi bg-num">
+                                    {{$vm.returnKPIPoint( $vm.listOfUserTitle[$vm.CoreIndex].listKPI,salepoint.SumInfo.AVG)}}
+                                </td>
+
+                                <!--TB-->
+                                <td class="cus-size-kpi">
+                                    {{salepoint.SumInfo.AVG}}
+                                </td>
+                                <!--TC-->
+                                <td class="cus-size-kpi">
+                                    {{salepoint.listWeek[$vm.currentTab.Index].Sum}}
+                                </td>
+                                <td ng-class="[type.Point != type.PointBK ?  'check-input-success': type.PointBK>0 ?'check-input-warning' :'']"
+                                    class="{{$vm.listOfUserTitle[$vm.CoreIndex].isGetSP ?'cus-size-payment':'cus-size-kpi' }}"
+                                    ng-repeat="type in salepoint.listWeek[$vm.currentTab.Index].listSelected">
+
+                                    <input type="text" class="form-control text-right h30px center-block"
+                                           style="width: 50px;"
+                                           id="amountPrice"
+                                           ng-model="type.Point" ng-disabled="$vm.checkStaff || !salepoint.listWeek[$vm.currentTab.Index].check"
+                                           ng-change="numToCurrency(type,'Point',type.Point,{{type.Point}}); $vm.onChangeValue(type); $vm.getTotalUser($vm.CoreIndex, user.index, $parent.$index)">
+
+
+                                </td>
+                            </tr>
+                            <tr style="display:none" ng-repeat-end=""> </tr>
+                            <tr ng-if="!$vm.listOfUserTitle[$vm.CoreIndex].listUser || $vm.listOfUserTitle[$vm.CoreIndex].listUser.length == 0">
+                                <td colspan="99">Không có dữ liệu</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

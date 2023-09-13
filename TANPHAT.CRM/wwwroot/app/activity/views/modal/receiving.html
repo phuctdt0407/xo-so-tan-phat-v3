@@ -1,0 +1,150 @@
+<div class="modal-header">
+    <h3 class="modal-title" id="modal-title">Nhận vé</h3>
+    <h5 class="text-left">Quản lý đưa vé:  <b class="text-left">{{$vm.ManagerName}}</b> </h5>
+</div>
+<div class="modal-body">
+   
+    <div>
+        <div class="card card-create-container">
+            <div class="mb-4 mt-4">
+                <h3 class="text-center">{{$vm.data.toDay.day}}</h3>
+                <table id="toDay" class="table" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th class="noselect theader text-center"><span>No.</span></th>
+                            <th class="noselect theader">
+                                <div class="d-flex justify-content-center align-items-center">
+                                    <span>Đài</span>
+                                </div>
+                            </th>
+                            <th class="noselect theader">
+                                <div class="d-flex justify-content-center align-items-center text-center">
+                                    <span>Còn lại dự kiến</span>
+                                </div>
+                            </th>
+                            <th class="noselect theader">
+                                <div class="d-flex justify-content-center align-items-center">
+                                    <span>Tồn kho</span>
+                                </div>
+                            </th>
+                            <th class="noselect theader">
+                                <div class="d-flex justify-content-center align-items-center">
+                                    <span>Nhận vào</span>
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="noselect" ng-repeat="item in $vm.toDayRecevingData">
+                            <td class="noselect w80 text-center" ng-class="{'bg-sky' : $index % 2 == 1}">{{$vm.toDayRecevingData.indexOf(item)+1}}</td>
+                            <td class="noselect w120 text-left" ng-class="{'bg-sky' : $index % 2 == 1}">{{item.ShortName}} {{item.type ==2? ' (VTr)':''}}</td>
+
+                            <td class="noselect w120 text-right" ng-class="{'bg-sky' : $index % 2 == 1}">{{item.remaining}}</td>
+                            <td class="noselect w120 text-center" ng-class="{'bg-sky' : $index % 2 == 1}">{{item.inventory}}</td>
+                            <td class="noselect w120 text-center" ng-class="{'bg-sky' : $index % 2 == 1}">
+                                <input ng-click="showKeyBoard($event, false)" ng-keypress="inputNumber($event)" class="text-center" type="number" id="toDayInputTransfer" name="" min="0" max="999999" ng-model="item.inputReceiving" ng-change="$vm.ChangeValueReceiving(item,item.inputReceiving, {{item.inputReceiving}})">
+                            </td>
+
+                        </tr>
+                        <tr ng-if="!$vm.toDayRecevingData || $vm.toDayRecevingData <=0">
+                            <td colspan="99" class="text-center">Không tìm thấy dữ liệu nào...</td>
+                        </tr>
+                </table>
+            </div>
+            <div class="mb-4 mt-4" ng-if="$vm.nextDayReceivingData.length>0">
+                <h3 class="text-center">{{$vm.data.nextDay.day}}</h3>
+                <table id="nextDay" class="table table-hover" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th class="noselect theader text-center"><span>No.</span></th>
+                            <th class="noselect theader">
+                                <div class="d-flex justify-content-center align-items-center">
+                                    <span>Đài</span>
+                                </div>
+                            </th>
+                            <th class="noselect theader">
+                                <div class="d-flex justify-content-center align-items-center text-center">
+                                    <span>Còn lại dự kiến</span>
+                                </div>
+                            </th>
+                            <th class="noselect theader">
+                                <div class="d-flex justify-content-center align-items-center">
+                                    <span>Tồn kho</span>
+                                </div>
+                            </th>
+                            <th class="noselect theader">
+                                <div class="d-flex justify-content-center align-items-center">
+                                    <span>Nhận vào</span>
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="noselect" ng-repeat="item in $vm.nextDayReceivingData">
+                            <td class="noselect w80 text-center" ng-class="{'bg-sky' : $index % 2 == 1}">{{$vm.nextDayReceivingData.indexOf(item)+1}}</td>
+                            <td class="noselect w120 text-center" ng-class="{'bg-sky' : $index % 2 == 1}">{{item.ShortName}} {{item.type ==2? ' (VTr)':''}}</td>
+
+                            <td class="noselect w120 text-center" ng-class="{'bg-sky' : $index % 2 == 1}">{{item.remaining}}</td>
+                            <td class="noselect w120 text-center" ng-class="{'bg-sky' : $index % 2 == 1}">{{item.inventory}}</td>
+                            <td class="noselect w120 text-center" ng-class="{'bg-sky' : $index % 2 == 1}">
+                                <input ng-click="showKeyBoard($event, false)" ng-keypress="inputNumber($event)" class="text-center" type="number" id="nextDayInputTransfer" name="" min="0" max="999999" ng-model="item.inputReceiving" ng-change="$vm.ChangeValueReceiving(item,item.inputReceiving, {{item.inputReceiving}})">
+                            </td>
+                        </tr>
+                        <tr ng-if="!$vm.nextDayReceivingData || $vm.nextDayReceivingData <=0">
+                            <td colspan="99" class="text-center">Không tìm thấy dữ liệu nào...</td>
+                        </tr>
+                </table>
+            </div>
+            <div class="mb-4 mt-4" ng-if="$vm.scratchCardReceivingData">
+                <h3 class="text-center">Vé cào</h3>
+                <table id="nextDay" class="table table-hover" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th class="noselect theader text-center"><span>No.</span></th>
+                            <th class="noselect theader">
+                                <div class="d-flex justify-content-center align-items-center">
+                                    <span>Đài</span>
+                                </div>
+                            </th>
+                            <th class="noselect theader">
+                                <div class="d-flex justify-content-center align-items-center">
+                                    <span>Còn lại dự kiến</span>
+                                </div>
+                            </th>
+                            <th class="noselect theader">
+                                <div class="d-flex justify-content-center align-items-center">
+                                    <span>Tồn kho</span>
+                                </div>
+                            </th>
+                            <th class="noselect theader">
+                                <div class="d-flex justify-content-center align-items-center">
+                                    <span>Nhận vào</span>
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="noselect" ng-repeat="item in $vm.scratchCardReceivingData">
+                            <td class="noselect w80 text-center" ng-class="{'bg-sky' : $index % 2 == 1}">{{$vm.scratchCardReceivingData.indexOf(item)+1}}</td>
+                            <td class="noselect w120 text-center" ng-class="{'bg-sky' : $index % 2 == 1}">{{item.ShortName}}</td>
+
+                            <td class="noselect w120 text-center" ng-class="{'bg-sky' : $index % 2 == 1}">{{item.remaining}}</td>
+                            <td class="noselect w120 text-center" ng-class="{'bg-sky' : $index % 2 == 1}">{{item.inventory}}</td>
+                            <td class="noselect w120 text-center" ng-class="{'bg-sky' : $index % 2 == 1}">
+                                <input ng-click="showKeyBoard($event, false)" ng-keypress="inputNumber($event)" class="text-center" type="number" id="nextDayInputTransfer" name="" min="0" max="999999" ng-model="item.inputReceiving" ng-change="$vm.ChangeValueReceiving(item,item.inputReceiving, {{item.inputReceiving}})">
+                            </td>
+                        </tr>
+                        <tr ng-if="!$vm.scratchCardReceivingData">
+                            <td colspan="99" class="text-center">Không tìm thấy dữ liệu nào...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <img src="../images/loading-dot.gif" ng-if="$vm.isSaving" class="float-r" style="height: 45px; width: 120px;">
+    <button class="btn btn-success" ng-if="!$vm.isSaving" type="submit" ng-click="$vm.save()">Xác nhận</button>
+    <button class="btn btn-secondary" ng-if="!$vm.isSaving" type="button" ng-click="$vm.cancel()">Đóng</button>
+</div>

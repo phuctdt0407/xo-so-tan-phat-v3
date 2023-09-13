@@ -1,0 +1,238 @@
+<div class="container-fluid wh-bg mt-10">
+    <div class="col-md-3 col-xs-6 col-lg-2 pt10">
+        <label>Tháng</label>
+        <monthyearpicker my-class="input-sm datepicker-new" date-format="MM/YYYY" placeholder="All month"
+                         ng-model="$vm.month" on-select="$vm.loadData()" ng-change="$vm.loadData()" output-format="YYYY-MM"></monthyearpicker>
+    </div>
+
+    <ul class="nav nav-tabs mb-3 mt-3" id="iconTab" role="tablist" ng-if="!$vm.checkStaff">
+        <li class="nav-item cursor" ng-click="$vm.changeTab(1)" id="liLoto">
+            <a ng-class="$vm.classItem0 + ' editItem'" data-toggle="tab" role="tab" id="loto">
+                Nhập mới
+            </a>
+        </li>
+        <li class="nav-item cursor" ng-click="$vm.changeTab(2)" id="liVietlott">
+            <a ng-class="$vm.classItem1 + ' editItem'" data-toggle="tab" role="tab" id="vietlott">
+                Lịch sử
+            </a>
+        </li>
+    </ul>
+
+    <div ng-if="$vm.tabId == 1">
+        <div class="p-2">
+            <span class="resizeSchedule btn btn-today" ng-click="$vm.clickMonth(-1)">Tháng trước</span>
+            <span class="resizeSchedule btn btn-tomorrow" ng-click="$vm.clickMonth()">Tháng này</span>
+            <div class="btn btn-primary float-r resizeSchedule" ng-if="!$vm.checkStaff" ng-click="$vm.openModalAddCommission()">Nhập mới</div>
+        </div>
+
+
+        <div class="table-responsive ">
+            <div class="table-responsive resize-tb">
+                <div id="calendar">
+                    <table class="table w100p table-wrapper-scroll-y my-custom-scrollbar">
+                        <thead class="theader text-center fix-scroll">
+                            <tr>
+                                <th class="text-center first1-col-sticky fix-scroll py-4"><span>TP</span></th>
+                                <th class="text-center  fix-scroll second1-col-sticky py-4"><span>Tên</span></th>
+                                <th class="text-center fix-scroll py-4" style="font-weight: bold; min-width: 75px" ng-repeat="item in $vm.listDateOfMonth"
+                                    ng-class=" item.IsWeekEnd ? 'patternsCss' : '' ">
+                                    {{$index + 1}}
+                                </th>
+                                <th class="text-center fix-scroll py-4" style="min-width: 75px"><span>TC</span></th>
+                            </tr>
+                            <tr class="noselect" style="color: black !important; font-weight: 600" ng-if="!$vm.checkStaff">
+                                <td colspan="2" class="noselect w-100 height-table py-4 first-col-sticky sticky-border-1">Tổng cộng</td>
+                                <td class="noselect bg-total w-100 text-right height-table sticky-border-1"
+                                    ng-repeat="item2 in $vm.listDateOfMonth "
+                                    style="color: black; font-weight: bold"
+                                    ng-class="{'weekendCss':item2.IsWeekEnd}">
+                                    {{$vm.totalCommissionByDate[($index + 1)] | formatCurrency}}
+                                </td>
+                                <td class="noselect height-table w-100 text-right sticky-border-1">{{$vm.SumCommission | formatCurrency}}</td>
+                            </tr>
+                        </thead>
+                        <tbody ng-if="!$vm.checkStaff">
+                            <!--    Nhan Vien-->
+
+                            <tr ng-repeat-start="staff in $vm.listStaffGrpBySalePoint" style="display: none"></tr>
+                            <tr class="noselect" ng-repeat="item in staff.Data track by $index">
+                                <td class="noselect w-100 height-table first-col-sticky py-4 sticky-border-1" rowspan="{{staff.Data.length}}" ng-if="$index==0">
+                                    {{staff.SalePointName}}
+                                </td>
+                                <td class="noselect height-table w-100 text-left second-col-sticky py-4 sticky-border-1">{{item.FullName}}</td>
+                                <td class="noselect height-table w-100 text-right"
+                                    style="color: black; font-weight: bold"
+                                    ng-repeat="item2 in $vm.listDateOfMonth "
+                                    ng-class="{'weekendCss':item2.IsWeekEnd}  ">
+                                    {{item.Commission[($index + 1)] | formatCurrency}}
+                                </td>
+                                <td class="noselect height-table w-100 text-right ">{{item.TotalCommission | formatCurrency}}</td>
+                            </tr>
+                            <tr ng-repeat-end style="display: none"></tr>
+                            <!-- Quan Ly-->
+                            <tr class="noselect" ng-repeat="item in $vm.listManager track by $index">
+                                <td colspan="2" class="noselect w-100 height-table py-4 first-col-sticky sticky-border-1">{{item.FullName}}</td>
+                                <td class="noselect w-100 text-right height-table"
+                                    ng-repeat="item2 in $vm.listDateOfMonth  "
+                                    style="color: black; font-weight: bold"
+                                    ng-class="{'weekendCss':item2.IsWeekEnd}">
+                                    {{item.Commission[($index + 1)] | formatCurrency}}
+                                </td>
+                                <td class="noselect height-table w-100 text-right ">{{item.TotalCommission | formatCurrency}}</td>
+                            </tr>
+                            <!--    Anh Phi-->
+                            <tr class="noselect" ng-repeat="item in $vm.adminCommission track by $index">
+                                <td colspan="2" class="noselect w-100  height-table py-4 bg-admin first-col-sticky sticky-border-1">{{item.SalePointName}}</td>
+                                <td class="noselect bg-admin w-100 text-right height-table"
+                                    ng-repeat="item2 in $vm.listDateOfMonth"
+                                    style="color: black; font-weight: bold"
+                                    ng-class="{'weekendCss':item2.IsWeekEnd}">
+                                    {{item.Commission[($index + 1)] | formatCurrency}}
+                                </td>
+                                <td class="noselect height-table w-100 text-right ">{{item.TotalCommission | formatCurrency}}</td>
+                            </tr>
+                            <!--    TC Anh Phi-->
+                            <tr class="noselect">
+                                <td colspan="2" class="noselect w-100 height-table py-4 bg-admin-total first-col-sticky sticky-border-1">TC Anh Phi</td>
+                                <td class="noselect bg-admin-total w-100 text-right height-table"
+                                    ng-repeat="item2 in $vm.listDateOfMonth "
+                                    style="color: black; font-weight: bold"
+                                    ng-class="{'weekendCss':item2.IsWeekEnd}">
+                                    {{$vm.adminCommissionGroupByDate[($index + 1)] | formatCurrency}}
+                                </td>
+                                <td class="noselect height-table w-100 text-right ">{{$vm.SumAdminCommission | formatCurrency}}</td>
+                            </tr>
+                            <!--                    Phi doi so trung-->
+                            <tr class="noselect">
+                                <td colspan="2" class="noselect w-100 height-table py-4 first-col-sticky sticky-border-1">Phí ĐST</td>
+                                <td class="noselect  w-100 text-right height-table"
+                                    ng-repeat="item2 in $vm.listDateOfMonth "
+                                    style="color: black; font-weight: bold"
+                                    ng-class="{'weekendCss':item2.IsWeekEnd}">
+                                    {{$vm.totalFeeByDate[($index + 1)] | formatCurrency}}
+                                </td>
+                                <td class="noselect height-table w-100 text-right ">{{$vm.SumFee | formatCurrency}}</td>
+                            </tr>
+                            <!--                    TC-->
+                            <tr class="noselect">
+                                <td colspan="2" class="noselect w-100 height-table py-4 first-col-sticky sticky-border-1">Tổng cộng</td>
+                                <td class="noselect bg-total w-100 text-right height-table"
+                                    ng-repeat="item2 in $vm.listDateOfMonth "
+                                    style="color: black; font-weight: bold"
+                                    ng-class="{'weekendCss':item2.IsWeekEnd}">
+                                    {{$vm.totalCommissionByDate[($index + 1)] | formatCurrency}}
+                                </td>
+                                <td class="noselect height-table w-100 text-right ">{{$vm.SumCommission | formatCurrency}}</td>
+                            </tr>
+                            <tr ng-if="!$vm.listUser || $vm.listUser <=0">
+                                <td colspan="99" class="text-center">Không tìm thấy dữ liệu nào...</td>
+                            </tr>
+                        </tbody>
+
+                        <tbody ng-if="$vm.checkStaff">
+                            <tr ng-repeat-start="staff in $vm.listStaffGrpBySalePoint" style="display: none"></tr>
+                            <tr class="noselect" ng-repeat="item in staff.Data track by $index" ng-if="$vm.staffId == item.UserId">
+                                <td class="noselect w-100 height-table first-col-sticky py-4 sticky-border-1">
+                                    {{staff.SalePointName}}
+                                </td>
+                                <td class="noselect height-table w-100 text-left second-col-sticky py-4 sticky-border-1">{{item.FullName}}</td>
+                                <td class="noselect height-table w-100 text-right"
+                                    style="color: black; font-weight: bold"
+                                    ng-repeat="item2 in $vm.listDateOfMonth "
+                                    ng-class="{'weekendCss':item2.IsWeekEnd}  ">
+                                    {{item.Commission[($index + 1)] | formatCurrency}}
+                                </td>
+                                <td class="noselect height-table w-100 text-right ">{{item.TotalCommission | formatCurrency}}</td>
+                            </tr>
+                            <tr ng-repeat-end style="display: none"></tr>
+                            <tr ng-if="!$vm.listUser || $vm.listUser <=0">
+                                <td colspan="99" class="text-center">Không tìm thấy dữ liệu nào...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div ng-if="$vm.tabId == 2">
+
+        <div class="col-md-3 col-xs-6 col-lg-2 pt10 mb-2">
+            <label>Chọn điểm bán</label>
+            <ui-select ng-model="$vm.salePointId" ng-change="$vm.changeSalePoint()"
+                       theme="select2" search-enabled="false">
+                <ui-select-match placeholder="Chọn điểm bán" allow-clear="false">{{$select.selected.Name}}</ui-select-match>
+                <ui-select-choices position="down" repeat="ele.Id.toString() as ele in $vm.listSalePoint">
+                    {{ele.Name}}
+                </ui-select-choices>
+            </ui-select>
+        </div>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="noselect theader text-center">
+                        STT
+                    </th>
+                    <th class="noselect theader text-center">
+                        Điểm bán
+                    </th>
+                    <th class="noselect theader text-center">
+                        Ngày
+                    </th>
+                    <th class="noselect theader text-center">
+                        Nhân viên
+                    </th>
+                    <th class="noselect theader text-center">
+                        Hoa hồng
+                    </th>
+                    <th class="noselect theader text-center">
+                         Phí đst
+                    </th>
+                    <th class="noselect theader text-center">
+                        Thời gian tạo
+                    </th>
+                    <th class="noselect theader text-center">
+                        Xóa
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in $vm.listTotalComissionAndFee" ng-if="item.SalePointId == $vm.salePointId || $vm.salePointId == 0 || !$vm.salePointId">
+                    <td class="text-center">
+                        {{$index+1}}
+                    </td>
+                    <td class="text-center">
+                        {{item.SalePointName}}
+                    </td>
+                  
+                    <td class="text-center">
+                        {{item.Date|formatDate}}
+                    </td>
+                    <td class="text-left">
+                        {{item.Users}}
+                    </td>
+                    <td class="text-right">
+                        {{item.TotalCommision| formatCurrency}}
+                    </td>
+                    <td class="text-right">
+                        {{item.Fee | formatCurrency}}
+                    </td>
+                    <td class="text-center">
+                        {{item.CreatedDate|formatDateTime}}
+                    </td>
+                    <td class="text-center">
+                        <i class="fa fa-trash fa-lg cursor" style="color: blue" ng-click="$vm.deleteCommissionWining(item)"></i>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="99" ng-if="!$vm.listTotalComissionAndFee || $vm.listTotalComissionAndFee.length == 0">
+                        Chưa có chi phí
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+

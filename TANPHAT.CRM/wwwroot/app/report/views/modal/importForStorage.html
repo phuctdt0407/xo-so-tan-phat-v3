@@ -1,0 +1,67 @@
+﻿<div class="modal-header">
+    <h3 class="modal-title" id="modal-title">Nhập {{$vm.CurrTypeOfItem.Name}} cho kho</h3>
+</div>
+<div>
+    <div class="modal-body">
+        <div class="card card-create-container m-3 modal-body">
+
+            <div class="mb-1 mt-1">
+                <div style="display: flex; justify-content: space-around;">
+                    <h2 class="text-center"> {{$vm.model.Name}}</h2>
+                </div>
+                <!---->
+                <div class="table-responsive resize-tb">
+                    <table class="table">
+                        <thead class="fix-scroll">
+                            <tr class="noselect theader center-align  fix-scroll">
+                                <th>Tên công cụ</th>
+                                <th>Đơn giá</th>
+                                <th>Tồn cuối</th>
+                                <th>Đã nhập</th>
+
+                                <th>Nhập số lượng thêm</th>
+
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr >
+                                <td>{{$vm.listData.ItemName }}</td>
+                                <!--<td>{{$vm.listData.Price | formatCurrency}}</td>-->
+                            <td>
+                                <input type="text" class="form-control text-right h30px "
+                                       id="amountPrice"
+                                       ng-model="$vm.listData.Price"
+                                       ng-change="numToCurrency($vm.listData,'Price',$vm.listData.Price? $vm.listData.Price: '0',{{$vm.listData.Price? $vm.listData.Price: '0'}});$vm.ChangeValueInput()">
+                            </td>
+                                <td>{{$vm.listData.TotalRemaining }}</td>
+                                <td>{{$vm.listData.Import}}</td>
+                                <td>
+                                    <input ng-disabled="!$vm.listData.Price || $vm.listData.Price == 0"  class="text-align-right" type="number" min="0" max="999999" ng-model="$vm.input" ng-change="$vm.ChangeValueQuantity($vm.input)">
+                                </td>
+
+
+                            </tr>
+                            <tr>
+                                <td colspan="4">Thành tiền: </td>
+                                <td>{{$vm.sum | formatCurrency}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+
+<div class="modal-footer">
+    <div class="btn btn-primary " ng-if="!$vm.isSaving" ng-click="$vm.save()"><i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu </div>
+    <img src="../images/loading-dot.gif" ng-if="$vm.isSaving" class="float-r" style="height: 45px; width: 120px;">
+
+    <button class="btn btn-secondary" type="button" ng-click="$vm.cancel()">Đóng</button>
+</div>

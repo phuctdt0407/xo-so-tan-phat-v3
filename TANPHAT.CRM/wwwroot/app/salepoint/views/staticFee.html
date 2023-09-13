@@ -1,0 +1,37 @@
+﻿<div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
+    <div class="container-fluid wh-bg mt-10">
+
+        <div class="row">
+            <div class="col-md-3 col-xs-6 col-lg-2 pt10">
+                <label>Tháng</label>
+                <monthyearpicker my-class="input-sm datepicker-new" date-format="MM/YYYY" placeholder="MM/YYYY"
+                                 ng-model="$vm.month" on-select="$vm.loadData()" ng-change="$vm.loadData()" output-format="YYYY-MM"></monthyearpicker>
+            </div>
+        </div>
+
+        <div class="table-responsive resize-tb">
+            <table class="table">
+                <thead class="fix-scroll">
+                    <tr>
+                        <th class="theader first-col-sticky"></th>
+                        <th class="theader first-col-sticky" ng-repeat="fee in $vm.listDisplay">
+                            <div class=""> {{fee.StaticFeeTypeNameVIET}}</div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="">
+                    <tr ng-repeat="ele in $vm.dataTable">
+                        <td class="first-col-sticky link ">
+                            {{ele.name}}
+
+                        </td>
+                        <td ng-repeat="item in ele.data" class="w100 text-right" ng-click="$vm.updateStaticFee(ele, item.id, item.fee, item.feeNameV)" style="cursor: pointer">
+                            {{item.fee > 0 ? (item.fee | formatCurrency) : 0}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>     

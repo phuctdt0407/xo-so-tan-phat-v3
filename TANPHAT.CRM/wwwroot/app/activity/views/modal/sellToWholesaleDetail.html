@@ -1,0 +1,81 @@
+﻿<div class="modal-header text-center">
+    <h3 class="modal-title" id="modal-title">Chi tiết bán cho khách sỉ</h3>
+</div>
+
+<div>
+    <div class="modal-body">
+        <div class="table-responsive resize-tb px-3">
+            <div>
+                <div class="row">
+                    <div class="col-6 text-left"> Khách hàng</div>
+                    <div class="col-6 text-left">{{$vm.wholesaleData.FullName}}</div>
+                </div>
+                <div class="row">
+                    <div class="col-6 text-left">Điểm bán</div>
+                    <div class="col-6 text-left">{{$vm.data.SalePointName}}</div>
+                </div>
+            </div>
+            <div class="mt-3">
+                <div class="row">
+                    <div class="col-6 text-left">Nợ cũ</div>
+                    <div class="col-6 text-left">{{$vm.wholesaleData.Debt > 0 ? ($vm.wholesaleData.Debt | formatCurrency) : 0}}</div>
+                </div>
+                <div class="row">
+                    <div class="col-6 text-left">Trả ế</div>
+                    <div class="col-6 text-left">{{$vm.returnData.totalReturn != 0 ? ($vm.returnData.totalReturn | formatCurrency) : 0}}</div>
+                </div>
+            </div>
+            <div class="mt-3">
+                <div class="row">
+                    <div class="col-6 text-left">Đã trả cho khách</div>
+                    <div class="col-6 text-left">{{$vm.returnForGuest.Input != 0 ? ($vm.returnForGuest.Input | formatCurrency) : 0}}</div>
+                </div>
+                <div class="row">
+                    <div class="col-6 text-left">Còn nợ khách</div>
+                    <div class="col-6 text-left">{{$vm.returnForGuest.Debt > 0 ? ($vm.returnForGuest.Debt | formatCurrency) : 0}}</div>
+                </div>
+            </div>
+            <div class="mt-3">
+                <div class="row">
+                    <div class="col-6 text-left">Tổng thanh toán</div>
+                    <div class="col-6 text-left">{{$vm.totalPayment != 0 ? ($vm.totalPayment | formatCurrency) : 0 }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-6 text-left">Thanh toán nợ cũ</div>
+                    <div class="col-6 text-left">{{$vm.totalPaymentOldDebt  != 0 ? ($vm.totalPaymentOldDebt | formatCurrency) : 0}}</div>
+                </div>
+                <div class="row">
+                    <div class="col-6 text-left">Thanh toán hết nợ cũ</div>
+                    <i ng-if="($vm.returnData.totalReturn + $vm.totalPayment) >= $vm.wholesaleData.Debt" class="fa fa-check fa-lg" aria-hidden="true" style="color: green;"></i>
+                    <i ng-if="($vm.returnData.totalReturn + $vm.totalPayment) < $vm.wholesaleData.Debt" class="fa fa-times fa-lg" aria-hidden="true" style="color: red;"></i>
+                </div>
+                <div class="row">
+                    <div class="col-6 text-left font-weight-bold">Thanh toán còn lại</div>
+                    <div class="col-6 text-left font-weight-bold">
+                        {{($vm.totalPayment - $vm.totalPaymentOldDebt) > 0 ? (($vm.totalPayment - $vm.totalPaymentOldDebt) | formatCurrency) : 0}}
+                    </div>
+                </div>
+            </div>
+            <div class="mt-3">
+                <div class="row">
+                    <div class="col-6 text-left">Mua mới</div>
+                    <div class="col-6 text-left">{{$vm.totalBuy ? ($vm.totalBuy | formatCurrency) : 0}}</div>
+                </div>
+<!--                <div class="row font-weight-bold">-->
+<!--                    <div class="col-6 text-left ">Nợ mới</div>-->
+<!--                    <div class="col-6 text-left ">-->
+<!--                        {{$vm.newDebt > 0 ? ($vm.newDebt | formatCurrency) : 0}}-->
+<!--                    </div>-->
+<!--                </div>-->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal-footer">
+
+    <button class="btn btn-success" type="button" ng-click="$vm.saveWholesale()">Xác nhận</button>
+
+    <button class="btn btn-secondary" type="button" ng-click="$vm.cancel()">Đóng</button>
+</div>

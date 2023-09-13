@@ -1,0 +1,46 @@
+﻿<div class="col-12 layout-spacing">
+    <div class="container-fluid wh-bg mt-10 pt-10">
+
+        <form class="col-12" name="formCreate" id="myform" ng-submit="$vm.save()" novalidate>
+            <div>
+                <div class="col-12 layout-spacing">
+                    <div id="general-info">
+                        <div class="info">
+                            <hr />
+                            <h5 class="">Thông tin đại lý</h5>
+                            <div class="row" style="margin-top:36px"></div>
+                            <div class="row">
+
+                                <div class="form-group col-md-4 col-sm-122">
+                                    <label>Chọn Loại đại lý</label>
+                                    <ui-select ng-model="$vm.dataTypeAngency.id"
+                                               theme="select2" search-enabled="false">
+                                        <ui-select-match placeholder="Loại đại lý" allow-clear="false">{{$select.selected.type}}</ui-select-match>
+                                        <ui-select-choices position="down" repeat="ele.id.toString() as ele in $vm.listTypeAgency">
+                                            {{ele.type}}
+                                        </ui-select-choices>
+                                    </ui-select>
+                                </div>
+
+                                <div class="form-group col-md-6 col-sm-12">
+                                    <label for="Name" class="rq-form">Tên đại lý:</label>
+                                    <input type="text" class="form-control" id="Name"
+                                           name="Name" placeholder="vd: Phi Cường, Minh ngọc..."
+                                           ng-class="{'invalid-input': $vm.IsCheck && formCreate.Name.$invalid && formCreate.$submitted }"
+                                           ng-model="$vm.update.Name" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" type="submit" ng-disabled="$vm.isSaving">Lưu</button>
+            </div>
+        </form>
+
+    </div>
+</div>

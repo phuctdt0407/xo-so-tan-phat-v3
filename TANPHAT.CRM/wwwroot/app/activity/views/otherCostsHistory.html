@@ -1,0 +1,89 @@
+﻿<div class="modal-header">
+    <h3 class="modal-title" id="modal-title">Lịch sử chi phí</h3>
+</div>
+<div class="modal-body">
+    <div class="m-3">
+        <div class="m-2">
+            <form name="submitSearch" ng-submit="$vm.submitSearch()" novalidate>
+
+                <div style="margin-bottom: 5px; display: flex">
+                    <div class="col-2">
+                        <label class="rq-form">Chọn điểm bán</label>
+                        <ui-select ng-model="$vm.salePointGet"
+                                   theme="select2"
+                                   search-enabled="false">
+                            <ui-select-match style="font-size: 20px" allow-clear="false" placeholder="Chọn điểm bán">
+                                {{$select.selected.Name}}
+                            </ui-select-match>
+                            <ui-select-choices position="down" repeat="item in $vm.listSalePointForGet">
+                                {{item.Name}}
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                    <div class="col-2">
+                        <label>Choose date</label>
+                        <span class="" style="width: 270px;">
+                            <datepicker my-class="input-sm z999 editDaypicker" date-format="dddd, YYYY/MM/DD" pick-time="false"
+                                        ng-model="$vm.date" output-format="dddd,YYYY/MM/DD"
+                                        placeholder="yyyy/mm/dd"></datepicker>
+                        </span>
+                    </div>
+                    <button class="btn btn-primary" type="submit" style="width: max-content; float: right; margin-right: 5px; height: 45px;margin-top: 38px;">Search</button>
+                </div>
+            </form>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="noselect theader text-center">
+                            STT
+                        </th>
+                        <th class="noselect theader text-center">
+                            Điểm bán
+                        </th>
+                        <th class="noselect theader text-center">
+                            Tên chi phí
+                        </th>
+                        <th class="noselect theader text-center">
+                            Tổng chi phí
+                        </th>
+                        <th class="noselect theader text-center">
+                            Ghi chú
+                        </th>
+                        <th class="noselect theader text-center">
+                            Xóa
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in $vm.listFee">
+                        <td class="text-center">
+                            {{$index+1}}
+                        </td>
+                        <td class="text-center">
+                            {{item.SalePointName }}
+                        </td>
+                        <td class="text-left">
+                            {{item.Name}}
+                        </td>
+                        <td class="text-center">
+                            {{item.Price > 0 ? (item.Price | formatCurrency) : 0}}
+                        </td>
+                        <td class="text-left">
+                            {{item.Note}}
+                        </td>
+                        <td class="text-center">
+                            <i class="fa fa-trash fa-lg cursor" style="color: red" ng-click="$vm.getBootBox(item)"></i>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="99" ng-if="!$vm.listFee || $vm.listFee.length == 0">
+                            Chưa có chi phí
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+

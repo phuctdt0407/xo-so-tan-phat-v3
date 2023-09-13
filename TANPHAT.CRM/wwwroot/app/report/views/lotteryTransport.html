@@ -1,0 +1,89 @@
+﻿<div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
+    <div class="container-fluid mt-10 pt-10 pb-10 mt-10 px-4 wh-bg">
+        <div class="row">
+            <div class="mt-20 w160px">
+                <label>Chọn ngày</label>
+                <datepicker my-class="input-sm datepicker" date-format="DD/MM/YYYY" pick-time="false"
+                            on-select="$vm.getData(date)"
+                            ng-model="$vm.params.day" output-format="DD/MM/YYYY"
+                            ng-change="$vm.changeDate()"
+                            placeholder="dd/mm/yyyy"></datepicker>
+            </div>
+        </div>
+
+
+        <div ng-if="$vm.listTotalTrans.TotalRemaining==0 && $vm.listTotalTrans.TotalTrans1==0 && $vm.listTotalTrans.TotalTrans2==0">Chưa có dữ liệu</div>
+        <div ng-if="$vm.listTotalTrans.TotalRemaining!=0">
+            <label class="mt-20">Điểm bán trả ế</label>
+            <div class="table-responsive resize-tb" >
+                <table class="table">
+                    <thead class="fix-scroll">
+                        <tr class="noselect theader center-align first-col-sticky fix-scroll">
+                            <th class=" center-align first1-col-sticky w100">Đài bán</th>
+                            <th class=" center-align second1-col-sticky w100 bg-sum">Tổng cộng</th>
+                            <th class=" center-align w100" ng-repeat="item in $vm.listSalePoint">{{item.Name}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="display:none" ng-repeat-start="ele in $vm.listData"></tr>
+                        <tr>
+                            <td class="first-col-sticky">{{ele.LotteryChannelName}}</td>
+                            <td ng-class="ele.TotalRemaining!=0?'bg-color':''" class="second-col-sticky bg-num">{{ele.TotalRemaining  | formatCurrency}}</td>
+                            <td ng-repeat="item in ele.listSalePoint" ng-class="item.TotalRemaining!=0?'bg-color':''"> {{item.TotalRemaining  | formatCurrency}}</td>
+                        </tr>
+                        <tr style="display:none" ng-repeat-end=""></tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+        <div ng-if="$vm.listTotalTrans.TotalTrans1!=0">
+            <label class="mt-20">Chuyển vé ca 1</label>
+            <div class="table-responsive resize-tb">
+                <table class="table">
+                    <thead class="fix-scroll">
+                        <tr class="noselect theader center-align first-col-sticky fix-scroll">
+                            <th class=" center-align first1-col-sticky w100">Đài bán</th>
+                            <th class=" center-align second1-col-sticky w100 bg-sum">Tổng cộng</th>
+                            <th class=" center-align w100" ng-repeat="item in $vm.listSalePoint">{{item.Name}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="display:none" ng-repeat-start="ele in $vm.listData"></tr>
+                        <tr>
+                            <td class="first-col-sticky">{{ele.LotteryChannelName}}</td>
+                            <td class="second-col-sticky bg-num" ng-class="!ele.TotalTrans1 || ele.TotalTrans1==0?'':'bg-color'">{{ele.TotalTrans1  | formatCurrency}}</td>
+                            <td ng-class="!item.TotalTrans1 || item.TotalTrans1==0?'':'bg-color'" ng-repeat="item in ele.listSalePoint"> {{(!item.TotalTrans1 ? 0 : item.TotalTrans1)  | formatCurrency}}</td>
+                        </tr>
+                        <tr style="display:none" ng-repeat-end=""></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div ng-if="$vm.listTotalTrans.TotalTrans2!=0">
+            <label class="mt-20">Chuyển vé ca 2</label>
+            <div class="table-responsive resize-tb">
+                <table class="table">
+                    <thead class="fix-scroll">
+                        <tr class="noselect theader center-align first-col-sticky fix-scroll">
+                            <th class=" center-align first1-col-sticky w100">Đài bán</th>
+                            <th class=" center-align second1-col-sticky w100 bg-sum">Tổng cộng</th>
+                            <th class=" center-align w100" ng-repeat="item in $vm.listSalePoint">{{item.Name}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="display:none" ng-repeat-start="ele in $vm.listData"></tr>
+                        <tr>
+                            <td class="first-col-sticky">{{ele.LotteryChannelName}}</td>
+                            <td class="second-col-sticky bg-num" ng-class="!ele.TotalTrans2 || ele.TotalTrans2==0?'':'bg-color'">{{ele.TotalTrans2  | formatCurrency}}</td>
+                            <td ng-class="!item.TotalTrans2 || item.TotalTrans2==0?'':'bg-color'" ng-repeat="item in ele.listSalePoint"> {{(!item.TotalTrans2 ? 0 : item.TotalTrans2)  | formatCurrency}}</td>
+                        </tr>
+                        <tr style="display:none" ng-repeat-end=""></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    </div>

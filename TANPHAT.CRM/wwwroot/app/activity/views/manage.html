@@ -1,0 +1,149 @@
+﻿<div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
+    <div style="padding-bottom: 60px;" class="container-fluid mt-10 pt-10 pb-10 mt-10 px-4 wh-bg">
+        <div class="row">
+            <div class="wh-bg mt-10 col-6">
+                <div class="mt20" style="width: 160px; padding-left: 15px;">
+                    <label>Chọn ngày xổ số</label>
+                    <datepicker my-class="input-sm datepicker" date-format="DD/MM/YYYY" pick-time="false"
+                                on-select="$vm.getData(date)"
+                                ng-model="$vm.params.day" output-format="DD/MM/YYYY"
+                                ng-change="$vm.changeDate()"
+                                placeholder="dd/mm/yyyy"></datepicker>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="table-responsive resize-tb py-4 note">
+                    <table class="table table-wrapper-scroll-y my-custom-scrollbar">
+                        <thead class="theader text-center fix-scroll ">
+                            <tr>
+                                <th colspan="2" class="text-center py-4">CHÚ GIẢI</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="py-4">
+                                    <i class="fa fa-lock" aria-hidden="true"></i>
+                                </td>
+                                <td class="py-4 text-12 text-left">
+                                    Đóng nhập vé trùng cho điểm bán
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="py-4">
+                                    <i class="fa fa-unlock text-align-right" aria-hidden="true"></i>
+                                </td>
+                                <td class="py-4 text-12 text-left">
+                                    Mở nhập vé trùng cho điểm bán
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <span class="btn btn-today" ng-click="$vm.clickToday()">Hôm nay</span>
+        <span class="btn btn-tomorrow" ng-click="$vm.clickToday(1)">Ngày mai</span>
+        <span class="btn btn-nextday" ng-click="$vm.clickToday(2)">Ngày kia</span>
+
+
+        <div style="display: flex; justify-content: space-between;">
+
+            <h3 style="text-align: left;"><strong>Ngày xổ số: {{$vm.dayDisplay}}</strong></h3>
+            <div class="btn btn-primary float-r  mb-10" ng-if="!vm.isSaving" ng-click="$vm.save()"><i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu </div>
+            <img src="../images/loading-dot.gif" ng-if="$vm.isSaving" class="float-r" style="height: 45px; width: 120px;">
+        </div>
+
+        <div class="table-responsive resize-tb">
+            <table id="default-ordering" class="table" style="width:100%">
+                <thead class="fix-scroll">
+                    <tr class="fix-scroll">
+                        <th rowspan="3" class="noselect theader center-align first-col-sticky bg-total"> Tổng cộng </th> <!-- add class sticky-border-2 to set border -->
+                        <!--Modify-->
+
+                        <th colspan="2" class="noselect theader center-align detail-col-sticky bg-total"> Vé chưa chia từ đại lý</th> <!-- add class sticky-border-2 to set border -->
+                        <th colspan="{{$vm.listLottery.length}}" ng-repeat="item in $vm.listAgency" class="noselect theader center-align ">{{item.Name}}  </th> <!-- add class sticky-border-2 to set border -->
+                    </tr>
+
+                    <tr>
+                        <!--Modify-->
+                        <th rowspan="2" class="noselect theader center-align detail-col-sticky bg-total">
+                            <div ng-repeat="daiban in $vm.listLotteryBk" style="display: flex; justify-content: space-between;">
+                                <div style="text-align: left;">{{daiban.Name}}</div>
+                                <div style="text-align: right;">{{daiban.TotalRemaining}}</div>
+                            </div>
+                        </th>
+
+                        <th rowspan="2" class="noselect theader center-align total-col-sticky bg-total"> {{$vm.Total}} </th>
+
+                        <th ng-repeat="item in $vm.listInitDaiBan1" class="noselect theader center-align <!--sticky-border-2-->">{{item.Name}}  </th> <!-- add class sticky-border-2 to set border -->
+                    </tr>
+                    <tr>
+                        <!--Modify-->
+                        <th ng-repeat="item in $vm.listInitDaiBan1" class="noselect theader center-align <!--sticky-border-2--> text-align-right padding-r24">{{item.TotalRemaining}}  </th> <!-- add class sticky-border-2 to set border -->
+                    </tr>
+                </thead>
+
+                <tbody ng-repeat-end>
+                    <tr ng-hide="true" ng-repeat-start="diemban in $vm.listInit1"></tr>
+
+                    <!--Firstline-->
+                    <tr>
+                        <!--lock-->
+                        <td class="first-col-sticky <!--sticky-border-2-->" ng-if="!(diemban.isCheckDupVal || diemban.isClose)">
+                            <!-- add class sticky-border-2 to set border -->
+                            {{$index +1}}. {{diemban.SalePointName}}
+
+                            <i class="fa fa-lock" aria-hidden="true" style="float: right" ng-click="diemban.isClose= true"></i>
+                        </td>
+
+                        <td class="detail-col-sticky <!--sticky-border-2-->" ng-if="!(diemban.isCheckDupVal || diemban.isClose)">
+                            <!-- add class sticky-border-2 to set border -->
+                            <div ng-repeat="daiban in diemban.detail" style="display: flex; justify-content: space-between;">
+                                <div style="text-align: left;">{{daiban.Name}}</div>
+                                <div style="text-align: right;">{{daiban.total}}</div>
+                            </div>
+
+                        </td>
+
+                        <!--end lock-->
+                        <!--unlock-->
+                        <td class="first-col-sticky text-align-left" ng-if="diemban.isCheckDupVal || diemban.isClose" rowspan="2">
+                            <!-- add class sticky-border-2 to set border -->
+                            {{$index +1}}. {{diemban.SalePointName}}
+
+                            <i ng-if="!diemban.isCheckDupVal" class="fa fa-unlock text-align-right" aria-hidden="true" style="float: right" ng-click="diemban.isClose= false"></i>
+                        </td>
+                        <td class="detail-col-sticky text-align-left" ng-if="diemban.isCheckDupVal || diemban.isClose" rowspan="2">
+                            <!-- add class sticky-border-2 to set border -->
+                            <div ng-repeat="daiban in diemban.detail" style="display: flex; justify-content: space-between;">
+                                <div style="text-align: left;">{{daiban.Name}}</div>
+                                <div style="text-align: right;">{{daiban.total}}</div>
+                            </div>
+                        </td>
+                        <!--end unlock-->
+                        <td class="total-col-sticky">
+                            {{ diemban.isClose ? 'Vé thường: '+diemban.TotalRemaining : diemban.TotalRemaining}}
+                        </td>
+                        <td class="text-align-right" ng-repeat="item in diemban.Info" ng-class="item.TotalRemaining!==0?'bg-color':''" ng-click="$vm.onClick($parent.$index,$index)">
+                            <input ng-keypress="inputNumber($event)" class="text-align-right" type="number" id="quantity_{{$parent.$index}}_{{$index}}" name="" min="0" max="999999" ng-model="item.TotalRemaining" ng-change="$vm.ChangeValueNumber1(item,{{item}}, diemban, $parent.$index,$index)" ng-class="item.TotalRemaining!==0?['bg-color', 'border-input']:'border-input'">
+                        </td>
+                    </tr>
+
+                    <!--Secondline-->
+                    <tr ng-if="diemban.isCheckDupVal || diemban.isClose">
+                        <td class="total-col-sticky <!--sticky-border-2-->"> <div>Vé trùng:</div> {{diemban.TotalDupRemaining}} </td> <!-- add class sticky-border-2 to set border -->
+                        <td class="text-align-right" ng-repeat="item in diemban.Info" ng-class="item.TotalDupRemaining!==0?'bg-color':''" ng-click="$vm.onClickDup($parent.$index,$index)">
+                            <input ng-keypress="inputNumber($event)" class="text-align-right" type="number" id="quantity_dup_{{$parent.$index}}_{{$index}}" name="" min="0" max="999999" ng-model="item.TotalDupRemaining" ng-change="$vm.ChangeValueNumber2(item,{{item}}, diemban, $parent.$index,$index)" ng-class="item.TotalDupRemaining!==0?['bg-color', 'border-input']:'border-input'">
+                        </td>
+                    </tr>
+                    <tr ng-hide="true" ng-repeat-end></tr>
+                </tbody>
+            </table>
+        </div>
+
+
+        <div class="btn btn-primary float-r pt-10 mb-10 mt-10" ng-if="!$vm.isSaving" ng-click="$vm.save()"><i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu </div>
+        <img src="../images/loading-dot.gif" ng-if="$vm.isSaving" class="float-r" style="height: 45px; width: 120px;">
+    </div>
+</div>

@@ -1,0 +1,72 @@
+﻿<div class="modal-header">
+    <h3 class="modal-title" id="modal-title">{{$vm.model && $vm.model.ItemId?("Chỉnh sửa "+ $vm.CurrTypeOfItem.Name):"Tạo "+ $vm.CurrTypeOfItem.Name+" mới"}}</h3>
+</div>
+<div>
+    <form class="col-12" name="formCreate" id="myform" ng-submit="$vm.save()" novalidate>
+        <div>
+            <div class="col-12 layout-spacing">
+                <div id="general-info">
+                    <div class="info">
+                        <hr />
+                        <h5 class="">Thông tin dụng cụ</h5>
+                        <div class="row" style="margin-top:36px"></div>
+                        <div class="row">
+                            <div class="form-group col-md-6 col-sm-12">
+                                <label for="Name" class="rq-form">Tên dụng cụ:</label>
+                                <input type="text" class="form-control" id="Name"
+                                       name="Name" placeholder="vd:Bút chì, Bút bi ..."
+                                       ng-class="{'invalid-input': $vm.IsCheck && formCreate.Name.$invalid && formCreate.$submitted }"
+                                       ng-model="$vm.Name" required
+                                       />
+
+                            </div>
+                            <div class="form-group col-md-6 col-sm-12">
+                                <label for="Name" class="rq-form">Đơn vị tính:</label>
+                                <ui-select ng-model="$vm.selectBK" 
+                                            ng-change="$vm.onChangeValue($select.selected)"
+                                           theme="select2" search-enabled="true" >
+                                    <ui-select-match allow-clear="false" class="text-center">{{$select.selected.UnitName}}</ui-select-match>
+                                    <ui-select-choices position="down" repeat="ele.UnitId as ele in $vm.listUnit |  filter: $select.search.toUnaccent()">
+                                        {{ele.UnitName}}
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                            <!--<div class="form-group col-md-3 col-sm-12">
+                                <label for="Name" class="rq-form">Đơn giá:</label>
+                                <input type="number" class="form-control" id="Price"  min="0" max="99999999"
+                                       name="Price" placeholder="vd: 4,000..."
+                                       ng-keypress="inputNumber($event)"
+                                       ng-class="{'invalid-input': $vm.IsCheck && formCreate.Price.$invalid && formCreate.$submitted }"
+                                       ng-model="$vm.Price" required 
+                                      />
+                            </div>-->
+                        </div>
+                        <div class="row">
+
+                            <label for="standard">Tiêu chuẩn sử dụng trong 1 tháng của hệ thống:</label>
+                            <div class="form-group col-md-6 col-sm-12">
+                                <input type="number" class="form-control" id="standard" min="0" max="999999"
+                                       name="standard" placeholder="vd: 1,010..."
+                                       ng-keypress="inputNumber($event)"
+                                       ng-class="{'invalid-input': $vm.IsCheck && formCreate.standard.$invalid && formCreate.$submitted }"
+                                       ng-model="$vm.Quotation" required>
+                            </div>
+                            <div class="form-group col-md-1 col-sm-12"></div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+
+
+<div class="modal-footer">
+    <div class="btn btn-primary " ng-if="!$vm.isSaving" ng-click="$vm.save()"><i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu </div>
+    <img src="../images/loading-dot.gif" ng-if="$vm.isSaving" class="float-r" style="height: 45px; width: 120px;">
+
+    <button class="btn btn-secondary" type="button" ng-click="$vm.cancel()">Đóng</button>
+</div>

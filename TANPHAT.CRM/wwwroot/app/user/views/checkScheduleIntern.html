@@ -1,0 +1,106 @@
+<div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
+    <div class="container-fluid wh-bg mt-10">
+
+        <div class="row">
+            <div class="wh-bg mt-10 col-9">
+                <div class="mt20 w160px pt-10">
+                    <label>Tháng</label>
+                    <monthyearpicker my-class="input-sm datepicker-new" date-format="MM/YYYY" placeholder="All month"
+                                     ng-model="$vm.month" on-select="$vm.loadData()" ng-change="$vm.loadData()" output-format="YYYY-MM"></monthyearpicker>
+                </div>
+            </div>
+
+            <div class="col-3 my-auto">
+                <div class="d-flex justify-content-between resizeSchedule">
+                    <div class="legend-duplicate-shift">
+                        <span class="m-3">Trùng ca</span>
+                    </div>
+                    <span>{{$vm.totalDup}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="p-2">
+            <span class="resizeSchedule btn btn-today" ng-click="$vm.clickMonth()">Tháng này</span>
+            <span class="resizeSchedule btn btn-tomorrow" ng-click="$vm.clickMonth(1)">Tháng sau</span>
+            <div ng-if="!$vm.isSaving " class="btn btn-primary float-r resizeSchedule" ng-click="$vm.save()"><i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu </div>
+            <img src="../images/loading-dot.gif" ng-if="$vm.isSaving" class="float-r" style="height: 45px; width: 120px;">
+        </div>
+        <div class="table-responsive">
+            <div class="table-responsive resize-tb">
+                <div id="calendar">
+                    <table class="table w100p table-wrapper-scroll-y my-custom-scrollbar editPadding">
+                        <thead class="theader text-center fix-scroll ">
+                        <tr class="flex flex-wrap sticky-border-1">
+                            <th colspan="2" class="text-center first1-col-sticky fix-scroll py-4 resizeSchedule">Bảng lịch tháng {{$vm.thisMonth}}</th>
+
+                            <th style="width: 10px;" class="text-center fix-scroll py-4 resizeSchedule " ng-repeat="item in $vm.listDateInMonth"
+                                ng-class="({{$vm.checkCurrentDate($index)}} && item.IsWeekEnd && item.isDup) || (item.IsWeekEnd && item.isDup) ? 'bg-warning-weekend'
+                                                : (({{$vm.checkCurrentDate($index)}} && item.isDup) || item.isDup) ? 'bg-warning'
+                                                : ({{$vm.checkCurrentDate($index)}}&&item.IsWeekEnd) ? 'bg-current-weekend'
+                                                : {{$vm.checkCurrentDate($index)}} ? 'bg-curentDate'
+                                                : item.IsWeekEnd ? 'patternsCss' : '' ">
+                                    <span class="custom_ByTien">
+                                        {{$index+1}}
+
+                                        <i ng-if="item.IsHoliday" class="fa fa-solid fa-star tooltips" tooltip="{{item.Tooltip}}" tooltip-position="bottom" style="color:yellow"></i>
+
+                                    </span>
+                            </th>
+  </tr>
+                        <tr class="flex flex-wrap sticky-border-1 resizeSchedule">
+                            <td class="text-center first1-col-sticky fix-scroll py-4">TP</td>
+                            <td class="text-center  fix-scroll second1-col-sticky py-4">Tên</td>
+                            <td class="text-center fix-scroll py-4" ng-repeat="item in $vm.listMonth"
+                                ng-class="({{$vm.checkCurrentDate($index)}}&&{{item.IsWeekEnd}}) ? 'bg-current-weekend'
+                                                : {{$vm.checkCurrentDate($index)}} ? 'bg-curentDate'
+                                                : {{item.IsWeekEnd}} ? 'patternsCss' : '' ">
+                                {{item.DateName}}
+                            </td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat-start="item in $vm.listSalePoint" style="display:none"> </tr>
+                        <tr>
+                            <td rowspan="2" class="text-center center-align first-col-sticky sticky-border-1">{{$index +1}}. {{item.Name}}</td>
+                            <td class="text-center sky-bg second-col-sticky sticky-border-1">
+                                <ui-select ng-model="item.inputShift_2" ng-change="$vm.checkDupValueAll()"
+                                       
+                                           ng-click="$vm.clicked()"
+                                           theme="select2" search-enabled="true">
+                                    <ui-select-match placeholder="Chọn nhân viên" allow-clear="false" class="text-center" >{{$select.selected.Name}}</ui-select-match>
+                                    <ui-select-choices position="down" repeat="ele.Id as ele in $vm.listStaff |filter: { IsIntern: true } | filter: $select.search.toUnaccent()">
+                                        {{ele.Name}}
+                                    </ui-select-choices>
+                                </ui-select>
+                            </td>
+                            <td class="mw-7r" ng-repeat="ele in item.listMonth" ng-click="$vm.openPopup(1,ele, item, ele.objShift1.ShiftDistributeId)" ng-class="[ !$vm.isCheckMonth(ele,1)? 'notAllow':'' ,ele.objShift1.isDup? 'bg-warning' : ele.objShift1.isChangeData? 'wh-bg' : ele.IsWeekEnd? (ele.objShift1.isShift1?  'grin-patternsCss' :'sky-patternsCss') :  (ele.objShift1.isShift1?  'grin-bg' :'sky-bg')]">
+                                {{ele.objShift1.isChangeData? ele.objShift1.Name : ele.objShift1.isShift1?$vm.objStaff[item.inputShift_1]:$vm.objStaff[item.inputShift_2]}}
+                             </td>
+                        </tr>
+                        <tr class="bb-4">
+                            <td class="text-center grin-bg second-col-sticky sticky-border-1">
+                                <ui-select ng-model="item.inputShift_1" ng-change="$vm.checkDupValueAll()"
+                                         
+                                           theme="select2" search-enabled="true">
+                                    <ui-select-match placeholder="Chọn nhân viên" allow-clear="false" class="text-center">{{$select.selected.Name}}</ui-select-match>
+                                    <ui-select-choices position="down" repeat="ele.Id as ele in $vm.listStaff |filter: { IsIntern: true } | filter: $select.search.toUnaccent()">
+                                        {{ele.Name}}
+                                    </ui-select-choices>
+                                </ui-select>
+                            </td>
+                            <td class="mw-7r" ng-repeat="ele in item.listMonth" ng-click="  $vm.openPopup(2,ele, item, ele.objShift2.ShiftDistributeId)" ng-class="[ !$vm.isCheckMonth(ele,2)? 'notAllow':'' , ele.objShift2.isDup? 'bg-warning' : ele.objShift2.isChangeData? 'wh-bg' : ele.IsWeekEnd? (ele.objShift2.isShift1?  'grin-patternsCss' :'sky-patternsCss') :  (ele.objShift2.isShift1?  'grin-bg' :'sky-bg')] ">
+                                {{ele.objShift2.isChangeData? ele.objShift2.Name : ele.objShift2.isShift1?$vm.objStaff[item.inputShift_1]:$vm.objStaff[item.inputShift_2]}}
+                         </td>
+                        </tr>
+
+                        <tr ng-repeat-end style="display:none"> </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <img src="../images/loading-dot.gif" ng-if="$vm.isSaving" class="float-r" style="height: 45px; width: 120px;">
+            <div ng-if="!$vm.isSaving"  class="btn btn-primary float-r mt-10" ng-click="$vm.save()"><i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu </div>
+        </div>
+    </div>
+
+</div>

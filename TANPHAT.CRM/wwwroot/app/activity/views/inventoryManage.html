@@ -1,0 +1,73 @@
+﻿<div class="col-12 layout-spacing">
+    <div class="container-fluid wh-bg mt-10 pt-10" style="padding-bottom:50px">
+        <div class="mt20" style="width: 160px;">
+            <label>Chọn ngày:</label>
+            <datepicker my-class="input-sm datepicker" date-format="DD-MM-YYYY" pick-time="false"
+                        ng-model="$vm.params.day" output-format="DD-MM-YYYY"
+                        ng-change="$vm.changeDate()"
+                        placeholder="dd/mm/yyyy"></datepicker>
+        </div>
+        <span class="btn btn-today" ng-click="$vm.clickToday()">Hôm nay</span>
+        <span class="btn btn-tomorrow" ng-click="$vm.clickToday(1)">Ngày mai</span>
+        <span class="btn btn-nextday" ng-click="$vm.clickToday(2)">Ngày kia</span>
+        <h2> {{$vm.dayDisplay}}</h2>
+        <div id="chart"> </div>
+
+        <div style="overflow: auto">
+            <div class="table-responsive resize-tb">
+                <table class="table table-custom" style="width:100%">
+                    <thead class="fix-scroll">
+                        <tr class="fix-scroll">
+                            <!--<th class="noselect theader text-center" rowspan="2">STT</th>-->
+                            <th class="w80px noselect theader text-center" style="min-width:80px" rowspan="2">Điểm bán</th>
+                            <th ng-repeat="item in $vm.dataDaiBan" class="noselect theader text-center"><strong>{{item.name}}</strong></th>
+                            <th class="noselect theader text-center">Tổng cộng</th>
+                            <th class="noselect theader text-center" rowspan="2">Chi tiết</th>
+                        </tr>
+                        <tr>
+                            <th ng-repeat="item in $vm.dataDaiBan" class="noselect theader text-center">
+                                <div style="font-weight: bold; display: flex; justify-content: space-between;"><span>Vé chưa chuyển</span> <span>{{item.total}}</span></div>
+                            </th>
+                            <th class="text-right noselect theader"> {{ $vm.TotalSum }}</th>
+                        </tr>
+                    </thead>
+                    <tbody ng-repeat-end>
+                        <tr ng-repeat-start="item in $vm.listInventory" ng-click="$vm.showHide($index);  $vm.openDetail(item.ListLogData, item.SalePointName)">
+                            <!--<td class="noselect text-bold">{{$index+1}}</td>-->
+                            <td class="noselect text-left text-bold w80px">{{item.SalePointName}}</td>
+
+                            <td ng-repeat="ele in item.dataDaiBan" class="noselect text-left text-bold text-align-right">{{-ele.total}}</td>
+                            <td class="noselect text-left text-bold text-align-right">{{-item.TotalSum}}</td>
+                            <td class="noselect text-bold link text-align-right" ng-if="!item.ListLogData || item.ListLogData.length ==0">-</td>
+                            <td class="noselect text-bold link text-align-right" ng-if="item.ListLogData.length >0" ng-bind-html="true | detail"></td>
+
+
+                            <!--<td class="noselect text-bold link text-align-right" ng-click="$vm.openDetail(item.ListLogData)" ng-if=" item.ListLogData.length >0 && item.isExpand" ng-bind-html="!item.isExpand | detail"></td>
+    <td class="noselect text-bold link text-align-right" ng-click="$vm.openDetail(item.ListLogData)" ng-if=" item.ListLogData.length >0 && !item.isExpand" ng-bind-html="!item.isExpand | detail"></td>-->
+
+
+                        </tr>
+                        <tr ng-if="item.isExpand && false && item.ListLogData">
+                            <td rowspan="{{item.ListLogData.length +1}}" class=" selected noselect center-align"></td>
+                            <th colspan="1" class="noselect theader text-center">Đài Bán</th>
+                            <th colspan="1" class="noselect theader text-center">Số lượng</th>
+                            <th colspan="1" class="noselect theader text-center">Người chuyển</th>
+                            <th colspan="1" class="noselect theader text-center">Thời gian</th>
+                            <td rowspan="{{item.ListLogData.length +1}}" class=" selected noselect center-align"></td>
+                        </tr>
+                        <tr ng-if="item.isExpand && false" ng-repeat-end="" ng-repeat="ele in item.ListLogData">
+                            <td colspan="1" class="noselect border-soild td-color text-left ">{{ele.LotteryChannelName}}</td>
+                            <td colspan="1" class="noselect border-soild td-color text-left ">{{ele.TransitionTypeId==2? "Nhận: ": "Chuyển: "}} {{ele.TotalTrans}} {{ele.TotalTransDup>0? " (Vé trùng: "+ele.TotalTransDup+")":""}}</td>
+                            <td colspan="1" class="noselect border-soild td-color text-left ">{{ele.ManagerName?ele.ManagerName:'--'}}</td>
+                            <td colspan="1" class="noselect border-soild td-color text-left ">{{ele.TransitionDate  | formatDateTime}}</td>
+                        </tr>
+                        <tr ng-if="!$vm.listInventory || $vm.listInventory.length == 0">
+                            <td colspan="99">Không tìm thấy dữ liệu</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>

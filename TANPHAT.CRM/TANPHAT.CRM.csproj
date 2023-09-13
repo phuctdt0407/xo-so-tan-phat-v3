@@ -1,0 +1,82 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Controllers\Api\" />
+    <None Remove="KTHub.Core.Client" />
+    <None Remove="BuildBundlerMinifier" />
+    <None Remove="Wire" />
+    <None Remove="Newtonsoft.Json" />
+    <None Remove="Helpers\" />
+    <None Remove="KTHub.Core.Helper" />
+    <None Remove="Hubs\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="wwwroot\app\dashboard\controllers\modal" />
+    <Folder Include="wwwroot\app\dashboard\views\modal" />
+    <Folder Include="wwwroot\lib\" />
+    <Folder Include="wwwroot\bundle\" />
+    <Folder Include="wwwroot\bundle\css\" />
+    <Folder Include="wwwroot\bundle\js\" />
+    <Folder Include="wwwroot\app\user\css\" />
+    <Folder Include="wwwroot\app\user\services\" />
+    <Folder Include="Helpers\" />
+    <Folder Include="wwwroot\app\activity\css\" />
+    <Folder Include="wwwroot\app\activity\services\" />
+    <Folder Include="wwwroot\app\report\css\" />
+    <Folder Include="wwwroot\app\report\services\" />
+    <Folder Include="Hubs\" />
+    <Folder Include="wwwroot\app\salepoint\services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="KTHub.Core.Client">
+      <HintPath>..\DLLpackages\KTHub.Core.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="KTHub.Core.Helper">
+      <HintPath>..\DLLpackages\KTHub.Core.Helper.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TANPHAT.CRM.Client\TANPHAT.CRM.Client.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
+    <ProjectReference Include="..\TANPHAT.CRM.Domain\TANPHAT.CRM.Domain.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="BuildBundlerMinifier" Version="3.2.449" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.14" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.15.1" />
+    <PackageReference Include="System.Text.Encodings.Web" Version="6.0.2-mauipre.1.22054.8" />
+    <PackageReference Include="Wire" Version="1.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="wwwroot\lib\" />
+    <Content Remove="wwwroot\bundle\" />
+    <Content Remove="wwwroot\bundle\css\" />
+    <Content Remove="wwwroot\bundle\js\" />
+    <Content Remove="wwwroot\app\user\" />
+    <Content Remove="wwwroot\app\user\controllers\" />
+    <Content Remove="wwwroot\app\user\css\" />
+    <Content Remove="wwwroot\app\user\services\" />
+    <Content Remove="wwwroot\app\user\views\" />
+    <Content Remove="wwwroot\templates\" />
+    <Content Remove="wwwroot\app\activity\" />
+    <Content Remove="wwwroot\app\activity\controllers\" />
+    <Content Remove="wwwroot\app\activity\css\" />
+    <Content Remove="wwwroot\app\activity\services\" />
+    <Content Remove="wwwroot\app\activity\views\" />
+    <Content Remove="wwwroot\app\report\" />
+    <Content Remove="wwwroot\app\report\controllers\" />
+    <Content Remove="wwwroot\app\report\css\" />
+    <Content Remove="wwwroot\app\report\services\" />
+    <Content Remove="wwwroot\app\report\views\" />
+    <Content Remove="wwwroot\app\salepoint\" />
+    <Content Remove="wwwroot\app\salepoint\services\" />
+  </ItemGroup>
+</Project>

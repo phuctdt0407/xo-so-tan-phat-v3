@@ -1,0 +1,59 @@
+﻿<div class="modal-header">
+    <h3 class="modal-title" id="modal-title">Lịch sử mua hàng</h3>
+</div>
+<div>
+    <div class="modal-body">
+        <div class="">
+            <div class="card card-create-container">
+           
+                <table class="table" style="width: 100% ;">
+                    <thead>
+                        <tr>
+                            <th rowspan="2" class="noselect theader text-center"><span>Thời gian</span></th>
+                            <th colspan="3" class="noselect theader text-center"><span>Mua mới/Trả ế</span></th>
+                            <th colspan="2" class="noselect theader text-center"><span>Khách thanh toán</span></th>
+                            <th rowspan="2" class="noselect theader text-center"><span>Trả lại khách</span></th>
+                            <th colspan="2" class="noselect theader text-center"><span>Nợ</span></th>
+                        </tr>
+                        <tr>
+                            <th class="noselect theader text-center"><span>Đài</span></th>
+                            <th class="noselect theader text-center"><span>Loại vé</span></th>
+                            <th class="noselect theader text-center"><span>Số lượng</span></th>
+
+                            <th class="noselect theader text-center"><span>Chuyển khoản</span></th>
+                            <th class="noselect theader text-center"><span>Tiền mặt</span></th>
+
+                            <th class="noselect theader text-center"><span>Nợ cũ</span></th>
+                            <th class="noselect theader text-center"><span>Nợ mới</span></th>
+                        </tr>
+
+
+                    </thead>
+                    <tbody>
+                        <tr style="display: none" ng-repeat-start="item in $vm.historyLog"> </tr>
+                        <tr ng-repeat="ele in item.Detail">
+                            <td ng-if="$index==0" rowspan="{{item.Detail.length}}">{{item.CreatedDate | formatDateTime}}</td>
+                            <td class="text-left">{{ele.LotteryChannelName}}</td>
+                            <td class="text-left">{{ele.LotteryTypeName}}</td>
+                            <td class="text-right">{{ele.Quantity | formatCurrency}}</td>
+                            <td class="text-right" ng-if="$index==0" rowspan="{{item.Detail.length}}">{{ele.Transfer  > 0 ? (ele.Transfer | formatCurrency) : 0}}</td>
+                            <td class="text-right" ng-if="$index==0" rowspan="{{item.Detail.length}}">{{ele.Cash > 0 ? (ele.Cash | formatCurrency) : 0}}</td>
+                            <td class="text-right" ng-if="$index==0" rowspan="{{item.Detail.length}}">{{ele.PayForGuest > 0 ? (ele.PayForGuest | formatCurrency) : 0}}</td>
+                            <td class="text-right" ng-if="$index==0" rowspan="{{item.Detail.length}}">{{item.Data.LastData.OldDebt > 0 ? (item.Data.LastData.OldDebt | formatCurrency) : 0}}</td>
+                            <td class="text-right" ng-if="$index==0" rowspan="{{item.Detail.length}}">{{item.Data.LastData.NewDebt > 0 ? (item.Data.LastData.NewDebt | formatCurrency) : 0}}</td>
+                        </tr>    
+                        <tr style="display: none" ng-repeat-end=""> </tr>
+
+                        <tr ng-if=" (!$vm.historyLog || $vm.historyLog.length <=0 )">
+                            <td colspan="99" class="text-center">Chưa có dữ liệu </td>
+                        </tr>
+</table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-footer">
+    <button class="btn btn-secondary" type="button" ng-click="$vm.cancel()">Đóng</button>
+
+</div>

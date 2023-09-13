@@ -1,0 +1,65 @@
+<div class="modal-header">
+    <h3 class="modal-title" id="modal-title">Trả thưởng</h3>
+</div>
+
+<div class=" m-3 p-3 ">
+    <div>
+        <label for="winningType" class="rq-form">Loại trả thưởng</label>
+        <ui-select ng-model="$vm.saveData.WinningTypeId" theme="select2" search-enabled="false" ng-change="$vm.onSelected($select.selected)">
+            <ui-select-match allow-clear="false" placeholder="Chọn loại trúng thưởng">
+                {{$select.selected.Name}}
+            </ui-select-match>
+            <ui-select-choices position="down" repeat="item.Id as item in $vm.winningTypeDDL">
+                {{item.Name}}
+            </ui-select-choices>
+        </ui-select>
+    </div>
+    <div ng-if="$vm.selectedType.HasChannel">
+        <label for="channel" class="rq-form">Đài</label>
+        <ui-select ng-model="$vm.saveData.LotteryChannelId" theme="select2" search-enabled="false">
+            <ui-select-match allow-clear="false" placeholder="Chọn đài">
+                {{$select.selected.Name}}
+            </ui-select-match>
+            <ui-select-choices position="down" repeat="item.Id as item in $vm.channels">
+                {{item.Name}}
+            </ui-select-choices>
+        </ui-select>
+    </div>
+    <div ng-if="$vm.saveData.WinningTypeId !=undefined && $vm.selectedType.HasSalePoint">
+        <label for="channel" class="rq-form">Cửa hàng bán</label>
+        <ui-select ng-model="$vm.saveData.FromSalePointId" theme="select2" search-enabled="false">
+            <ui-select-match allow-clear="false" placeholder="Chọn cửa hàng bán">
+                {{$select.selected.Name}}
+            </ui-select-match>
+            <ui-select-choices position="down" repeat="item.Id as item in $vm.salePoints">
+                {{item.Name}}
+            </ui-select-choices>
+        </ui-select>
+    </div>
+
+    <div ng-if="$vm.selectedType.HasFourNumber">
+        <label for="number" class="rq-form">Số trúng</label>
+        <input type="text" pattern="\d*" maxlength="4" class="form-control" id="number" name="numonly" placeholder="Nhập 4 số đuôi" required
+               ng-model="$vm.saveData.LotteryNumber ">
+    </div>
+    <div ng-if="$vm.selectedType.HasFourNumber ">
+        <label for="quantity" class="rq-form">Số lượng</label>
+        <input type="text" class="form-control" id="quantity" name="numonly" placeholder="Nhập số lượng vé" required
+               ng-change="$vm.OnChangeQuantity($vm.saveData.Quantity)"
+               ng-model="$vm.saveData.Quantity ">
+    </div>
+    <label for="amount" class="rq-form">Số tiền trả thưởng</label>
+    <!--<div class="form-control">{{$vm.saveData.WinningPrice * $vm.saveData.Quantity}}</div>-->
+
+    <input ng-disabled="!$vm.selectedType.CanChangePrice" ng-change="numToCurrency( $vm.saveData,'WinningPrice',$vm.saveData.WinningPrice? $vm.saveData.WinningPrice: '0',{{$vm.saveData.WinningPrice? $vm.saveData.WinningPrice: '0'}})" type="text" class="form-control" id="amountPrice" name="" placeholder="Nhập số tiền trả thưởng" required
+           ng-model="$vm.saveData.WinningPrice">
+
+    <!--<label for="amount" class="rq-form">Số tiền trả thưởng</label>
+        <input ng-disabled="!$vm.selectedType.CanChangePrice" ng-change="numToCurrency( $vm.saveData,'WinningPrice',$vm.saveData.WinningPrice? $vm.saveData.WinningPrice: '0',{{$vm.saveData.WinningPrice? $vm.saveData.WinningPrice: '0'}})" type="text" class="form-control" id="amountPrice" name="" placeholder="Nhập số tiền trả thưởng" required
+        ng-model="$vm.saveData.WinningPrice">-->
+</div>
+<div class="modal-footer">
+    <img src="../images/loading-dot.gif" ng-if="$vm.isSaving" class="float-r" style="height: 45px; width: 120px;">
+    <button class="btn btn-success" ng-if="!$vm.isSaving"  type="submit" ng-click="$vm.save()">Xác nhận</button>
+    <button class="btn btn-secondary" ng-if="!$vm.isSaving" type="button" ng-click="$vm.cancel()">Đóng</button>
+</div>
