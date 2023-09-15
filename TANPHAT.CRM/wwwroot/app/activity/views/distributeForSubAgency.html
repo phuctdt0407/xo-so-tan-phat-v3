@@ -71,17 +71,17 @@
                         <th rowspan="2" class="noselect theader center-align detail-col-sticky bg-total">
                             <div ng-repeat="daiban in $vm.listLotteryBk" style="display: flex; justify-content: space-between;">
                                 <div style="text-align: left;">{{daiban.Name}}</div>
-                                <div style="text-align: right;">{{daiban.TotalRemaining}}</div>
+                                <div style="text-align: right;">{{daiban.TotalRemaining ? (daiban.TotalRemaining | formatCurrency) : 0}}</div>
                             </div>
                         </th>
 
-                        <th rowspan="2" class="noselect theader center-align total-col-sticky bg-total"> {{$vm.Total}} </th>
+                        <th rowspan="2" class="noselect theader center-align total-col-sticky bg-total"> {{$vm.Total ? ($vm.Total | formatCurrency) : 0}} </th>
 
                         <th ng-repeat="item in $vm.listInitDaiBan1" class="noselect theader center-align <!--sticky-border-2-->">{{item.Name}}  </th> <!-- add class sticky-border-2 to set border -->
                     </tr>
                     <tr>
                         <!--Modify-->
-                        <th ng-repeat="item in $vm.listInitDaiBan1" class="noselect theader center-align <!--sticky-border-2--> text-align-right padding-r24">{{item.TotalRemaining}}  </th> <!-- add class sticky-border-2 to set border -->
+                        <th ng-repeat="item in $vm.listInitDaiBan1" class="noselect theader center-align <!--sticky-border-2--> text-align-right padding-r24">{{item.TotalRemaining ? (item.TotalRemaining | formatCurrency) : 0}}  </th> <!-- add class sticky-border-2 to set border -->
                     </tr>
                 </thead>
 
@@ -102,7 +102,7 @@
                             <!-- add class sticky-border-2 to set border -->
                             <div ng-repeat="daiban in diemban.detail" style="display: flex; justify-content: space-between;">
                                 <div style="text-align: left;">{{daiban.Name}}</div>
-                                <div style="text-align: right;">{{daiban.total}}</div>
+                                <div style="text-align: right;">{{daiban.total ? (daiban.total | formatCurrency) : 0}}</div>
                             </div>
 
                         </td>
@@ -119,12 +119,12 @@
                             <!-- add class sticky-border-2 to set border -->
                             <div ng-repeat="daiban in diemban.detail" style="display: flex; justify-content: space-between;">
                                 <div style="text-align: left;">{{daiban.Name}}</div>
-                                <div style="text-align: right;">{{daiban.total}}</div>
+                                <div style="text-align: right;">{{daiban.total ? (daiban.total | formatCurrency) : 0}}</div>
                             </div>
                         </td>
                         <!--end unlock-->
                         <td class="total-col-sticky">
-                            {{ diemban.isClose ? 'Vé thường: '+diemban.TotalRemaining : diemban.TotalRemaining}}
+                            {{ diemban.isClose ? 'Vé thường: '+(diemban.TotalRemaining?(diemban.TotalRemaining| formatCurrency) : 0) : (diemban.TotalRemaining?(diemban.TotalRemaining| formatCurrency) : 0)}}
                         </td>
                         <td class="text-align-right" ng-repeat="item in diemban.Info" ng-class="item.TotalRemaining!==0?'bg-color':''" ng-click="$vm.onClick($parent.$index,$index)">
                             <input ng-keypress="inputNumber($event)" class="text-align-right" type="number" id="quantity_{{$parent.$index}}_{{$index}}" name="" min="0" max="999999" ng-model="item.TotalRemaining" ng-change="$vm.ChangeValueNumber1(item,{{item}}, diemban, $parent.$index,$index)" ng-class="item.TotalRemaining!==0?['bg-color', 'border-input']:'border-input'">
@@ -133,7 +133,7 @@
 
                     <!--Secondline-->
                     <tr ng-if="diemban.isCheckDupVal || diemban.isClose">
-                        <td class="total-col-sticky <!--sticky-border-2-->"> <div>Vé trùng:</div> {{diemban.TotalDupRemaining}} </td> <!-- add class sticky-border-2 to set border -->
+                        <td class="total-col-sticky <!--sticky-border-2-->"> <div>Vé trùng:</div> {{diemban.TotalDupRemaining ? (diemban.TotalDupRemaining | formatCurrency) : 0}} </td> <!-- add class sticky-border-2 to set border -->
                         <td class="text-align-right" ng-repeat="item in diemban.Info" ng-class="item.TotalDupRemaining!==0?'bg-color':''" ng-click="$vm.onClickDup($parent.$index,$index)">
                             <input ng-keypress="inputNumber($event)" class="text-align-right" type="number" id="quantity_dup_{{$parent.$index}}_{{$index}}" name="" min="0" max="999999" ng-model="item.TotalDupRemaining" ng-change="$vm.ChangeValueNumber2(item,{{item}}, diemban, $parent.$index,$index)" ng-class="item.TotalDupRemaining!==0?['bg-color', 'border-input']:'border-input'">
                         </td>

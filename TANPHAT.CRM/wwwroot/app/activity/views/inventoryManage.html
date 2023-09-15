@@ -28,7 +28,7 @@
                             <th ng-repeat="item in $vm.dataDaiBan" class="noselect theader text-center">
                                 <div style="font-weight: bold; display: flex; justify-content: space-between;"><span>Vé chưa chuyển</span> <span>{{item.total}}</span></div>
                             </th>
-                            <th class="text-right noselect theader"> {{ $vm.TotalSum }}</th>
+                            <th class="text-right noselect theader"> {{ $vm.TotalSum | formatCurrency }}</th>
                         </tr>
                     </thead>
                     <tbody ng-repeat-end>
@@ -36,8 +36,8 @@
                             <!--<td class="noselect text-bold">{{$index+1}}</td>-->
                             <td class="noselect text-left text-bold w80px">{{item.SalePointName}}</td>
 
-                            <td ng-repeat="ele in item.dataDaiBan" class="noselect text-left text-bold text-align-right">{{-ele.total}}</td>
-                            <td class="noselect text-left text-bold text-align-right">{{-item.TotalSum}}</td>
+                            <td ng-repeat="ele in item.dataDaiBan" class="noselect text-left text-bold text-align-right">{{-ele.total | formatCurrency}}</td>
+                            <td class="noselect text-left text-bold text-align-right">{{-item.TotalSum | formatCurrency}}</td>
                             <td class="noselect text-bold link text-align-right" ng-if="!item.ListLogData || item.ListLogData.length ==0">-</td>
                             <td class="noselect text-bold link text-align-right" ng-if="item.ListLogData.length >0" ng-bind-html="true | detail"></td>
 
@@ -57,7 +57,7 @@
                         </tr>
                         <tr ng-if="item.isExpand && false" ng-repeat-end="" ng-repeat="ele in item.ListLogData">
                             <td colspan="1" class="noselect border-soild td-color text-left ">{{ele.LotteryChannelName}}</td>
-                            <td colspan="1" class="noselect border-soild td-color text-left ">{{ele.TransitionTypeId==2? "Nhận: ": "Chuyển: "}} {{ele.TotalTrans}} {{ele.TotalTransDup>0? " (Vé trùng: "+ele.TotalTransDup+")":""}}</td>
+                            <td colspan="1" class="noselect border-soild td-color text-left ">{{ele.TransitionTypeId==2? "Nhận: ": "Chuyển: "}} {{ele.TotalTrans | formatCurrency}} {{ele.TotalTransDup>0 ? "(Vé trùng: "+ele.TotalTransDup+")":""}}</td>
                             <td colspan="1" class="noselect border-soild td-color text-left ">{{ele.ManagerName?ele.ManagerName:'--'}}</td>
                             <td colspan="1" class="noselect border-soild td-color text-left ">{{ele.TransitionDate  | formatDateTime}}</td>
                         </tr>

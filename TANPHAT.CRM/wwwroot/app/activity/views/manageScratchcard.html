@@ -20,7 +20,7 @@
                         <tr class="">
                             <!--<th class="noselect theader text-center">STT</th>-->
                             <th rowspan="2" class="noselect theader text-center w80px">Điểm bán</th>
-                            <th colspan="2" ng-repeat="item in $vm.listScratchcard" class="noselect theader text-center">{{item.ShortName}}: {{item.TotalRemaining | formatCurrency}}</th>
+                            <th colspan="2" ng-repeat="item in $vm.listScratchcard" class="noselect theader text-center">{{item.ShortName}}: {{item.TotalRemaining ? (item.TotalRemaining | formatCurrency) : 0}}</th>
                         </tr>
                         <tr>
                             <th ng-repeat-start="item in $vm.listScratchcard" style="display:none"></th>

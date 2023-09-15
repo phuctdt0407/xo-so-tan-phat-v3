@@ -56,12 +56,12 @@
                                <td class="text-left ">
                                    <div ng-repeat="ele in item.Data" style="display: flex; justify-content: space-between;" ng-if="ele.TotalTrans>0">
                                        <div style="text-align: left;"><strong>{{$vm.getLotteryName(ele.LotteryChannelId)}}</strong> </div>
-                                       <div style="text-align: right; line-height: 1.5;">{{ele.TotalTrans}}</div>
+                                       <div style="text-align: right; line-height: 1.5;">{{ele.TotalTrans | formatCurrency}}</div>
                                    </div>
 
                                    <div ng-repeat="ele in item.Data" style="display: flex; justify-content: space-between;" ng-if="ele.TotalTransDup>0">
                                        <div style="text-align: left;"><strong>{{$vm.getLotteryName(ele.LotteryChannelId) }} (Vtr)</strong> </div>
-                                       <div style="text-align: right; line-height: 1.5;">{{ele.TotalTransDup}}</div>
+                                       <div style="text-align: right; line-height: 1.5;">{{ele.TotalTransDup | formatCurrency}}</div>
 
                                    </div>
                                    <div style="display: flex; justify-content: space-between;">

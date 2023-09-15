@@ -41,11 +41,11 @@
 
                         <td class="noselect bnor text-left">
                             <div style="text-align: left;" ng-repeat="item in $vm.data.Data" ng-if="item.TotalTrans>0">
-                                <br /> {{item.TotalTrans}}
+                                <br /> {{item.TotalTrans | formatCurrency}}
                             </div>
 
                             <div style="text-align: left;" ng-repeat="item in $vm.data.Data" ng-if="item.TotalTransDup>0">
-                                <br /> {{item.TotalTransDup}}
+                                <br /> {{item.TotalTransDup | formatCurrency}}
                             </div>
 
                         </td>

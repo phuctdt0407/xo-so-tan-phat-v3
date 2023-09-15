@@ -30,7 +30,7 @@
                                 </td>
                                 <td style="display:none" ng-repeat-start="agency in lottery.listAgency"> </td>
                                 <td class="text-12 text-right w80px">
-                                    {{agency.TotalReceiced}}
+                                    {{agency.TotalReceiced ? (agency.TotalReceiced | formatCurrency) : 0}}
                                 </td>
                                 <td style="display:none" ng-repeat-end=""> </td>
                             </tr>
@@ -71,17 +71,17 @@
                                 <td class="w150">
                                     <div class="d-flex justify-content-between">
                                         <div><strong>Đã trả</strong></div>
-                                        <div> <strong>{{$vm.getHaveReturned(CoreI.Name,$index)}}</strong></div>
+                                        <div> <strong>{{$vm.getHaveReturned(CoreI.Name,$index) | formatCurrency}}</strong></div>
                                     </div>
                                     <div class="d-flex justify-content-between">
                                         <div>Còn lại</div>
-                                        <div class="pt5px"> {{lottery.Sum}}</div>
+                                        <div class="pt5px"> {{lottery.Sum ? (lottery.Sum | formatCurrency) : 0}}</div>
                                     </div>
                                 </td>
                                 <td style="display:none" ng-repeat-start="agency in lottery.listAgency"> </td>
                                 <td ng-class="[agency.TotalHaveReturned!=0 || agency.Receiced!=0 ?'check-input-success':'check-input-warning']" class="w150" >
                                     <div class="d-flex justify-content-right">
-                                        <div class="pt5px pr11px"><strong>{{agency.TotalHaveReturned}}</strong></div>
+                                        <div class="pt5px pr11px"><strong>{{agency.TotalHaveReturned ? (agency.TotalHaveReturned | formatCurrency) : 0}}</strong></div>
                                     </div>
                                     <div class="d-flex justify-content-right">
                                         <input type="text" class="form-control text-right h30px "
@@ -110,19 +110,19 @@
                                 <td class="w150 bg-num">
                                     <div class="d-flex justify-content-between">
                                         <div><strong>Đã trả</strong></div>
-                                        <div> <strong>{{$vm.getHaveReturned(CoreI.Name)}}</strong></div>
+                                        <div> <strong>{{$vm.getHaveReturned(CoreI.Name) | formatCurrency}}</strong></div>
                                     </div>
                                     <div class="d-flex justify-content-between">
                                         <div>Còn lại</div>
-                                        <div class="pt5px"> {{$vm.getSumAgency(CoreI.Name,'Sum')}}</div>
+                                        <div class="pt5px"> {{$vm.getSumAgency(CoreI.Name,'Sum') | formatCurrency}}</div>
                                     </div>
                                 </td>
                                 <td class="w150 bg-num" ng-repeat="agency in $vm.listAgency">
                                     <div class="d-flex justify-content-right">
-                                        <div class="pt5px pr11px"><strong> {{$vm.getSumAgency(CoreI.Name,'TotalHaveReturned', $index)}}</strong></div>
+                                        <div class="pt5px pr11px"><strong> {{$vm.getSumAgency(CoreI.Name,'TotalHaveReturned', $index) | formatCurrency}}</strong></div>
                                     </div>
                                     <div class="d-flex justify-content-right">
-                                        <div class="pt5px pr11px"><strong> {{$vm.getSumAgency(CoreI.Name,'Receiced', $index)}}</strong></div>
+                                        <div class="pt5px pr11px"><strong> {{$vm.getSumAgency(CoreI.Name,'Receiced', $index)| formatCurrency}}</strong></div>
                                     </div>
                                 </td>
                             </tr>

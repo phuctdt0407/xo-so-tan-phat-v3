@@ -31,7 +31,7 @@
                         <td class="noselect w120 text-center" ng-class="{'bg-sky' : $index % 2 == 1}">{{item.ActionByName}}</td>
                         <td class="noselect w120 text-center" ng-class="{'bg-sky' : $index % 2 == 1}">{{item.ActionDate}}</td>
                         <td class="noselect w120 text-center" ng-class="{'bg-sky' : $index % 2 == 1}">
-                            {{item.TotalReceive}}
+                            {{item.TotalReceive | formatCurrency}}
                         </td>
                         <td class="noselect w120 text-center" ng-class="{'bg-sky' : $index % 2 == 1}">
                             <a style="cursor: pointer" ng-click="$vm.openModal(item)"><i style="font-size:24px" class="fa">&#xf044;</i></a>

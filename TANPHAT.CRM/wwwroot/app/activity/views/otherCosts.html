@@ -35,10 +35,10 @@
 
                 <div class="col-3">
                     <label class="rq-form">Chi phí</label>
-                    <input type="text" class="form-control" id="quantity" name="numonly" placeholder="Nhập chi phí" required
+                    <input type="text" class="form-control" id="quantity" name="545fd" placeholder="Nhập chi phí" required
                            ng-keypress="inputNumber($event)"
-                          
-                           ng-model="$vm.saveData.Price ">
+                           ng-change="numToCurrency($vm.saveData, 'Price', $vm.saveData.Price?$vm.saveData.Price :'0', {{$vm.saveData.Price? $vm.saveData.Price: '0'}})"
+                           ng-model="$vm.saveData.Price">
                 </div>
 
                 <div class="col-4">

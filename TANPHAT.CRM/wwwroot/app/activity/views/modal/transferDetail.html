@@ -42,7 +42,7 @@
                             <td class="noselect border-soild td-color text-left" ng-class="{'bg-sky' : $index % 2 == 1}">
                                 <div style="display: flex; justify-content: space-between;">
                                     <div style="text-align: left;">  <strong>{{ele.TransitionTypeId==2? "Nhận: ": ele.TransitionTypeId==1? "Chuyển: " : "Trả ế: "}}</strong></div>
-                                    <div style="text-align: right;"> <span ng-if="ele.TotalTrans>0">{{ele.TotalTrans}} <br /></span> {{ele.TotalTransDup>0? "Vé trùng: "+ele.TotalTransDup+"":""}}</div>
+                                    <div style="text-align: right;"> <span ng-if="ele.TotalTrans>0">{{ele.TotalTrans | formatCurrency}} <br /></span> {{ele.TotalTransDup>0? "Vé trùng: "+ele.TotalTransDup+"":""}}</div>
                                 </div>
                             </td>
                             <td class="noselect border-soild td-color text-left " ng-class="{'bg-sky' : $index % 2 == 1}">{{ele.ManagerName?ele.ManagerName:'--'}}</td>
