@@ -29,8 +29,8 @@
                         <td class="text-left ">{{$index + 1}}</td>
                         <td class="text-left ">{{data.FullName}}</td>
                         <td class="text-left ">{{data.FullName}}</td>
-                        <td class="text-right">{{data.TotalDebt}}</td>
-                        <td class="text-right">{{data.PayedDebt}}</td>
+                        <td class="text-right">{{data.TotalDebt | formatCurrency}}</td>
+                        <td class="text-right">{{data.PayedDebt | formatCurrency}}</td>
                         <td class="text-center">
                             <i class="fa fa-plus cursor mr-2" style="color: blue;" ng-click="$vm.openModalDebt(data)"></i>
                             <i class="fa fa-edit fa-lg cursor" style="color: blue" ng-click="$vm.showDetail(data)"></i>
