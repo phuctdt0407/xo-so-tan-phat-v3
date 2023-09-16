@@ -38,7 +38,7 @@
             vm.objStatus = {};
 
             vm.listStaff.forEach(function (item) {
-                vm.objStaff[item.Id.toString()] = item.Name;
+                vm.objStaff[item.UserId.toString()] = item.Name;
             })
             console.log("vm.listStaff", vm.listStaff);
             console.log("vm.listSalePoint", vm.listSalePoint);
@@ -512,7 +512,7 @@
                                 day["ShiftTypeId" + shiftId] = ele.ShiftTypeId;
                                 day["Note" + shiftId] = ele.Note;
 
-                                var getUserName = vm.listStaff.filter(staff => staff.Id == ele.UserId);
+                                var getUserName = vm.listStaff.filter(staff => staff.Id == ele.salePointId);
                                 var status = vm.listStatus.filter(x => x.Id == ele.ShiftTypeId)[0];
                                 if (getUserName.length > 0) {
                                     //add objShift1 --> changeValue
@@ -521,7 +521,7 @@
 
                                     day['objShift' + ele.ShiftId].ShiftDistributeId = ele.ShiftDistributeId;
 
-                                    day['objShift' + ele.ShiftId].Name = getUserName[0].Name ;
+                                    day['objShift' + ele.ShiftId].Name = getUserName[0].Name;
                                 } else {
                                     day['objShift' + ele.ShiftId].Name = "Không tìm thấy người dùng";
                                 }

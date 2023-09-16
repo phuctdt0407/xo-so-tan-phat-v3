@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Text.Json;
 using System.Threading.Tasks;
 using KTHub.Core.DBConnection;
 using Microsoft.Extensions.Configuration;
@@ -191,7 +193,7 @@ namespace TANPHAT.CRM.Provider
 
         public async Task<List<InternByTitleDDLModel>> InternByTitleDDL(InternByTitleDDLReq req)
         {
-            var res = await base.ExecStoredProcAsync<InternByTitleDDLModel>("crm_intern_by_title_v1");
+            var res = await base.ExecStoredProcAsync<InternByTitleDDLModel>("crm_intern_by_title");
             return res;
         }
 
