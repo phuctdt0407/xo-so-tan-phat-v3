@@ -55,6 +55,12 @@
                 vm.loadData();
             }
 
+            vm.handleFilterEmployee = function (startDate) {
+                var monthAndYearObject = moment(startDate, 'YYYY-MM');
+                var currentSelectObject = moment(vm.month, 'YYYY-MM');
+                return monthAndYearObject.toDate() <= currentSelectObject.toDate();
+            }
+
             vm.changeTab = function (tabId) {
                 vm.currentTab = vm.listWeek.filter(x => x.WeekId == tabId)[0];
             };

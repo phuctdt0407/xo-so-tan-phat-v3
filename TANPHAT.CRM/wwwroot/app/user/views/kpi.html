@@ -74,7 +74,7 @@
                         </thead>
                         <tbody>
                             <tr style="display:none" ng-repeat-start="user in $vm.listOfUserTitle[$vm.CoreIndex].listUser"> </tr>
-                            <tr ng-repeat="salepoint in user.ListSalePoint" ng-if="user.SalePointId==$vm.SalePointID ||  $vm.SalePointID==0" ng-show="$vm.checkStaff && user.UserId == $vm.staffId || !$vm.checkStaff">
+                            <tr ng-repeat="salepoint in user.ListSalePoint" ng-if="(user.SalePointId==$vm.SalePointID ||  $vm.SalePointID==0) && $vm.handleFilterEmployee(user.StartDate)" ng-show="$vm.checkStaff && user.UserId == $vm.staffId || !$vm.checkStaff">
                                 <td class="w80px" ng-if="$index==0" rowspan="{{user.ListSalePoint.length}}">{{user.index +1}}</td>
                                 <td class="w150" ng-if="$index==0" rowspan="{{user.ListSalePoint.length}}"> {{user.FullName}}</td>
                                 <td class="w100" ng-if="$vm.CoreIndex==0" rowspan="{{user.ListSalePoint.length}}">

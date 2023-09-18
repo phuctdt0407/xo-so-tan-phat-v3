@@ -14,6 +14,7 @@
           
             vm.selectedStaff = null;
             vm.close = function () {
+                vm.selectedStaff = null;
                 $uibModalInstance.close();
             }
             vm.onPickStaff = function (select){

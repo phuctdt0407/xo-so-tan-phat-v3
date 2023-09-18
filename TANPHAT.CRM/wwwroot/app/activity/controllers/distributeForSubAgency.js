@@ -14,8 +14,79 @@
             vm.params.day = moment(vm.params.day, formatDate).format('DD-MM-YYYY');
             vm.dayDisplay = dayOfWeekVN[moment(moment(vm.params.day, formatDate)).day()].Name + ", " + vm.params.day;
             vm.dayOfWeekVN = angular.copy(dayOfWeekVN);
+            //chart data
+            var dataColunm = [];
+            var listLabelColunm = [];
+            var colorArray = ['#FF1700', '#CC6600', '#CF6DFA', '#FE6D03', '#FCD600',
+                '#EDFC00', '#A4FC00', '#58FC00', '#1C9C03', '#04C35E',
+                '#04C392', '#04C3B8', '#049BC3', '#0266D6', '#03257F',
+                '#03257F', '#FE6D03', '#99045E', '#CC00FF', '#BD8656',
+                '#836665', '#C68ECF', '#9EA640', '#cc00cc', '#95928A'];
+            var currentLotteryChart;
+
 
             vm.isCanChangeData = currentEvi != 'pro' ? true : $rootScope.sessionInfo.UserTitleId == 3
+
+            vm.buildCurrentLotteryChart = function () {
+                var optionColunm = {
+                    series: [{
+                        name: 'Tổng số vé',
+                        data: dataColunm,
+                    }],
+                    chart: {
+                        height: 500,
+                        type: 'bar',
+                        events: {
+                            click: function (chart, w, e) {
+                            }
+                        }
+                    },
+                    colors: colorArray,
+                    plotOptions: {
+                        bar: {
+                            columnWidth: '20%',
+                            distributed: true,
+                            dataLabels: {
+                                position: 'top',
+                            }
+                        }
+                    },
+                    dataLabels: {
+                        enabled: true,
+                        style: {
+                            fontSize: ['16px'],
+                            fontWeight: ['bold'],
+                            colors: ['#000']
+                        }
+                    },
+                    legend: {
+                        show: false,
+                    },
+                    xaxis: {
+                        categories: listLabelColunm,
+                        labels: {
+                            style: {
+                                colors: '#000',
+                                fontSize: '14px'
+                            }
+                        }
+                    }
+                };
+                currentLotteryChart = new ApexCharts(document.querySelector("#currentLotteryChart"), optionColunm);
+                currentLotteryChart.render();
+            }
+            vm.handleUpdateCurrentLotteryChart = function () {
+                dataColunm = [];
+                vm.listInit1.forEach(diemban => {
+                    dataColunm.push(diemban.TotalRemaining ? diemban.TotalRemaining : 0)
+                });
+                currentLotteryChart.updateOptions({
+                    series: [{
+                        name: 'Tổng số vé',
+                        data: dataColunm,
+                    }]
+                });
+            }
 
             vm.getSum = function () {
                 vm.Total = 0;
@@ -28,6 +99,7 @@
                     daiban.TotalRemaining = temp;
                     vm.Total += temp;
                 });
+                vm.handleUpdateCurrentLotteryChart();
             }
 
             vm.saveInfo = {
@@ -39,7 +111,6 @@
             }
 
             vm.clickToday = function (days = 0) {
-                console.log("days", days)
                 vm.params.day = moment().add(days, 'days').format("YYYY-MM-DD");
                 vm.changeDate();
             }
@@ -87,12 +158,8 @@
                     //INIT DATA FROM LIST MANAGE 
                     diemban.InfoDaiLy.forEach(function (daily) {
                         daily.InfoDaiBan.forEach(function (daiban) {
-
-                         
-                          
                             try {
-                                var temp3 = vm.listTotalSupAgency.filter(x => x.AgencyId == daiban.AgencyId && x.SubAgencyId == diemban.SubAgencyId && x.LotteryChannelId == daiban.LotteryChannelId);
-                                console.log("temp3", temp3);
+                                var temp3 = vm.listTotalSupAgency.filter(x => x.AgencyId == daiban.AgencyId && x.SubAgencyName == diemban.SubAgencyName && x.LotteryChannelId == daiban.LotteryChannelId);
                                 daiban.SubAgencyId = diemban.SubAgencyId;
                                 daiban.TotalRemaining = temp3[0].TotalReceived;
                                 temp2 += temp3[0].TotalReceived;
@@ -138,10 +205,14 @@
                         detail.push(lottery)
                     })
                     item.detail = detail;
+                    //init chart
+                    dataColunm.push(item.TotalRemaining ? item.TotalRemaining : 0)
+                    listLabelColunm.push(item.SalePointName);
                 })
 
                 //Modify
                 vm.listInit1Bk = angular.copy(vm.listInit1);
+                vm.buildCurrentLotteryChart();
             }
             vm.init();
 
@@ -150,8 +221,6 @@
                 if (newValue && newValue != oldValue) {
                     newValue.isChange = true;
                 }
-
-
 
                 var DaiBanTotal = vm.listInitDaiBan1.filter(x => x.LotteryChannelId == newValue.LotteryChannelId && x.AgencyId == newValue.AgencyId)[0];
                 if (newValue.TotalRemaining == undefined) {
@@ -263,7 +332,6 @@
                 return temp
             }
 
-
             vm.sendDataTL = function () {
                 $rootScope.connection.invoke("SendMessage", "addLotteryManage", JSON.stringify(vm.listSendData)).catch(function (err) {
                     return console.error(err.toString());
@@ -290,6 +358,5 @@
 
                 })
             }
-
         }]);
 })();

@@ -72,8 +72,6 @@
                 });
             }
             
-            
-
             vm.updatePercent = function (model) {
                 var viewPath = baseAppPath + '/salepoint/views/modal/';
                 var modalUpdatePercent = $uibModal.open({

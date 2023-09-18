@@ -2,7 +2,7 @@
     <div style="padding-bottom: 60px;" class="container-fluid mt-10 pt-10 pb-10 mt-10 px-4 wh-bg">
         <div class="row">
             <div class="wh-bg mt-10 col-6">
-                <div class="mt20" style="width: 160px; padding-left: 15px;">
+                <div class="mt20" style="width: 200px; padding-left: 15px;">
                     <label>Chọn ngày xổ số</label>
                     <datepicker my-class="input-sm datepicker" date-format="DD/MM/YYYY" pick-time="false"
                                 on-select="$vm.getData(date)"
@@ -144,7 +144,17 @@
             </table>
         </div>
 
-        <div class="btn btn-primary float-r pt-10 mb-10 mt-10" ng-if="!$vm.isSaving && $vm.isCanChangeData" ng-click="$vm.save()"><i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu </div>
+        <div class="row d-flex px-4" style="justify-content:end">
+            <div class="btn btn-primary float-r pt-10 mb-10 mt-10" ng-if="!$vm.isSaving && $vm.isCanChangeData" ng-click="$vm.save()"><i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu </div>
+        </div>
         <img src="../images/loading-dot.gif" ng-if="$vm.isSaving" class="float-r" style="height: 45px; width: 120px;">
+        <div class="row px-4">
+            <div class="mt-20">
+                <h3><strong>Tổng kết số vé đã nhận: {{$vm.dayDisplay}}</strong></h3>
+            </div>
+            <div class="table-responsive resize-tb">
+                <div id="currentLotteryChart" class="minWidthChart" style="min-height: 400px;"></div>
+            </div>
+        </div>
     </div>
 </div>

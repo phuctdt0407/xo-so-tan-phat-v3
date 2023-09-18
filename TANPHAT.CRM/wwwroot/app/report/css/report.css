@@ -308,6 +308,7 @@
 }
 .first-col-sticky{
     max-width: none !important;
+    min-width: 140px;
 }
 
 
