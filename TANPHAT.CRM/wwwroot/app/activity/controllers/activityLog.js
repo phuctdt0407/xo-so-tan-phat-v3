@@ -369,6 +369,8 @@
                 });
             }
             
-
+            vm.backToSalePointPage = function () {
+                window.history.back();
+            }
         }]);
 })();
