@@ -362,7 +362,7 @@ namespace TANPHAT.CRM.Provider
                 p_month = req.Month,
                 p_user_id = req.UserId
             };
-            var res = await base.ExecStoredProcAsync<ListSalaryModel>("crm_get_salary_of_user_by_month_v10", obj);
+            var res = await base.ExecStoredProcAsync<ListSalaryModel>("crm_get_salary_of_user_by_month_v7", obj);
             return res;
         }
 

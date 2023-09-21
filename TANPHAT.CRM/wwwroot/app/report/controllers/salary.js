@@ -52,8 +52,8 @@
                 { TitleId:10, Name: 'Phạt', DisplayName: 'Punish' },
                 { TitleId:10, Name: 'Trích Bảo hiểm', DisplayName: 'Insure' },
                 { TitleId:10, Name: 'Công đoàn', DisplayName: 'PriceUnion' },
-                { TitleId: 10, Name: 'Tổng nợ còn lại', DisplayName: 'DebtAllTime' },
-                { TitleId: 10, Name: 'Nợ trả trong tháng', DisplayName: 'PayedDebt' },
+                { TitleId:10, Name: 'Tổng nợ còn lại', DisplayName: 'DebtAllTime' },
+                { TitleId:10, Name: 'Nợ trả trong tháng', DisplayName: 'PayedDebt' },
             ]
 
             //declare

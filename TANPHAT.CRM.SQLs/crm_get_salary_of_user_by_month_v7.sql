@@ -55,16 +55,16 @@ BEGIN
 	);
 	
 	v_union := (SELECT C."Price" FROM ConstData C WHERE C."ConstId" = 1)::NUMERIC;									--Công đoàn
-	v_rice := (SELECT C."Price" FROM ConstData C WHERE C."ConstId" = 2)::NUMERIC;										--Tiền cơm
+	v_rice := (SELECT C."Price" FROM ConstData C WHERE C."ConstId" = 2)::NUMERIC;									--Tiền cơm
 	v_insure := (SELECT C."Price" FROM ConstData C WHERE C."ConstId" = 3)::NUMERIC;									--bảo hiểm
-	v_sale_loto := (SELECT C."Price" FROM ConstData C WHERE C."ConstId" = 4)::NUMERIC;							--loto
+	v_sale_loto := (SELECT C."Price" FROM ConstData C WHERE C."ConstId" = 4)::NUMERIC;								--loto
 	v_overtime := (SELECT C."Price" FROM ConstData C WHERE C."ConstId" = 5)::NUMERIC;								--tăng ca
 	v_event := (SELECT C."Price" FROM ConstData C WHERE C."ConstId" = 6)::NUMERIC;									--lễ
-	v_l30 := (SELECT C."Price" FROM ConstData C WHERE C."ConstId" = 7)::NUMERIC;										--tăng ca 30ph
-	v_l60 := (SELECT C."Price" FROM ConstData C WHERE C."ConstId" = 8)::NUMERIC;										--tăng ca 60ph
-	v_l90 := (SELECT C."Price" FROM ConstData C WHERE C."ConstId" = 9)::NUMERIC;										--tăng ca 90ph;
-	v_salary_leader := (SELECT C."Price" FROM ConstData C WHERE C."ConstId" = 10)::NUMERIC;					--Lương cơ bản trưởng nhóm;
-	v_coef_leader := (SELECT C."Price" FROM ConstData C WHERE C."ConstId" = 11)::NUMERIC;						--Hệ số lương cơ bản trưởng nhóm;
+	v_l30 := (SELECT C."Price" FROM ConstData C WHERE C."ConstId" = 7)::NUMERIC;									--tăng ca 30ph
+	v_l60 := (SELECT C."Price" FROM ConstData C WHERE C."ConstId" = 8)::NUMERIC;									--tăng ca 60ph
+	v_l90 := (SELECT C."Price" FROM ConstData C WHERE C."ConstId" = 9)::NUMERIC;									--tăng ca 90ph;
+	v_salary_leader := (SELECT C."Price" FROM ConstData C WHERE C."ConstId" = 10)::NUMERIC;							--Lương cơ bản trưởng nhóm;
+	v_coef_leader := (SELECT C."Price" FROM ConstData C WHERE C."ConstId" = 11)::NUMERIC;							--Hệ số lương cơ bản trưởng nhóm;
 		
 	RETURN QUERY
 	WITH tmp00 AS (
@@ -163,7 +163,8 @@ BEGIN
 			T."ShiftDistributeId",
 			T."SalePointId",
 			T."TransactionTypeId",
-			T."TypeNameId"
+			T."TypeNameId",
+			T."Date"
 		FROM "Transaction" T 
 		WHERE T."IsDeleted" IS FALSE
 			AND (T."ShiftDistributeId" = ANY(SELECT SD."ShiftDistributeId" FROM tmp1 SD)
@@ -187,19 +188,18 @@ BEGIN
 	tmp4 AS (
 		SELECT 
 			T."UserId",
-			COALESCE(SUM(T."TotalPrice") FILTER(WHERE T."TransactionTypeId" = 2), 0) AS "SaleOfVietlott", 															--Doanh thu vietlot
-			COALESCE(SUM(T."TotalPrice") FILTER(WHERE T."TransactionTypeId" = 3), 0) AS "SaleOfLoto",																		--Doanh thu loto
-			COALESCE(SUM(T."TotalPrice") FILTER(WHERE T."TransactionTypeId" = 4), 0) AS "Punish",																				--Phạt
-			COALESCE(SUM(T."TotalPrice") FILTER(WHERE T."TransactionTypeId" = 5), 0) AS "Advance",																			--Ứng lương
-			COALESCE(SUM(T."TotalPrice") FILTER(WHERE T."TransactionTypeId" = 6 AND T."TypeNameId" NOT IN (4,5,6)), 0) AS "Overtime",		--Làm lố giờ loại khác
-			COALESCE(SUM(T."TotalPrice") FILTER(WHERE T."TransactionTypeId" = 7), 0) AS "Award",																				--Thưởng
-			COALESCE(SUM(T."TotalPrice") FILTER(WHERE T."TransactionTypeId" = 8), 0) AS "Debt",																					--Nợ
-			COALESCE(SUM(T1."TotalPrice") FILTER(WHERE T1."TransactionTypeId" = 8), 0) AS "DebtOfAllTime",
-			COALESCE(COUNT(1) FILTER(WHERE T."TransactionTypeId" = 6 AND T."TypeNameId" = 4), 0) AS "L30",														--làm lố 30p
-			COALESCE(COUNT(1) FILTER(WHERE T."TransactionTypeId" = 6 AND T."TypeNameId" = 5), 0) AS "L60",														--làm lố 60p
-			COALESCE(COUNT(1) FILTER(WHERE T."TransactionTypeId" = 6 AND T."TypeNameId" = 6), 0) AS "L90"															--làm lố 90p
+			COALESCE(SUM(T."TotalPrice") FILTER(WHERE T."TransactionTypeId" = 2 AND TO_CHAR(T."Date", 'YYYY-MM') =  p_month), 0) AS "SaleOfVietlott", 																	--Doanh thu vietlot
+			COALESCE(SUM(T."TotalPrice") FILTER(WHERE T."TransactionTypeId" = 3 AND TO_CHAR(T."Date", 'YYYY-MM') =  p_month), 0) AS "SaleOfLoto",																		--Doanh thu loto
+			COALESCE(SUM(T."TotalPrice") FILTER(WHERE T."TransactionTypeId" = 4 AND TO_CHAR(T."Date", 'YYYY-MM') =  p_month), 0) AS "Punish",																			--Phạt
+			COALESCE(SUM(T."TotalPrice") FILTER(WHERE T."TransactionTypeId" = 5 AND TO_CHAR(T."Date", 'YYYY-MM') =  p_month), 0) AS "Advance",																			--Ứng lương
+			COALESCE(SUM(T."TotalPrice") FILTER(WHERE T."TransactionTypeId" = 6 AND T."TypeNameId" NOT IN (4,5,6) AND TO_CHAR(T."Date", 'YYYY-MM') =  p_month), 0) AS "Overtime",										--Làm lố giờ loại khác
+			COALESCE(SUM(T."TotalPrice") FILTER(WHERE T."TransactionTypeId" = 7 AND TO_CHAR(T."Date", 'YYYY-MM') =  p_month), 0) AS "Award",																			--Thưởng
+			COALESCE(SUM(T."TotalPrice") FILTER(WHERE T."TransactionTypeId" = 8 AND TO_CHAR(T."Date", 'YYYY-MM') =  p_month), 0) AS "Debt",
+			COALESCE(NULL, 0) AS "DebtOfAllTime",
+			COALESCE(COUNT(1) FILTER(WHERE T."TransactionTypeId" = 6 AND T."TypeNameId" = 4 AND TO_CHAR(T."Date", 'YYYY-MM') =  p_month), 0) AS "L30",																	--làm lố 30p
+			COALESCE(COUNT(1) FILTER(WHERE T."TransactionTypeId" = 6 AND T."TypeNameId" = 5 AND TO_CHAR(T."Date", 'YYYY-MM') =  p_month), 0) AS "L60",																	--làm lố 60p
+			COALESCE(COUNT(1) FILTER(WHERE T."TransactionTypeId" = 6 AND T."TypeNameId" = 6 AND TO_CHAR(T."Date", 'YYYY-MM') =  p_month), 0) AS "L90"																	--làm lố 90p
 		FROM tmp3 T
-		JOIN tmp3_1 T1 ON T1."UserId" = T."UserId"
 		GROUP BY 
 			T."UserId"
 	),
@@ -227,21 +227,21 @@ BEGIN
 			COALESCE(P."L30", 0) AS "L30",
 			COALESCE(P."L60", 0) AS "L60",
 			COALESCE(P."L90", 0) AS "L90",
-			COALESCE(P."SaleOfVietlott", 0) AS "SaleOfVietlott",											--Doanh thu vietlot
-			COALESCE(P."SaleOfLoto", 0) AS "SaleOfLoto",															--Doanh thu loto
+			COALESCE(P."SaleOfVietlott", 0) AS "SaleOfVietlott",															--Doanh thu vietlot
+			COALESCE(P."SaleOfLoto", 0) AS "SaleOfLoto",																	--Doanh thu loto
 			COALESCE(P."Punish", 0) AS "Punish",																			--Phạt
 			COALESCE(P."Advance",	0) AS "Advance",																		--Ứng lương
-			COALESCE(P."Overtime", 0) AS "Overtime",																	--Làm lố giờ loại khác
+			COALESCE(P."Overtime", 0) AS "Overtime",																		--Làm lố giờ loại khác
 			COALESCE(P."Award",	0) AS "Award",																				--Thưởng
-			COALESCE(P."Debt", 0) AS "Debt",																					--Nợ
-			COALESCE(P."DebtOfAllTime", 0) AS "DebtOfAllTime",																					--Nợ all time
+			COALESCE(P."Debt", 0) AS "Debt",																				--Nợ
+			COALESCE(P."DebtOfAllTime", 0) AS "DebtOfAllTime",																--Nợ all time
 			COALESCE(T."Average", 0) AS "Average"																			--Doanh số
 		FROM tmp00 U
 			JOIN "UserTitle" UT ON U."UserTitleId" = UT."UserTitleId"
 			LEFT JOIN tmp B ON U."UserId" = B."UserId"
 			LEFT JOIN tmp4 P ON P."UserId" = U."UserId"
 			LEFT JOIN tmp0 T ON T."UserId" = U."UserId"
-		WHERE U."UserTitleId" IN (v_employee, v_leader, v_hr,3)											--Chỉ lấy nhân viên, trưởng nhóm và nhân sự
+		WHERE U."UserTitleId" IN (v_employee, v_leader, v_hr,3)																--Chỉ lấy nhân viên, trưởng nhóm và nhân sự
 		ORDER BY 
 			U."UserTitleId",
 			U."UserId"
@@ -303,8 +303,7 @@ BEGIN
 					AND SC."IsDeleted" IS FALSE 
 					AND SC."Month" = p_month
 			)::NUMERIC ,U."BaseSalary" * v_insure, 0) AS "Insure",														--Bảo hiểm
-			(
-				CASE 
+			COALESCE(CASE 
 					WHEN U."UserTitleId" <> v_leader THEN
 					(
 						CASE
@@ -317,19 +316,19 @@ BEGIN
 					)
 					ELSE (SELECT L."Length" FROM tmp01 L WHERE L."UserId" = U."UserId" )::NUMERIC * v_salary_leader 
 				END
-			) AS "ReponsibilityLottery",
-			(CASE
+			,0) AS "ReponsibilityLottery",
+			COALESCE((CASE
 				WHEN U."SaleOfVietlott" > (SELECT MAX(C."ToValue") FROM tmp2 C WHERE C."TargetDataTypeId" = 2)::NUMERIC 
 					THEN (SELECT MAX(C."Value") FROM tmp2 C WHERE T."TargetDataTypeId" = 2)::NUMERIC
 				WHEN U."SaleOfVietlott" < (SELECT MIN(C."FromValue") FROM tmp2 C WHERE C."TargetDataTypeId" = 2)::NUMERIC
 					THEN 0
-				ELSE V."Value" END) AS "VietlottLottery",
-			(CASE
+				ELSE V."Value" END),0) AS "VietlottLottery",
+			COALESCE(CASE
 				WHEN U."Average" > (SELECT MAX(C."ToValue") FROM tmp2 C WHERE C."TargetDataTypeId" = 3)::NUMERIC 
 					THEN (SELECT MAX(C."Value") FROM tmp2 C WHERE C."TargetDataTypeId" = 3)::NUMERIC
 				WHEN U."Average" < (SELECT MIN(C."FromValue") FROM tmp2 C WHERE C."TargetDataTypeId" = 3)::NUMERIC
 					THEN 0
-				ELSE T."Value" END) AS "TraditionalLottery"
+				ELSE T."Value" END,0) AS "TraditionalLottery"
 		FROM tmp6 U 
 			LEFT JOIN tmp2 P ON P."TargetDataTypeId" = 1 AND (ROUND(U."Average", 0)::NUMERIC BETWEEN P."FromValue"::NUMERIC AND P."ToValue"::NUMERIC)
 			LEFT JOIN tmp2 V ON V."TargetDataTypeId" = 2 AND (ROUND(U."SaleOfVietlott", 0)::NUMERIC BETWEEN V."FromValue"::NUMERIC AND V."ToValue"::NUMERIC)
@@ -380,9 +379,8 @@ BEGIN
 		SELECT
 			U.*,
 			v_sale_loto * U."SaleOfLoto" AS "OnePercentLoto",
-			(U."MainSalary" + U."PriceForLunch" + U."KPICoafficient" * (U."ReponsibilityLottery" + U."VietlottLottery" + U."TraditionalLottery" + v_sale_loto * U."SaleOfLoto")) AS "TotalSalary",
-			(U."MainSalary" + U."PriceForLunch" + U."KPICoafficient" * (U."ReponsibilityLottery" + U."VietlottLottery" + U."TraditionalLottery" + v_sale_loto * U."SaleOfLoto") - U."Advance" + U."TotalCommission" + U."Award" - U."Punish" - COALESCE((SELECT ((SL."Data"::JSON) ->> 'Insure')::INT8 FROM "SalaryConfirm" SL WHERE SL."UserId" = U."UserId" LIMIT 1),0) -
-			 COALESCE((SELECT ((SL."Data"::JSON) ->> 'PriceUnion')::INT8 FROM "SalaryConfirm" SL WHERE SL."UserId" = U."UserId" LIMIT 1),0) - U."Debt" ) AS "RealSalary" 
+			(U."MainSalary" + U."TotalCommission" + U."Award" + U."KPICoafficient" * (U."ReponsibilityLottery" + U."VietlottLottery" + U."TraditionalLottery" + v_sale_loto * U."SaleOfLoto") - (COALESCE((SELECT ((SL."Data"::JSON) ->> 'Insure')::INT8 FROM "SalaryConfirm" SL WHERE SL."UserId" = U."UserId" LIMIT 1),0) + COALESCE((SELECT ((SL."Data"::JSON) ->> 'PriceUnion')::INT8 FROM "SalaryConfirm" SL WHERE SL."UserId" = U."UserId" LIMIT 1),0))) AS "TotalSalary",
+			(U."MainSalary" + U."TotalCommission" + U."Award" + U."KPICoafficient" * (U."ReponsibilityLottery" + U."VietlottLottery" + U."TraditionalLottery" + v_sale_loto * U."SaleOfLoto") - (COALESCE((SELECT ((SL."Data"::JSON) ->> 'Insure')::INT8 FROM "SalaryConfirm" SL WHERE SL."UserId" = U."UserId" LIMIT 1),0) + COALESCE((SELECT ((SL."Data"::JSON) ->> 'PriceUnion')::INT8 FROM "SalaryConfirm" SL WHERE SL."UserId" = U."UserId" LIMIT 1),0) + U."Advance" + U."Punish" + U."Debt")) AS "RealSalary" 
 		FROM tmp11 U 
 	),
 	--Làm tròn
@@ -429,9 +427,9 @@ BEGIN
 			ROUND(T."TraditionalLottery", 2) AS "TraditionalLottery",
 			ROUND(T."ReponsibilityLottery", 2) AS "ReponsibilityLottery"
 		FROM tmp12 T
-		WHERE T."UserTitleId" NOT IN (3,4,6)
+		WHERE T."UserTitleId" = 5
 		UNION
-				SELECT 
+			SELECT 
 			(SELECT SC."SalaryConfirmId" FROM "SalaryConfirm" SC WHERE SC."UserId" = T."UserId" AND SC."Month" = p_month)::INT AS "SalaryConfirmId",
 			T."UserId",
 			T."FullName",
@@ -447,19 +445,19 @@ BEGIN
 			ROUND(T."Debt", 2) AS "Debt",
 			ROUND(T."Debt", 2) AS "Debt",
 			ROUND(T."Award", 2) AS "Award",
-			ROUND(NULL, 2) AS "Insure",
+			ROUND(T."Insure", 2) AS "Insure",
 			ROUND(T."Punish", 2) AS "Punish",
 			COALESCE(ROUND((SELECT A."Price" from crm_salepoint_get_list_transaction(p_month,0,0) A WHERE A."UserId" = T."UserId" And A."TransactionTypeId" = 5), 2),0) AS "Advance",
 			ROUND(T."Average", 2) AS "Average",
 			ROUND(T."Overtime", 2) AS "Overtime",
 			ROUND(T."TotalSub", 0) AS "TotalSub",
-			ROUND(NULL, 2) AS "BaseSalary",
-			ROUND(NULL, 2) AS "MainSalary", 
-			ROUND(NULL, 2) AS "PriceUnion",
-			ROUND(3000000* (SELECT T1."Length"::INT FROM tmp01 T1 WHERE T1."UserId" = T."UserId") + 1000000 - T."Advance"-T."PriceForLunch" + T."TotalCommission" + T."Award" - T."Punish" - T."Debt"+ T."SaleOfVietlott" + T."Average", 2) AS "RealSalary",
-			ROUND(NULL, 2) AS "SaleOfLoto",
-						(CASE WHEN T."TotalNormal" >= v_total_date - 2 THEN T."TotalNormal" + 1 ELSE T."TotalNormal" END) AS "TotalNormal",
-			ROUND(3000000* (SELECT T1."Length"::INT FROM tmp01 T1 WHERE T1."UserId" = T."UserId") + 1000000, 2) AS "TotalSalary",
+			ROUND(T."BaseSalary", 2) AS "BaseSalary",
+			ROUND(T."MainSalary", 2) AS "MainSalary", 
+			ROUND(T."PriceUnion", 2) AS "PriceUnion",
+			ROUND(T."RealSalary", 2) AS "RealSalary",
+			ROUND(T."SaleOfLoto", 2) AS "SaleOfLoto",
+			(CASE WHEN T."TotalNormal" >= v_total_date - 2 THEN T."TotalNormal" + 1 ELSE T."TotalNormal" END) AS "TotalNormal",
+			ROUND(T."TotalSalary", 2) AS "TotalSalary",
 			ROUND(T."PriceForLunch", 2) AS "PriceForLunch",
 			ROUND(T."SalaryOneDate", 2) AS "SalaryOneDate",
 			fn_user_kpi_coafficient_of_user_by_month(p_month, T."UserId") AS "KPICoafficient",
@@ -469,11 +467,11 @@ BEGIN
 			ROUND(T."VietlottLottery", 2) AS "VietlottLottery",
 			ROUND(T."SalaryOneDateSub", 2) AS "SalaryOneDateSub",
 			ROUND(T."TraditionalLottery", 2) AS "TraditionalLottery",
-			ROUND(NULL, 2) AS "ReponsibilityLottery"
+			ROUND(T."ReponsibilityLottery", 2) AS "ReponsibilityLottery"
 		FROM tmp12 T
 		WHERE T."UserTitleId" = 4
 		UNION
-				SELECT 
+			SELECT 
 			(SELECT SC."SalaryConfirmId" FROM "SalaryConfirm" SC WHERE SC."UserId" = T."UserId" AND SC."Month" = p_month)::INT AS "SalaryConfirmId",
 			T."UserId",
 			T."FullName",
@@ -500,7 +498,7 @@ BEGIN
 			ROUND(NULL, 2) AS "PriceUnion",
 			ROUND(1500000 * (SELECT COUNT(*) OVER() FROM "SalePoint" WHERE "IsActive" IS TRUE LIMIT 1)::INT ) AS "RealSalary",
 			ROUND(NULL, 2) AS "SaleOfLoto",
-						(CASE WHEN T."TotalNormal" >= v_total_date - 2 THEN T."TotalNormal" + 1 ELSE T."TotalNormal" END) AS "TotalNormal",
+			(CASE WHEN T."TotalNormal" >= v_total_date - 2 THEN T."TotalNormal" + 1 ELSE T."TotalNormal" END) AS "TotalNormal",
 			ROUND(1500000 * (SELECT COUNT(*) OVER() FROM "SalePoint" WHERE "IsActive" IS TRUE LIMIT 1)::INT, 2) AS "TotalSalary",
 			ROUND(T."PriceForLunch", 2) AS "PriceForLunch",
 			ROUND(T."SalaryOneDate", 2) AS "SalaryOneDate",
@@ -513,7 +511,7 @@ BEGIN
 			0 AS "TraditionalLottery",
 			ROUND(NULL, 2) AS "ReponsibilityLottery"
 		FROM tmp12 T
-		WHERE T."UserTitleId" = 3
+		WHERE T."UserTitleId" = 3 AND T."UserId" != 4
 				UNION
 				SELECT 
 			(SELECT SC."SalaryConfirmId" FROM "SalaryConfirm" SC WHERE SC."UserId" = T."UserId" AND SC."Month" = p_month)::INT AS "SalaryConfirmId",
@@ -557,7 +555,6 @@ BEGIN
 		FROM tmp12 T
 		WHERE T."UserTitleId" = 6
 		UNION
-		
 		SELECT
 			NULL AS "SalaryConfirmId",
 			0 AS "UserId",
@@ -615,4 +612,4 @@ BEGIN
 	
 END;
 $BODY$
-LANGUAGE plpgsql VOLATILE
+LANGUAGE plpgsql VOLATILE;
