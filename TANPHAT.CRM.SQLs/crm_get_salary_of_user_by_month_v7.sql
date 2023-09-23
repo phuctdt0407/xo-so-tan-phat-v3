@@ -168,7 +168,7 @@ BEGIN
 		FROM "Transaction" T 
 		WHERE T."IsDeleted" IS FALSE
 			AND (T."ShiftDistributeId" = ANY(SELECT SD."ShiftDistributeId" FROM tmp1 SD)
-				OR T."ShiftDistributeId" IS NULL AND TO_CHAR(T."Date", 'YYYY-MM') = p_month)
+				OR T."ShiftDistributeId" IS NULL)
 	),
 	-- Lấy nợ cả năm
 	tmp3_1 AS(
@@ -195,7 +195,7 @@ BEGIN
 			COALESCE(SUM(T."TotalPrice") FILTER(WHERE T."TransactionTypeId" = 6 AND T."TypeNameId" NOT IN (4,5,6) AND TO_CHAR(T."Date", 'YYYY-MM') =  p_month), 0) AS "Overtime",										--Làm lố giờ loại khác
 			COALESCE(SUM(T."TotalPrice") FILTER(WHERE T."TransactionTypeId" = 7 AND TO_CHAR(T."Date", 'YYYY-MM') =  p_month), 0) AS "Award",																			--Thưởng
 			COALESCE(SUM(T."TotalPrice") FILTER(WHERE T."TransactionTypeId" = 8 AND TO_CHAR(T."Date", 'YYYY-MM') =  p_month), 0) AS "Debt",
-			COALESCE(NULL, 0) AS "DebtOfAllTime",
+			COALESCE(SUM(T."TotalPrice") FILTER(WHERE T."TransactionTypeId" = 8), 0) AS "DebtOfAllTime",
 			COALESCE(COUNT(1) FILTER(WHERE T."TransactionTypeId" = 6 AND T."TypeNameId" = 4 AND TO_CHAR(T."Date", 'YYYY-MM') =  p_month), 0) AS "L30",																	--làm lố 30p
 			COALESCE(COUNT(1) FILTER(WHERE T."TransactionTypeId" = 6 AND T."TypeNameId" = 5 AND TO_CHAR(T."Date", 'YYYY-MM') =  p_month), 0) AS "L60",																	--làm lố 60p
 			COALESCE(COUNT(1) FILTER(WHERE T."TransactionTypeId" = 6 AND T."TypeNameId" = 6 AND TO_CHAR(T."Date", 'YYYY-MM') =  p_month), 0) AS "L90"																	--làm lố 90p
