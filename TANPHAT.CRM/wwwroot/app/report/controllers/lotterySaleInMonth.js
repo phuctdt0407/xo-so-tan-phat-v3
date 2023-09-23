@@ -6,9 +6,11 @@
 			vm.listDataBK = {}
 			vm.listDataBK.VT = vm.listData.VT ? JSON.parse(vm.listData.VT) : [];
 			vm.listDataBK.VC = vm.listData.VC ? JSON.parse(vm.listData.VC) : [];
-			vm.listDataBK.VTr = vm.listData.VTr ? JSON.parse(vm.listData.VTr) : [];
+            vm.listDataBK.VTr = vm.listData.VTr ? JSON.parse(vm.listData.VTr) : [];
+            vm.listDataBK.Lotto = vm.listData.Lotto ? JSON.parse(vm.listData.Lotto) : [];
+            vm.listDataBK.Vietlot = vm.listData.Vietlot ? JSON.parse(vm.listData.Vietlot) : [];
 			vm.listDataBK.SUM = vm.listData.SUM ? JSON.parse(vm.listData.SUM) : [];
-			vm.listDataBK.SUMF = vm.listData.SUMF ? JSON.parse(vm.listData.SUMF) : [];
+            vm.listDataBK.SUMF = vm.listData.SUMF ? JSON.parse(vm.listData.SUMF) : [];
 
 			vm.month = vm.params.month;
 			vm.thisMonth = moment(vm.month, 'YYYY-MM').format("MM-YYYY");
@@ -55,10 +57,13 @@
             vm.listVT = [];
             vm.listVTr = [];
             vm.listVC = [];
+            vm.listLotto = [];
+            vm.listVietlot = [];
             vm.listSUM = [];
             vm.listMonth = [];
 
             vm.initData = function () {
+                console.log("XXX");
                 vm.groupById = [];
 
                 var { startDate, endDate } = getDayFunction(vm.month);
@@ -78,7 +83,9 @@
                     var temp1 = vm.listDataBK.VT.filter(x1 => x1.ActionDate == item.date)
                     var temp2 = vm.listDataBK.VTr.filter(x2 => x2.ActionDate == item.date)
                     var temp3 = vm.listDataBK.VC.filter(x3 => x3.ActionDate == item.date)
-                    var tempSum = vm.listDataBK.SUM.filter(x4 => x4.ActionDate == item.date)
+                    var temp4 = vm.listDataBK.Lotto.filter(x4 => x4.ActionDate == item.date)
+                    var temp5 = vm.listDataBK.Vietlot.filter(x5 => x5.ActionDate == item.date)
+                    var tempSum = vm.listDataBK.SUM.filter(x6 => x6.ActionDate == item.date)
                     if (temp1 && temp1.length > 0) {
                         var sum1 = 0;
                         temp1.forEach(x1 => sum1 += x1.TotalValue)
@@ -100,21 +107,53 @@
                     } else {
                         vm.listVC.push(0)
                     }
-                    if (tempSum && tempSum.length > 0) {
+                    if (temp4 && temp4.length > 0) {
                         var sum4 = 0;
-                        tempSum.forEach(x4 => sum4 += x4.TotalValue)
-                        vm.listSUM.push(sum4)
+                        temp4.forEach(x4 => sum4 += x4.TotalValue)
+                        vm.listLotto.push(sum4)
                     } else {
-                        vm.listSUM.push(0)
+                        vm.listLotto.push(0)
+                    }
+                    if (temp5 && temp5.length > 0) {
+                        var sum5 = 0;
+                        temp5.forEach(x5 => sum5 += x5.TotalValue)
+                        vm.listVietlot.push(sum5)
+                    } else {
+                        vm.listVietlot.push(0)
+                    }
+                    if (tempSum && tempSum.length > 0) {
+                        // lotto
+                        var sum4 = 0;
+                        temp4.forEach(x4 => sum4 += x4.TotalValue)
+                        // vietlot
+                        var sum5 = 0;
+                        temp5.forEach(x5 => sum5 += x5.TotalValue)
+                        var sum6 = 0;
+                        tempSum.forEach(x6 => sum6 += x6.TotalValue)
+                        vm.listSUM.push(sum6 + sum4 + sum5)
+                    } else {
+                        // lotto
+                        var sum4 = 0;
+                        temp4.forEach(x4 => sum4 += x4.TotalValue)
+                        // vietlot
+                        var sum5 = 0;
+                        temp5.forEach(x5 => sum5 += x5.TotalValue)
+                        var sum6 = 0;
+                        tempSum.forEach(x6 => sum6 += x6.TotalValue)
+                        vm.listSUM.push(sum4 + sum5)
                     }
                 })
 
                 vm.listSalePoint.forEach(function (item) {
                     var temp = vm.listDataBK.SUMF.find(x => x.SalePointId == item.Id)
+                    // Lotto
+                    var temp4 = vm.listDataBK.Lotto.find(x4 => x4.SalePointId == item.id) ? temp4 : 0
+                    // Vietlot
+                    var temp5 = vm.listDataBK.Vietlot.find(x5 => x5.SalePointId == item.id) ? temp5 : 0
                     if (temp) {
-                        item.TotalValue = temp.TotalValue;
+                        item.TotalValue = temp.TotalValue + temp4 + temp5;
                     } else {
-                        item.TotalValue = 0;
+                        item.TotalValue = 0 + temp4 + temp5;
                     }
                 })
 

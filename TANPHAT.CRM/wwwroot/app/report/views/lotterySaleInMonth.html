@@ -31,7 +31,7 @@
                             {{item | formatCurrency}}
                         </td>
                     </tr>
-                    <tr >
+                    <tr>
                         <td class="first-col-sticky link text-left">
                             Vé trùng
                         </td>
@@ -44,6 +44,22 @@
                             Vé cào
                         </td>
                         <td class="text-right" ng-repeat="item in $vm.listVC track by $index" style="min-width: 120px">
+                            {{item  | formatCurrency}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="first-col-sticky link text-left" style="min-width: max-content">
+                            Lotto
+                        </td>
+                        <td class="text-right" ng-repeat="item in $vm.listLotto track by $index" style="min-width: 120px">
+                            {{item  | formatCurrency}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="first-col-sticky link text-left" style="min-width: max-content">
+                            Vietlot
+                        </td>
+                        <td class="text-right" ng-repeat="item in $vm.listVietlot track by $index" style="min-width: 120px">
                             {{item  | formatCurrency}}
                         </td>
                     </tr>
