@@ -63,7 +63,6 @@
             vm.listMonth = [];
 
             vm.initData = function () {
-                console.log("XXX");
                 vm.groupById = [];
 
                 var { startDate, endDate } = getDayFunction(vm.month);

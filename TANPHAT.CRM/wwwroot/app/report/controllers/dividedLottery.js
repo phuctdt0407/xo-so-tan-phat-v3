@@ -1,20 +1,19 @@
 ﻿
 (function () {
-    app.controller('Report.dividedLottery', ['$scope', '$rootScope', '$state', 'viewModel', 'notificationService', 'reportService', 'activityService',
-        function ($scope, $rootScope, $state, viewModel, notificationService, reportService, activityService) {
+    app.controller('Report.dividedLottery', ['$scope', '$rootScope', '$state', 'viewModel', 'notificationService', 'reportService', 'activityService', '$q', 'ddlService', '$stateParams',
+        function ($scope, $rootScope, $state, viewModel, notificationService, reportService, activityService, $q, ddlService, $stateParams) {
             var vm = angular.extend(this, viewModel);
             vm.totalRow = vm.listUser && vm.listUser.length > 0 ? vm.listUser[0].TotalCount : 0;
-         
+
             vm.month = vm.params.month;
             vm.thisMonth = moment(vm.month, 'YYYY-MM').format("MM-YYYY");
             vm.listMonth = [];
-          
-            
 
             var dataChartColunm = [];
             var lableChartColunm = [];
 
             var dataChartLine = [];
+            var dataSold = [];
             var lableChartLine = [];
             vm.dataTable = []
             vm.listDate = []
@@ -36,7 +35,7 @@
             var { startDate, endDate } = getDayFunction(vm.month);
             var currentDate = startDate;
             vm.getDaysArray = function (year, month) {
-               
+
                 var monthIndex = month - 1;
                 var names = ['(CN)', '(T2)', '(T3)', '(T4)', '(T5)', '(T6)', '(T7)'];
                 var date = new Date(year, monthIndex, 1);
@@ -57,13 +56,105 @@
                     vm.listDate.push(objectDate);
                     currentDate = moment(currentDate).add(1, 'day');
                 }
-               
-            }
-            var result=[];
-            vm.init = function () {
-                
 
+            }
+
+            var result = [];
+
+            vm.currentSalePoint = '';
+
+            vm.getLotterySellInMonth = function () {
+                var deferred = $q.defer();
+                var params = angular.copy($stateParams);
+                params.month = params.month == '' ? moment().format('YYYY-MM') : params.month;
+                $q.all([
+                    reportService.getLotterySellInMonth({ month: params.month }),
+                ]).then(function (res) {
+                    var result = {
+                        listData: res[0],
+                    };
+                    deferred.resolve(result);
+                });
+                return deferred.promise;
+            }
+
+            vm.showChartDialog = function (name) {
+                dataSold = [];
+                vm.currentSalePoint = name;
+                vm.getLotterySellInMonth().then(function (res) {
+                    const sumInMonth = JSON.parse(res.listData.SUM);
+                    vm.listSalePoint.forEach(function (item) {
+                        var totalRetail = 0;
+                        var temp = {};
+                        temp.name = item.Name;
+                        temp.data = [];
+                        vm.listMonth.forEach(function (ele) {
+                            temp.data.push(null);
+                        })
+                        sumInMonth.forEach(function (ele) {
+                            if (item.Id == ele.SalePointId) {
+                                totalRetail += ele.Retail;
+                                var index = parseInt(ele.ActionDate.slice(8, 10)) - 1;
+                                temp.data[index] += ele.Retail;
+                            }
+                        })
+                        dataSold.push(temp);
+                    })
+                    
+                    var selectedData = vm.dataTable.find(function (ele) {
+                        return ele.name === name;
+                    });
+
+                    var chartData = selectedData.data.map(function (item) {
+                        return item;
+                    });
+
+                    var selectedSalePointSoldData = dataSold.find(function (ele) {
+                        return ele.name === name;
+                    });
+
+                    var chartSoldData = selectedSalePointSoldData.data.map(function (item) {
+                        return item;
+                    });
+
+                    var options = {
+                        chart: {
+                            type: 'bar',
+                            height: 400,
+                            width: '100%',
+                            stacked: false,
+                        },
+                        dataLabels: {
+                            enabled: false
+                        },
+                        series: [
+                            {
+                                name: 'Vé chia',
+                                data: chartData,
+                            },
+                            {
+                                name: 'Vé bán',
+                                data: chartSoldData,
+                            },
+                        ],
+                        xaxis: {
+                            categories: vm.listDate.map(function (item) {
+                                return item.time;
+                            }),
+                        }
+                    };
+                    $('#chartDialog').children().remove();
+                    chartSalePoint = new ApexCharts(
+                        document.getElementById('chartDialog'),
+                        options
+                    );
+                    chartSalePoint.render();
+                })
+            };
+
+            vm.init = function () {
                 vm.listMonth = [];
+                dataSold = [];
 
                 var { startDate, endDate } = getDayFunction(vm.month);
                 var currentDate = startDate;
@@ -89,7 +180,6 @@
                     })
 
                     lableChartColunm.push(item.Name);
-
                     vm.listDetail.forEach(function (ele) {
                         
                         
@@ -103,8 +193,7 @@
                             temp.data[index] += ele.TotalDupReceived;
                         }
                     })
-                   
-                    console.log("vm.params.salePointId", vm.params.salePointId);
+
                     dataChartLine.push(temp);
                     dataChartColunm.push(totalReceived);
                     var c = 1;
@@ -152,18 +241,15 @@
              //       for (var i = 0; i < vm.params.salePointId.length; i++) {
 
              //           result[vm.params.salePointId[i] - 1] = dataChartColunm[vm.params.salePointId[i]-1];
-                  
+
              //       }
              //   } else if (vm.params.salePointId != 0 && vm.params.salePointId != undefined) {
              //       result = new Array(dataChartColunm.length).fill(0);
              //       result[vm.params.salePointId-1] = dataChartColunm[vm.params.salePointId-1];
              //1   } else {
              //       result = angular.copy(dataChartColunm);
-             //   }
-                vm.dataTable = dataChartLine
-                /*for(var i =1;i<=vm.dataTable[0].data.length;i++){
-                    vm.listDate.push(i)
-                }*/
+                //   }
+                vm.dataTable = dataChartLine;
                 console.log("result.length",result);
                 var month = vm.month ? moment(vm.month).format('MM') : moment().format('MM');
                 var year = vm.month ? moment(vm.month).format('YYYY') : moment().format('YYYY');
@@ -171,7 +257,7 @@
 
                 //console.log("vm.params.salePointId", vm.params.salePointId);
                 vm.params.salePointId = [];
-               
+                vm.showChartDialog(vm.listSalePoint[0].Name);
             }
 
             vm.init();
@@ -202,7 +288,7 @@
                 '#836665', '#C68ECF', '#9EA640', '#cc00cc', '#95928A']
             var options = {
                 series: [{
-                    name: 'Total received',
+                    name: 'Tổng vé chia',
                     data: result,
                 }],
                 chart: {
@@ -247,102 +333,6 @@
 
             var chart = new ApexCharts(document.querySelector("#chartColunm"), options);
             chart.render();
-
-            
-            var optionLine = {
-                series: dataChartLine,
-                dataLabels: {
-                    enabled: true,
-                    style: {
-                        colors: colorArray
-                    }
-                },
-                colors: colorArray,
-                chart: {
-                    height: 500,
-                    type: 'line',
-                    zoom: {
-                        enabled: false
-                    },
-                    animations: {
-                        enabled: false
-                    }
-                },
-                fill: {
-                    type: 'solid',
-                    colors: colorArray
-                },
-                legend: {
-                    position: 'right',
-                    colors: colorArray
-                },
-                stroke: {
-                    width: [5, 5, 4],
-                    curve: 'straight'
-                },
-                labels: lableChartLine,
-                title: {
-                    text: '' //'Missing data (null values)'
-                },
-                xaxis: {
-                },
-            };
-
-            //var chart = new ApexCharts(document.querySelector("#chartLine"), optionLine);
-            //chart.render();
-            vm.showChartDialog = function (name) {
-                var selectedData = vm.dataTable.find(function (ele) {
-                    return ele.name === name;
-                });
-
-                var chartData = selectedData.data.map(function (item) {
-                    return item;
-                });
-
-                var options = {
-                    chart: {
-                        type: 'bar',
-                        height: 400,
-                        width: '100%',
-                        stacked: false,
-                    },
-                    series: [
-                        {
-                            name: name,
-                            data: chartData,
-                        },
-                    ],
-                    xaxis: {
-                        categories: vm.listDate.map(function (item) {
-                            return item.time;
-                        }),
-                    }, title: {
-                        text: name,
-                        align: 'center',
-                        style: {
-                            fontSize: '18px',
-                        }
-                    }
-                };
-
-                var dialog = document.createElement('div');
-                dialog.id = 'chartDialog';
-                dialog.style.width = '80%';
-                dialog.style.height = '400px';
-
-                document.body.appendChild(dialog);
-
-                var chart = new ApexCharts(
-                    document.getElementById('chartDialog'),
-                    options
-                );
-                chart.render();
-
-                dialog.addEventListener('click', function () {
-                    document.body.removeChild(dialog);
-                    chart.destroy();
-                });
-            };
 
         }]);
 })();

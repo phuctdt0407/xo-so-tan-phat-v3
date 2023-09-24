@@ -28,13 +28,14 @@
         <div class="table-responsive resize-tb">
             <div id="chartColunm" class="minWidthChart"></div>
         </div>
-        <h3 class="text-center mt-4">Số lượng vé chia cho các điểm bán theo ngày trong tháng {{$vm.thisMonth}}</h3>
+        <h3 class="text-center mt-4">Số lượng vé chia và bán lẻ cho điểm bán {{$vm.currentSalePoint}} theo ngày trong tháng {{$vm.thisMonth}}</h3>
         <!--<div id="chartLine" style="min-height: 365px; max-height: 365px"></div>-->
         <!--        <div class="table-responsive resize-tb">-->
         <!--            <div id="chartLine" class="minWidthChart"></div>-->
         <!--        </div>-->
-        <div id="chartDialog" title="Biểu đồ cột">
-            <canvas id="chartCanvas"></canvas>
+        
+        <div class="table-responsive resize-tb">
+            <div id="chartDialog" class="minWidthChart" style="min-height: 400px;"></div>
         </div>
         <div class="table-responsive resize-tb">
             <table class="table">
