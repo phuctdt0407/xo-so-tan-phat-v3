@@ -14,6 +14,7 @@
         GetDataDistributeScratchForSubAgency,
         GetScratchcardFull,
         GetWinningList,
+        GetWinningListByMonth,
         GetTransitionListToConfirm,
         GetShiftDistributeByDate,
         GetSoldLogDetail,

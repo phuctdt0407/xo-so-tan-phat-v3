@@ -57,6 +57,8 @@ namespace TANPHAT.CRM.Client
 
         Task<ApiResponse<List<WinningListModel>>> GetWinningList(WinningListReq req);
 
+        Task<ApiResponse<List<WinningListModel>>> GetWinningListByMonth(WinningListByMonthReq req);
+
         Task<ApiResponse<List<TransitionListToConfirmModel>>>
             GetTransitionListToConfirm(TransitionListToConfirmReq req);
 
@@ -243,6 +245,12 @@ namespace TANPHAT.CRM.Client
         {
             req.TypeName = ActivityGetType.GetWinningList;
             return await GetAsync<List<WinningListModel>, WinningListReq>(urlSend, req);
+        }
+
+        public async Task<ApiResponse<List<WinningListModel>>> GetWinningListByMonth(WinningListByMonthReq req)
+        {
+            req.TypeName = ActivityGetType.GetWinningListByMonth;
+            return await GetAsync<List<WinningListModel>, WinningListByMonthReq>(urlSend, req);
         }
 
         public async Task<ApiResponse<List<TransitionListToConfirmModel>>> GetTransitionListToConfirm(

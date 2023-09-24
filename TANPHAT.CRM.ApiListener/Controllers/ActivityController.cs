@@ -102,6 +102,12 @@ namespace TANPHAT.CRM.ApiListener.Controllers
                         var result = await _activityBusiness.GetWinningList(reqModel);
                         return OkResult(result);
                     }
+                case ActivityGetType.GetWinningListByMonth:
+                    {
+                        var reqModel = GetRequestData<WinningListByMonthReq>();
+                        var result = await _activityBusiness.GetWinningListByMonth(reqModel);
+                        return OkResult(result);
+                    }
                 case ActivityGetType.GetTransitionListToConfirm:
                     {
                         var reqModel = GetRequestData<TransitionListToConfirmReq>();

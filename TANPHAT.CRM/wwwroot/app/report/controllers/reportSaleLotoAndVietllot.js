@@ -1,6 +1,6 @@
 ﻿(function () {
-    app.controller('Report.reportSaleLotoAndVietllot', ['$scope', '$rootScope', '$state', 'viewModel', 'notificationService', 'reportService', 'activityService', '$uibModal', 'dayOfWeekVN',
-        function ($scope, $rootScope, $state, viewModel, notificationService, reportService, activityService, $uibModal, dayOfWeekVN) {
+    app.controller('Report.reportSaleLotoAndVietllot', ['$scope', '$rootScope', '$state', 'viewModel', 'notificationService', 'reportService', 'activityService', '$uibModal', 'dayOfWeekVN', '$q',
+        function ($scope, $rootScope, $state, viewModel, notificationService, reportService, activityService, $uibModal, dayOfWeekVN, $q) {
             var vm = angular.extend(this, viewModel);
 
             vm.classItem0 = vm.params.transactionType && vm.params.transactionType == 3 ?'nav-link active' : 'nav-link';
@@ -22,6 +22,46 @@
                 }
                 
             };
+
+            vm.getWinningListByMonth = function () {
+                var deferred = $q.defer();
+                vm.params.month = moment(vm.month).format('YYYY-MM');
+                $q.all([
+                    activityService.getWinningListByMonth({ month: vm.params.month }),
+                ]).then(function (res) {
+                    var result = {
+                        data: res[0],
+                    };
+                    deferred.resolve(result);
+                });
+                return deferred.promise;
+            }
+
+            var tongChiThuong = [];
+
+            vm.getTongChiThuong = function () {
+                vm.getWinningListByMonth().then(function (res) {
+                    tongChiThuong = [];
+                    var dataChiThuong = res.data;
+                    vm.listSalePoint.forEach(salePoint => {
+                        var total = 0;
+                        var temp = {};
+                        temp.Name = salePoint.Name;
+                        temp.Data = 0;
+                        dataChiThuong.forEach(ele => {
+                            if (ele.SalePointId == salePoint.Id && vm.params.transactionType == 3 && ele.WinningTypeId == 6) {
+                                total += ele.WinningPrice;
+                            }
+                            if (ele.SalePointId == salePoint.Id && vm.params.transactionType == 2 && ele.WinningTypeId == 5) {
+                                total += ele.WinningPrice;
+                            }
+                        })
+                        temp.Data = total;
+                        tongChiThuong.push(temp);
+                    })
+                })
+
+            }
 
             vm.listSalePoint.unshift({
                 Id: 0,
@@ -73,6 +113,7 @@
                     })
                     startDate = moment(startDate).add(1, 'day');
                 }
+                vm.getTongChiThuong();
             }
 
             vm.init()
@@ -84,6 +125,9 @@
                 });
                 return total;
             };
+            vm.getTotalLottoOrVietLot = function (salePointName) {
+                return tongChiThuong.filter(x => x.Name == salePointName)[0].Data;
+            }
 
             function getDayFunction(month) {
                 var startDate = moment(month, 'YYYY-MM').format('YYYY-MM-01');

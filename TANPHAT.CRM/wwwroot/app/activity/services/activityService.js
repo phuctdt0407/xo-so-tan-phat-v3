@@ -145,6 +145,10 @@
                 var url = baseUrl + '/GetWinningList';
                 return baseService.getData(url, params);
             };
+            this.getWinningListByMonth = function (params) {
+                var url = baseUrl + '/GetWinningListByMonth';
+                return baseService.getData(url, params);
+            };
 
             this.getTransitionListToConfirm = function (params) {
                 var url = baseUrl + '/GetTransitionListToConfirm';

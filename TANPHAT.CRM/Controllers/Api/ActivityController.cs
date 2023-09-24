@@ -247,6 +247,17 @@ namespace TANPHAT.CRM.Controllers.Api
             return res;
         }
 
+        [HttpGet("GetWinningListByMonth")]
+        public async Task<object> GetWinningListByMonth(string month)
+        {
+            var obj = new WinningListByMonthReq
+            {
+                Month = month
+            };
+            var res = await _activityClient.GetWinningListByMonth(obj);
+            return res;
+        }
+
         [HttpGet("GetTransitionListToConfirm")]
         public async Task<object> GetTransitionListToConfirm(int ps, int p, DateTime date, int salePointId, int userRoleId, int transitionTypeId)
         {

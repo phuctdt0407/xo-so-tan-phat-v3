@@ -51,6 +51,8 @@ namespace TANPHAT.CRM.Business
 
         Task<List<WinningListModel>> GetWinningList(WinningListReq req);
 
+        Task<List<WinningListModel>> GetWinningListByMonth(WinningListByMonthReq req);
+
         Task<List<TransitionListToConfirmModel>> GetTransitionListToConfirm(TransitionListToConfirmReq req);
 
         Task<List<ShiftDistributeByDateModel>> GetShiftDistributeByDate(ShiftDistributeByDateReq req);
@@ -228,6 +230,12 @@ namespace TANPHAT.CRM.Business
         public async Task<List<WinningListModel>> GetWinningList(WinningListReq req)
         {
             var res = await _activityProvider.GetWinningList(req);
+            return res;
+        }
+
+        public async Task<List<WinningListModel>> GetWinningListByMonth(WinningListByMonthReq req)
+        {
+            var res = await _activityProvider.GetWinningListByMonth(req);
             return res;
         }
 

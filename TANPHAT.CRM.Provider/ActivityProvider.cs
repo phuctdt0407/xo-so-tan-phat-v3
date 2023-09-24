@@ -41,6 +41,8 @@ namespace TANPHAT.CRM.Provider
 
         Task<List<WinningListModel>> GetWinningList(WinningListReq req);
 
+        Task<List<WinningListModel>> GetWinningListByMonth(WinningListByMonthReq req);
+
         Task<List<TransitionListToConfirmModel>> GetTransitionListToConfirm(TransitionListToConfirmReq req);
 
         Task<List<ShiftDistributeByDateModel>> GetShiftDistributeByDate(ShiftDistributeByDateReq req);
@@ -300,6 +302,16 @@ namespace TANPHAT.CRM.Provider
                 p_date = req.Date
             };
             var res = await base.ExecStoredProcAsync<WinningListModel>("crm_winning_get_list_v2", obj);
+            return res;
+        }
+
+        public async Task<List<WinningListModel>> GetWinningListByMonth(WinningListByMonthReq req)
+        {
+            var obj = new
+            {
+                p_month = req.Month
+            };
+            var res = await base.ExecStoredProcAsync<WinningListModel>("crm_winning_get_by_month", obj);
             return res;
         }
 
