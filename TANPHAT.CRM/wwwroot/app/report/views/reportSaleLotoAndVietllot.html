@@ -39,8 +39,8 @@
                 <thead class="theader text-center fix-scroll">
                     <tr class="flex flex-wrap ">
                         <th class="th-none first1-col-sticky" rowspan="2"></th>
-                        <th colspan="6" class="sticky-border-1 bg-total text-center fix-scroll py-4 resizeSchedule ">Tổng</th>
-                        <th colspan="6" class="sticky-border-1 bg-total text-center fix-scroll py-4 resizeSchedule ">Tổng</th>
+                        <th colspan="6" class="sticky-border-1 bg-total text-center fix-scroll py-4 resizeSchedule ">Doanh thu</th>
+                        <th colspan="6" class="sticky-border-1 bg-total text-center fix-scroll py-4 resizeSchedule ">Trả thưởng</th>
                         <th colspan="6" class="sticky-border-1 bg-total text-center fix-scroll py-4 resizeSchedule ">Lãi</th>
                         <th style="width: 10px;" class="sticky-border-1 text-center fix-scroll py-4 resizeSchedule " ng-repeat="item in $vm.listMonth"
                             ng-class="({{$vm.checkCurrentDate($index)}}&&{{item.IsWeekEnd}}) ? 'bg-current-weekend'
@@ -51,14 +51,14 @@
 
                     </tr>
                     <tr class="flex flex-wrap ">
-                        <th colspan="6" style="font-size:16px" class="sticky-border-1 bg-total text-center fix-scroll py-4 resizeSchedule ">
-                            Doanh thu <br/> (DT)
+                        <th colspan="6" style="color: #A2DA63" class="sticky-border-1 bg-total text-right fix-scroll py-4 resizeSchedule ">
+                            {{$vm.getTongDoanhThuHeThong() | formatCurrency}}
                         </th>
-                        <th colspan="6" style="font-size:16px" class="sticky-border-1 bg-total text-center fix-scroll py-4 resizeSchedule ">
-                            Trả thưởng <br/> (TT)
+                        <th colspan="6" style="color: #FF8D4A" class="sticky-border-1 bg-total text-right fix-scroll py-4 resizeSchedule ">
+                            {{$vm.getTotalLottoOrVietLotHeThong() | formatCurrency}}
                         </th>
-                        <th colspan="6" style="font-size:16px" class="sticky-border-1 bg-total text-center fix-scroll py-4 resizeSchedule ">
-                            (DT) - (TT)
+                        <th colspan="6" style="color: #A2DA63" class="sticky-border-1 bg-total text-right fix-scroll py-4 resizeSchedule ">
+                            {{$vm.getProfitLottoHeThong() | formatCurrency}}
                         </th>
                         <th style="width: 10px;" class="sticky-border-1 text-center fix-scroll py-4 resizeSchedule " ng-repeat="item in $vm.listMonth"
                             ng-class="({{$vm.checkCurrentDate($index)}}&&{{item.IsWeekEnd}}) ? 'bg-current-weekend'
@@ -77,7 +77,7 @@
                         </td>
                         <td class="text-right bg-total text-white" colspan="6">{{$vm.getTotal(item.Data) | formatCurrency}}</td>
                         <td class="text-right bg-total text-white" colspan="6">{{$vm.getTotalLottoOrVietLot(item.SalePointName) | formatCurrency}}</td>
-                        <td class="text-right bg-total text-white" colspan="6">{{$vm.getTotal(item.Data) - $vm.getTotalLottoOrVietLot(item.SalePointName) | formatCurrency}}</td>
+                        <td class="text-right bg-total text-white" colspan="6">{{$vm.getProfitLotto($vm.getTotal(item.Data), $vm.getTotalLottoOrVietLot(item.SalePointName)) | formatCurrency}}</td>
                         <td ng-repeat="ele in item.Data" class="text-right" style="min-width: 120px" ng-click="$vm.openModalDetail(ele, item.SalePointName)">{{ele.AllTotalPrice | formatCurrency}}</td>
 
 
@@ -97,8 +97,8 @@
                 <thead class="theader text-center fix-scroll">
                     <tr class="flex flex-wrap ">
                         <th class="th-none first1-col-sticky bg-total" rowspan="2"></th>
-                        <th colspan="6" class="sticky-border-1 bg-total text-center fix-scroll py-4 resizeSchedule ">Tổng</th>
-                        <th colspan="6" class="sticky-border-1 bg-total text-center fix-scroll py-4 resizeSchedule ">Tổng</th>
+                        <th colspan="6" class="sticky-border-1 bg-total text-center fix-scroll py-4 resizeSchedule ">Doanh Thu</th>
+                        <th colspan="6" class="sticky-border-1 bg-total text-center fix-scroll py-4 resizeSchedule ">Trả thưởng</th>
                         <th colspan="6" class="sticky-border-1 bg-total text-center fix-scroll py-4 resizeSchedule ">Lãi</th>
                         <th style="width: 10px;" class="sticky-border-1 text-center fix-scroll py-4 resizeSchedule " ng-repeat="item in $vm.listMonth"
                             ng-class="({{$vm.checkCurrentDate($index)}}&&{{item.IsWeekEnd}}) ? 'bg-current-weekend'
@@ -109,14 +109,14 @@
 
                     </tr>
                     <tr class="flex flex-wrap ">
-                        <th colspan="6" style="font-size:16px" class="sticky-border-1 bg-total text-center fix-scroll py-4 resizeSchedule ">
-                            Doanh thu <br /> (DT)
+                        <th colspan="6" style="color: #A2DA63" class="sticky-border-1 bg-total text-right fix-scroll py-4 resizeSchedule ">
+                            {{$vm.getTongDoanhThuHeThong() | formatCurrency}}
                         </th>
-                        <th colspan="6" style="font-size:16px" class="sticky-border-1 bg-total text-center fix-scroll py-4 resizeSchedule ">
-                            Trả thưởng <br /> (TT)
+                        <th colspan="6" style="color: #FF8D4A" class="sticky-border-1 bg-total text-right fix-scroll py-4 resizeSchedule ">
+                            {{$vm.getTotalLottoOrVietLotHeThong() | formatCurrency}}
                         </th>
-                        <th colspan="6" style="font-size:16px" class="sticky-border-1 bg-total text-center fix-scroll py-4 resizeSchedule ">
-                            (DT) - (TT)
+                        <th colspan="6" style="color: #A2DA63" class="sticky-border-1 bg-total text-right fix-scroll py-4 resizeSchedule ">
+                            {{$vm.getTongDoanhThuHeThong() - $vm.getTotalLottoOrVietLotHeThong() | formatCurrency}}
                         </th>
                         <th style="width: 10px;" class="sticky-border-1 text-center fix-scroll py-4 resizeSchedule " ng-repeat="item in $vm.listMonth"
                             ng-class="({{$vm.checkCurrentDate($index)}}&&{{item.IsWeekEnd}}) ? 'bg-current-weekend'

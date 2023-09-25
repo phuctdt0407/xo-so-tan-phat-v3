@@ -126,7 +126,36 @@
                 return total;
             };
             vm.getTotalLottoOrVietLot = function (salePointName) {
-                return tongChiThuong.filter(x => x.Name == salePointName)[0].Data;
+                var temp = tongChiThuong.filter(x => x.Name == salePointName)[0];
+                return temp != undefined ? temp.Data : 0;
+            }
+
+            vm.getProfitLotto = function (doanhThu, traThuong) {
+                return doanhThu - (doanhThu * 0.02) - traThuong; // Lãi Loto = doanh thu LOTO - (doanh thu loto * 2%) - trả thưởng
+            }
+
+            vm.getTongDoanhThuHeThong = function () {
+                var total = 0;
+                vm.data.forEach(item => {
+                    total += vm.getTotal(item.Data);
+                })
+                return total;
+            }
+
+            vm.getTotalLottoOrVietLotHeThong = function () {
+                var total = 0;
+                vm.data.forEach(item => {
+                    total += vm.getTotalLottoOrVietLot(item.SalePointName);
+                })
+                return total;
+            }
+
+            vm.getProfitLottoHeThong = function () {
+                var total = 0;
+                vm.data.forEach(item => {
+                    total += vm.getTotal(item.Data) - (vm.getTotal(item.Data) * 0.02) - vm.getTotalLottoOrVietLot(item.SalePointName);
+                })
+                return total;
             }
 
             function getDayFunction(month) {
