@@ -98,8 +98,8 @@
         templateUrl: viewPath + 'soldLottery.html' + versionTemplate,
         controller: 'Report.soldLottery as $vm',
         resolve: {
-            viewModel: ['$q', '$stateParams', 'reportService', 'activityService', 'ddlService',
-                function ($q, $stateParams, reportService, activityService, ddlService) {
+            viewModel: ['$q', '$stateParams', 'reportService', 'activityService', 'ddlService', 'salepointService',
+                function ($q, $stateParams, reportService, activityService, ddlService, salepointService) {
                     var deferred = $q.defer();
                     var params = angular.copy($stateParams);
                     params.month = params.month == '' ? moment().format('YYYY-MM') : params.month;
@@ -107,12 +107,14 @@
                         reportService.getTotalLotterySellOfUserToCurrentInMonth({ month: params.month, userid: params.userid, lotteryTypeId: params.lotteryTypeId }),
                         ddlService.userByTitleDDL({ userTitleId: 5 }),
                         reportService.getAverageLotterySellOfUser({ month: params.month, userid: params.userid, lotteryTypeId: params.lotteryTypeId }),
+                        salepointService.getListSalePoint()
                     ]).then(function (res) {
                         var result = {
                             params: params,
                             listData: res[0],
                             listStaff: res[1],
-                            listEx: res[2]
+                            listEx: res[2],
+                            listSalePoint: res[3]
                         };
 
                         deferred.resolve(result);

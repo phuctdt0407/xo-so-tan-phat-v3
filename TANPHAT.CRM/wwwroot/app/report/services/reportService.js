@@ -24,6 +24,10 @@
                 var url = baseUrl + '/GetTotalLotterySellOfUserToCurrentInMonth';
                 return baseService.getData(url, params);
             };
+            this.getTotalLotterySellOfUserInMonth = function (params) {
+                var url = baseUrl + '/GetTotalLotterySellOfUserInMonth';
+                return baseService.getData(url, params);
+            };
             this.getDataInventoryInMonthOfAllSalePoint = function (params) {
                 var url = baseUrl + '/GetDataInventoryInMonthOfAllSalePoint';
                 return baseService.getData(url, params);

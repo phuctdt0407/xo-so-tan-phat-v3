@@ -21,6 +21,9 @@ namespace TANPHAT.CRM.Client
         Task<ApiResponse<List<TotalLotterySellOfUserToCurrentInMonthModel>>> GetTotalLotterySellOfUserToCurrentInMonth(
             TotalLotterySellOfUserToCurrentInMonthReq req);
 
+        Task<ApiResponse<List<TotalLotterySellOfUserInMonth>>> GetTotalLotterySellOfUserInMonth(
+            TotalLotterySellOfUserToCurrentInMonthReq req);
+
         Task<ApiResponse<List<DataInventoryInMonthOfAllSalePointModel>>> GetDataInventoryInMonthOfAllSalePoint(
             DataInventoryInMonthOfAllSalePointReq req);
 
@@ -124,6 +127,14 @@ namespace TANPHAT.CRM.Client
         {
             req.TypeName = ReportGetType.GetTotalLotterySellOfUserToCurrentInMonth;
             return await GetAsync<List<TotalLotterySellOfUserToCurrentInMonthModel>,
+                TotalLotterySellOfUserToCurrentInMonthReq>(urlSend, req);
+        }
+
+        public async Task<ApiResponse<List<TotalLotterySellOfUserInMonth>>>
+            GetTotalLotterySellOfUserInMonth(TotalLotterySellOfUserToCurrentInMonthReq req)
+        {
+            req.TypeName = ReportGetType.GetTotalLotterySellOfUserInMonth;
+            return await GetAsync<List<TotalLotterySellOfUserInMonth>,
                 TotalLotterySellOfUserToCurrentInMonthReq>(urlSend, req);
         }
 

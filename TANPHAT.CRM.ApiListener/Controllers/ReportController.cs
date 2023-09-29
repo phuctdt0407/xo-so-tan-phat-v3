@@ -44,6 +44,12 @@ namespace TANPHAT.CRM.ApiListener.Controllers
                         var result = await _reportBusiness.GetDataInventoryInDayOfAllSalePoint(reqModel);
                         return OkResult(result);
                     }
+                case ReportGetType.GetTotalLotterySellOfUserInMonth:
+                    {
+                        var reqModel = GetRequestData<TotalLotterySellOfUserToCurrentInMonthReq>();
+                        var result = await _reportBusiness.GetTotalLotterySellOfUserInMonth(reqModel);
+                        return OkResult(result);
+                    }
                 case ReportGetType.GetTotalLotterySellOfUserToCurrentInMonth:
                     {
                         var reqModel = GetRequestData<TotalLotterySellOfUserToCurrentInMonthReq>();

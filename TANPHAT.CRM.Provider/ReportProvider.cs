@@ -21,6 +21,8 @@ namespace TANPHAT.CRM.Provider
         Task<List<DataInventoryInMonthOfAllSalePointModel>> GetDataInventoryInMonthOfAllSalePoint(DataInventoryInMonthOfAllSalePointReq req);
 
         Task<List<TotalLotterySellOfUserToCurrentInMonthModel>> GetTotalLotterySellOfUserToCurrentInMonth(TotalLotterySellOfUserToCurrentInMonthReq req);
+        Task<List<TotalLotterySellOfUserInMonth>> GetTotalLotterySellOfUserInMonth(TotalLotterySellOfUserToCurrentInMonthReq req);
+        
 
         Task<List<TotalLotteryReceiveOfAllAgencyInMonthModel>> GetTotalLotteryReceiveOfAllAgencyInMonth(ReportRequestModel req);
 
@@ -135,6 +137,18 @@ namespace TANPHAT.CRM.Provider
                 p_lottery_type = req.LotteryTypeId
             };
             var res = (await base.ExecStoredProcAsync<TotalLotterySellOfUserToCurrentInMonthModel>("crm_report_total_lottery_sell_of_user_to_current_date_v2", obj));
+            return res;
+        }
+
+        public async Task<List<TotalLotterySellOfUserInMonth>> GetTotalLotterySellOfUserInMonth(TotalLotterySellOfUserToCurrentInMonthReq req)
+        {
+            var obj = new
+            {
+                p_month = req.Month,
+                p_userId = 0,
+                p_lottery_type = req.LotteryTypeId
+            };
+            var res = (await base.ExecStoredProcAsync<TotalLotterySellOfUserInMonth>("crm_report_total_lottery_sell_of_user_to_current_date_v3", obj));
             return res;
         }
 

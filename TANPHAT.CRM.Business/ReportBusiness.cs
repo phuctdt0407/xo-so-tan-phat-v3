@@ -21,6 +21,7 @@ namespace TANPHAT.CRM.Business
         Task<List<DataInventoryInMonthOfAllSalePointModel>> GetDataInventoryInMonthOfAllSalePoint(DataInventoryInMonthOfAllSalePointReq req);
 
         Task<List<TotalLotterySellOfUserToCurrentInMonthModel>> GetTotalLotterySellOfUserToCurrentInMonth(TotalLotterySellOfUserToCurrentInMonthReq req);
+        Task<List<TotalLotterySellOfUserInMonth>> GetTotalLotterySellOfUserInMonth(TotalLotterySellOfUserToCurrentInMonthReq req);
 
         Task<List<TotalLotteryReceiveOfAllAgencyInMonthModel>> GetTotalLotteryReceiveOfAllAgencyInMonth(ReportRequestModel req);
 
@@ -206,6 +207,12 @@ namespace TANPHAT.CRM.Business
         public async Task<List<TotalLotterySellOfUserToCurrentInMonthModel>> GetTotalLotterySellOfUserToCurrentInMonth(TotalLotterySellOfUserToCurrentInMonthReq req)
         {
             var res = await _reportProvider.GetTotalLotterySellOfUserToCurrentInMonth(req);
+            return res;
+        }
+
+        public async Task<List<TotalLotterySellOfUserInMonth>> GetTotalLotterySellOfUserInMonth(TotalLotterySellOfUserToCurrentInMonthReq req)
+        {
+            var res = await _reportProvider.GetTotalLotterySellOfUserInMonth(req);
             return res;
         }
 

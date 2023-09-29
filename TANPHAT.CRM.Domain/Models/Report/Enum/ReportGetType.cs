@@ -32,6 +32,7 @@
         ReuseReportDataFinishShift,
         GetListUnsoldLotteryTicket,
         GetListTotalNumberOfTicketsOfEachManager,
-        GetListExemptKpi
+        GetListExemptKpi,
+        GetTotalLotterySellOfUserInMonth
     }
 }

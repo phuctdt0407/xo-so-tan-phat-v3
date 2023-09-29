@@ -9,16 +9,9 @@
             </div>
             <div class="col-md-3 col-xs-6 col-lg-2 pt10">
                 <label>Chọn nhân viên</label>
-                <!--<ui-select ng-model="$vm.params.userid" ng-change="$vm.loadData()"
-                   theme="select2" search-enabled="false">
-            <ui-select-match placeholder="Chọn nhân viên" allow-clear="false">{{$select.selected.Name}}</ui-select-match>
-            <ui-select-choices position="down" repeat="ele.Id.toString() as ele in $vm.listStaffDropDown">
-                {{ele.Name}}
-            </ui-select-choices>
-        </ui-select>-->
                 <ui-select multiple close-on-select="true" ng-model="$vm.params.userid" theme="select2"
                            search-enabled="true">
-                    <ui-select-match placeholder="Chọn điểm bán" allow-clear="true">
+                    <ui-select-match placeholder="Chọn nhân viên" allow-clear="true">
                         {{$item.Name}}
                     </ui-select-match>
                     <ui-select-choices position="down" repeat="ele.Id.toString() as ele in $vm.listStaffDropDown | filter:$select.search">
@@ -36,37 +29,265 @@
                     </ui-select-choices>
                 </ui-select>
             </div>
-            <div style="height: 50px; margin-top: 45px;" class="btn btn-primary float-r resizeSchedule" ng-click="$vm.loadData()"> tìm kiếm </div>
+            <div style="height: 50px; margin-top: 45px;" class="btn btn-primary float-r resizeSchedule" ng-click="$vm.loadData()"> Tìm kiếm </div>
         </div>
         <h3 class="text-center pt-4">Số lượng trung bình vé bán trong tháng {{$vm.thisMonth}} của mỗi nhân viên</h3>
         <div class="table-responsive resize-tb">
             <div id="chartColunm" class="minWidthChart"></div>
         </div>
         <h3 class="text-center pt-4">Số lượng vé đã bán các ngày trong tháng {{$vm.thisMonth}}</h3>
-<!--        <div class="table-responsive resize-tb">-->
-<!--            <div id="chartline" class="minWidthChart"></div>-->
-<!--        </div>-->
         <div class="table-responsive resize-tb">
             <table class="table">
                 <thead class="fix-scroll">
-                <tr>
-                    <th class="theader first-col-sticky"></th>
-                    <th class="theader text-center" ng-repeat="item in $vm.listDate">{{item.time}}</th>
-                </tr>
+                    <tr>
+                        <th class="theader first-col-sticky"></th>
+                        <th class="theader text-center" ng-repeat="item in $vm.listDate">{{item.time}}</th>
+                    </tr>
                 </thead>
                 <tbody class="">
-                <tr ng-repeat="ele in $vm.dataLine">
-                    <td class="first-col-sticky link ">
-                        {{ele.name}}
+                    <tr ng-repeat="ele in $vm.dataLine">
+                        <td class="first-col-sticky link ">
+                            {{ele.name}}
 
-                    </td>
-                    <td ng-repeat="item in ele.data track by $index" class="w100">
-                        {{item  | formatCurrency}}
-                    </td>
-                </tr>
+                        </td>
+                        <td ng-repeat="item in ele.data track by $index" class="w100">
+                            {{item  | formatCurrency}}
+                        </td>
+                    </tr>
                 </tbody>
             </table>
+        </div>
 
+        <!--Chart Sale Point-->
+        <h3 class="text-center pt-4">Biểu đồ so sánh vé bán của hai điểm bán</h3>
+        <div class="row mt-3 px-4">
+            <div class="col-5">
+                <div class="row">
+                    <div style="gap:8px; display: grid; grid-template-columns: 1fr 1fr auto">
+                        <div style="height:115px">
+                            <label>Tháng</label>
+                            <monthyearpicker my-class="input-sm datepicker-new" date-format="MM/YYYY" placeholder="Chọn tháng"
+                                             ng-model="$vm.firstSelectedMonth" on-select="$vm.onSelectFirstMonth()" ng-change="$vm.onSelectFirstMonth()" output-format="YYYY-MM"></monthyearpicker>
+                        </div>
+                        <div style="height:115px">
+                            <label>Điểm bán</label>
+                            <ui-select close-on-select="true" ng-model="$vm.firstSalePointId" theme="select2"
+                                       search-enabled="true">
+                                <ui-select-match placeholder="Chọn điểm bán" allow-clear="true">
+                                    {{$select.selected.Name}}
+                                </ui-select-match>
+                                <ui-select-choices position="down" repeat="ele.Id.toString() as ele in listSalePoint">
+                                    {{ele.Name}}
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                        <div style="height: 44px; margin-top: calc(115px - 24px - 44px - 0.5em) " class="btn btn-primary float-r resizeSchedule" ng-click="$vm.onClickSearchFirstSalePoint()"> Tìm </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="chart-container" style="width:100%">
+                        <div id="firstSalePointChart" style="min-height: 400px;"></div>
+                    </div>
+                    <div class="mt-3 d-flex justify-content-between" style="gap:24px">
+                        <div>
+                            <div class="d-flex justify-content-between" style="gap:4px">
+                                <small><strong>Miền bắc: </strong></small>
+                                <span>{{$vm.firstSalePointChartData.mienBac}} <small>vé</small></span>
+                            </div>
+                            <div class="d-flex justify-content-between" style="gap:4px">
+                                <small><strong>Miền trung: </strong></small>
+                                <span>{{$vm.firstSalePointChartData.mienTrung}} <small>vé</small></span>
+                            </div>
+                            <div class="d-flex justify-content-between" style="gap:4px">
+                                <small><strong>Miền nam: </strong></small>
+                                <span>{{$vm.firstSalePointChartData.mienNam}} <small>vé</small></span>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="d-flex justify-content-between" style="gap:4px">
+                                <small><strong>Cào thành phố: </strong></small>
+                                <span>{{$vm.firstSalePointChartData.caoTP}} <small>vé</small></span>
+                            </div>
+                            <div class="d-flex justify-content-between" style="gap:4px">
+                                <small><strong>Cào Đồng Nai: </strong></small>
+                                <span>{{$vm.firstSalePointChartData.caoDN}} <small>vé</small></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-1"></div>
+            <div class="col-5">
+                <div class="row">
+                    <div style="gap:8px; display: grid; grid-template-columns: 1fr 1fr auto">
+                        <div style="height:115px">
+                            <label>Tháng</label>
+                            <monthyearpicker my-class="input-sm datepicker-new" date-format="MM/YYYY" placeholder="Chọn tháng"
+                                             ng-model="$vm.secondSelectedMonth" on-select="$vm.onSelectSecondMonth()" ng-change="$vm.onSelectSecondMonth()" output-format="YYYY-MM"></monthyearpicker>
+                        </div>
+                        <div style="height:115px">
+                            <label>Điểm bán</label>
+                            <ui-select close-on-select="true" ng-model="$vm.secondSalePointId" theme="select2"
+                                       search-enabled="true">
+                                <ui-select-match placeholder="Chọn điểm bán" allow-clear="true">
+                                    {{$select.selected.Name}}
+                                </ui-select-match>
+                                <ui-select-choices position="down" repeat="ele.Id.toString() as ele in listSalePoint">
+                                    {{ele.Name}}
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                        <div style="height: 44px; margin-top: calc(115px - 24px - 44px - 0.5em)" class="btn btn-primary float-r resizeSchedule" ng-click="$vm.onClickSearchSecondSalePoint()"> Tìm </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="chart-container" style="width:100%">
+                        <div id="secondSalePointChart" style="min-height: 400px;"></div>
+                    </div>
+                    <div class="mt-3 d-flex justify-content-between" style="gap:24px">
+                        <div>
+                            <div class="d-flex justify-content-between" style="gap:4px">
+                                <small><strong>Miền bắc: </strong></small>
+                                <span>{{$vm.secondSalePointChartData.mienBac}} <small>vé</small></span>
+                            </div>
+                            <div class="d-flex justify-content-between" style="gap:4px">
+                                <small><strong>Miền trung: </strong></small>
+                                <span>{{$vm.secondSalePointChartData.mienTrung}} <small>vé</small></span>
+                            </div>
+                            <div class="d-flex justify-content-between" style="gap:4px">
+                                <small><strong>Miền nam: </strong></small>
+                                <span>{{$vm.secondSalePointChartData.mienNam}} <small>vé</small></span>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="d-flex justify-content-between" style="gap:4px">
+                                <small><strong>Cào thành phố: </strong></small>
+                                <span>{{$vm.secondSalePointChartData.caoTP}} <small>vé</small></span>
+                            </div>
+                            <div class="d-flex justify-content-between" style="gap:4px">
+                                <small><strong>Cào Đồng Nai: </strong></small>
+                                <span>{{$vm.secondSalePointChartData.caoDN}} <small>vé</small></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--Chart User-->
+        <h3 class="text-center pt-4">Biểu đồ so sánh vé bán của hai nhân viên</h3>
+        <div class="row mt-3 px-4">
+            <div class="col-5">
+                <div class="row">
+                    <div style="gap:8px; display: grid; grid-template-columns: 1fr 1fr auto">
+                        <div style="height:115px">
+                            <label>Tháng</label>
+                            <monthyearpicker my-class="input-sm datepicker-new" date-format="MM/YYYY" placeholder="Chọn tháng"
+                                             ng-model="$vm.firstEmployeeSelectedMonth" on-select="$vm.onSelectFirstEmployeeMonth()" ng-change="$vm.onSelectFirstEmployeeMonth()" output-format="YYYY-MM"></monthyearpicker>
+                        </div>
+                        <div style="height:115px">
+                            <label>Nhân viên</label>
+                            <ui-select close-on-select="true" ng-model="$vm.firstEmployeeId" theme="select2"
+                                       search-enabled="true">
+                                <ui-select-match placeholder="Chọn nhân viên" allow-clear="true">
+                                    {{$select.selected.Name}}
+                                </ui-select-match>
+                                <ui-select-choices position="down" repeat="ele.Id.toString() as ele in listEmployee">
+                                    {{ele.Name}}
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                        <div style="height: 44px; margin-top: calc(115px - 24px - 44px - 0.5em) " class="btn btn-primary float-r resizeSchedule" ng-click="$vm.onClickSearchFirstEmployee()"> Tìm </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="chart-container" style="width:100%">
+                        <div id="firstEmployeeChart" style="min-height: 400px;"></div>
+                    </div>
+                    <div class="mt-3 d-flex justify-content-between" style="gap:24px">
+                        <div>
+                            <div class="d-flex justify-content-between" style="gap:4px">
+                                <small><strong>Miền bắc: </strong></small>
+                                <span>{{$vm.firstEmployeeChartData.mienBac}} <small>vé</small></span>
+                            </div>
+                            <div class="d-flex justify-content-between" style="gap:4px">
+                                <small><strong>Miền trung: </strong></small>
+                                <span>{{$vm.firstEmployeeChartData.mienTrung}} <small>vé</small></span>
+                            </div>
+                            <div class="d-flex justify-content-between" style="gap:4px">
+                                <small><strong>Miền nam: </strong></small>
+                                <span>{{$vm.firstEmployeeChartData.mienNam}} <small>vé</small></span>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="d-flex justify-content-between" style="gap:4px">
+                                <small><strong>Cào thành phố: </strong></small>
+                                <span>{{$vm.firstEmployeeChartData.caoTP}} <small>vé</small></span>
+                            </div>
+                            <div class="d-flex justify-content-between" style="gap:4px">
+                                <small><strong>Cào Đồng Nai: </strong></small>
+                                <span>{{$vm.firstEmployeeChartData.caoDN}} <small>vé</small></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-1"></div>
+            <div class="col-5">
+                <div class="row">
+                    <div style="gap:8px; display: grid; grid-template-columns: 1fr 1fr auto">
+                        <div style="height:115px">
+                            <label>Tháng</label>
+                            <monthyearpicker my-class="input-sm datepicker-new" date-format="MM/YYYY" placeholder="Chọn tháng"
+                                             ng-model="$vm.secondEmployeeIdSelectedMonth" on-select="$vm.onSelectSecondEmployeeMonth()" ng-change="$vm.onSelectSecondEmployeeMonth()" output-format="YYYY-MM"></monthyearpicker>
+                        </div>
+                        <div style="height:115px">
+                            <label>Nhân viên</label>
+                            <ui-select close-on-select="true" ng-model="$vm.secondEmployeeId" theme="select2"
+                                       search-enabled="true">
+                                <ui-select-match placeholder="Chọn nhân viên" allow-clear="true">
+                                    {{$select.selected.Name}}
+                                </ui-select-match>
+                                <ui-select-choices position="down" repeat="ele.Id.toString() as ele in listEmployee">
+                                    {{ele.Name}}
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                        <div style="height: 44px; margin-top: calc(115px - 24px - 44px - 0.5em)" class="btn btn-primary float-r resizeSchedule" ng-click="$vm.onClickSearchSecondEmployee()"> Tìm </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="chart-container" style="width:100%">
+                        <div id="secondEmployeeChart" style="min-height: 400px;"></div>
+                    </div>
+                    <div class="mt-3 d-flex justify-content-between" style="gap:24px">
+                        <div>
+                            <div class="d-flex justify-content-between" style="gap:4px">
+                                <small><strong>Miền bắc: </strong></small>
+                                <span>{{$vm.secondEmployeeIdChartData.mienBac}} <small>vé</small></span>
+                            </div>
+                            <div class="d-flex justify-content-between" style="gap:4px">
+                                <small><strong>Miền trung: </strong></small>
+                                <span>{{$vm.secondEmployeeIdChartData.mienTrung}} <small>vé</small></span>
+                            </div>
+                            <div class="d-flex justify-content-between" style="gap:4px">
+                                <small><strong>Miền nam: </strong></small>
+                                <span>{{$vm.secondEmployeeIdChartData.mienNam}} <small>vé</small></span>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="d-flex justify-content-between" style="gap:4px">
+                                <small><strong>Cào thành phố: </strong></small>
+                                <span>{{$vm.secondEmployeeIdChartData.caoTP}} <small>vé</small></span>
+                            </div>
+                            <div class="d-flex justify-content-between" style="gap:4px">
+                                <small><strong>Cào Đồng Nai: </strong></small>
+                                <span>{{$vm.secondEmployeeIdChartData.caoDN}} <small>vé</small></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>    

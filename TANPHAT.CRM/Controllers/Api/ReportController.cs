@@ -89,6 +89,19 @@ namespace TANPHAT.CRM.Controllers.Api
             return res;
         }
 
+        [HttpGet("GetTotalLotterySellOfUserInMonth")]
+        public async Task<object> GetTotalLotterySellOfUserInMonth(string month, int userid, int? lotteryTypeId = 0)
+        {
+            var obj = new TotalLotterySellOfUserToCurrentInMonthReq
+            {
+                Month = month,
+                UserId = userid,
+                LotteryTypeId = lotteryTypeId ?? 0
+            };
+            var res = await _reportClient.GetTotalLotterySellOfUserInMonth(obj);
+            return res;
+        }
+
         [HttpGet("GetDataInventoryInMonthOfAllSalePoint")]
         public async Task<object> GetDataInventoryInMonthOfAllSalePoint(string month)
         {
