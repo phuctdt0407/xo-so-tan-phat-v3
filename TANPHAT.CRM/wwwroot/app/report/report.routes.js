@@ -612,11 +612,13 @@
                     params.month = params.month == '' ? moment().format('YYYY-MM') : params.month;
 
                     $q.all([
-                        reportService.getSaleOfSalePointInMonth(params)
+                        reportService.getSaleOfSalePointInMonth(params),
+                        salepointService.getListSalePoint()
                     ]).then(function (res) {
                         var result = {
                             params: params,
-                            listData: res[0]
+                            listData: res[0],
+                            listSalePoint: res[1]
                         };
                         deferred.resolve(result);
                     });

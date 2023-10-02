@@ -56,18 +56,29 @@ BEGIN
 	tmp0 AS (
 		SELECT 
 			SPL."SalePointId",
-			COALESCE(SUM(SPL."Quantity") FILTER (WHERE SPL."LotteryTypeId" IN (v_lottery, v_lottery_dup) AND SPL."LotteryPriceId" = v_lottery_price_id), 0) AS "TotalRetail",
-			COALESCE(SUM(SPL."TotalValue") FILTER (WHERE SPL."LotteryTypeId" IN (v_lottery, v_lottery_dup) AND SPL."LotteryPriceId" = v_lottery_price_id), 0) AS "TotalRetailMoney",
-			COALESCE(SUM(SPL."Quantity") FILTER (WHERE SPL."LotteryTypeId" IN (v_lottery, v_lottery_dup) AND SPL."LotteryPriceId" <> v_lottery_price_id), 0) AS "TotalWholesale",
-			COALESCE(SUM(SPL."TotalValue") FILTER (WHERE SPL."LotteryTypeId" IN (v_lottery, v_lottery_dup) AND SPL."LotteryPriceId" <> v_lottery_price_id), 0) AS "TotalWholesaleMoney",
-			COALESCE(SUM(SPL."Quantity") FILTER (WHERE SPL."LotteryTypeId" IN (v_scratch) AND SPL."LotteryPriceId" = v_lottery_scratch_price_id), 0) AS "TotalScratchRetail",
-			COALESCE(SUM(SPL."Quantity") FILTER (WHERE SPL."LotteryTypeId" IN (v_scratch) AND SPL."LotteryPriceId" = v_lottery_scratch_price_id AND SPL."LotteryChannelId" = 1000) , 0) AS "TotalScratchRetailOfCity",
-			COALESCE(SUM(SPL."Quantity") FILTER (WHERE SPL."LotteryTypeId" IN (v_scratch) AND SPL."LotteryPriceId" = v_lottery_scratch_price_id AND SPL."LotteryChannelId" = 1001) , 0) AS "TotalScratchRetailOfCaMau",
--- 			COALESCE(SUM(SPL."TotalValue") FILTER (WHERE SPL."LotteryTypeId" IN (v_scratch) AND SPL."LotteryPriceId" = v_lottery_scratch_price_id), 0) AS "TotalScratchRetailMoney",
-			COALESCE(SUM(SPL."Quantity") FILTER (WHERE SPL."LotteryTypeId" IN (v_scratch) AND SPL."LotteryPriceId" <> v_lottery_scratch_price_id AND SPL."LotteryChannelId" = 1000) , 0) AS "TotalScratchWholesaleOfCity",
-			COALESCE(SUM(SPL."Quantity") FILTER (WHERE SPL."LotteryTypeId" IN (v_scratch) AND SPL."LotteryPriceId" <> v_lottery_scratch_price_id AND SPL."LotteryChannelId" = 1001) , 0) AS "TotalScratchWholesaleOfCaMau"
--- 			COALESCE(SUM(SPL."Quantity") FILTER (WHERE SPL."LotteryTypeId" IN (v_scratch) AND SPL."LotteryPriceId" <> v_lottery_scratch_price_id), 0) AS "TotalScratchWholesale",
--- 			COALESCE(SUM(SPL."TotalValue") FILTER (WHERE SPL."LotteryTypeId" IN (v_scratch) AND SPL."LotteryPriceId" <> v_lottery_scratch_price_id), 0) AS "TotalScratchWholesaleMoney"
+			COALESCE(SUM(SPL."Quantity") FILTER (WHERE SPL."LotteryTypeId" IN (v_lottery, v_lottery_dup) AND SPL."LotteryPriceId" = v_lottery_price_id AND SPL."LotteryChannelId" < 1000), 0) AS "TotalRetail",																						-- Vé thường bán lẻ
+			COALESCE(SUM(SPL."TotalValue") FILTER (WHERE SPL."LotteryTypeId" IN (v_lottery, v_lottery_dup) AND SPL."LotteryPriceId" = v_lottery_price_id AND SPL."LotteryChannelId" < 1000), 0) AS "TotalRetailMoney",																				-- Vé thường bán lẻ thành tiền
+			COALESCE(SUM(SPL."Quantity") FILTER (WHERE SPL."LotteryTypeId" IN (v_lottery, v_lottery_dup) AND SPL."LotteryPriceId" <> v_lottery_price_id AND SPL."LotteryChannelId" < 1000), 0) AS "TotalWholesale",																					-- Vé thường bán sỉ
+			COALESCE(SUM(SPL."TotalValue") FILTER (WHERE SPL."LotteryTypeId" IN (v_lottery, v_lottery_dup) AND SPL."LotteryPriceId" <> v_lottery_price_id AND SPL."LotteryChannelId" < 1000), 0) AS "TotalWholesaleMoney",																			-- Vé thường bán sỉ thành tiền
+
+			COALESCE(SUM(SPL."Quantity") FILTER (WHERE SPL."LotteryTypeId" IN (v_scratch) AND SPL."LotteryChannelId" = 1000) , 0) AS "TotalScratchRetailOfCity",																																	-- Cào TP lẻ
+			COALESCE(SUM(SPL."Quantity") FILTER (WHERE SPL."LotteryTypeId" IN (v_scratch) AND SPL."LotteryChannelId" = 1001) , 0) AS "TotalScratchRetailOfCaMau",																																	-- Cào ĐN lẻ
+			COALESCE(SUM(SPL."Quantity") FILTER (WHERE SPL."LotteryTypeId" IN (v_scratch) AND SPL."LotteryChannelId" = 1002) , 0) AS "TotalOfBocLe",																																				-- Bóc lẻ ???
+			COALESCE(SUM(SPL."Quantity") FILTER (WHERE SPL."LotteryTypeId" IN (v_scratch) AND SPL."LotteryChannelId" = 1003) , 0) AS "TotalOfXo5K",																																					-- XO 5K lẻ ???
+			COALESCE(SUM(SPL."Quantity") FILTER (WHERE SPL."LotteryTypeId" IN (v_scratch) AND SPL."LotteryChannelId" = 1004) , 0) AS "TotalOfXo2K",																																					-- XO 2K lẻ ???
+
+			COALESCE(SUM(SPL."TotalValue") FILTER (WHERE SPL."LotteryTypeId" IN (v_scratch) AND SPL."LotteryChannelId" = 1000 AND SPL."LotteryPriceId" = 1) , 0) AS "TotalRetailMoneyRetailOfCity",																									-- Cào TP lẻ thành tiền
+			COALESCE(SUM(SPL."TotalValue") FILTER (WHERE SPL."LotteryTypeId" IN (v_scratch) AND SPL."LotteryChannelId" = 1001 AND SPL."LotteryPriceId" = 1) , 0) AS "TotalRetailMoneyRetailOfCaMau",																								-- Cào ĐN lẻ thành tiền
+			COALESCE(SUM(SPL."TotalValue") FILTER (WHERE SPL."LotteryTypeId" IN (v_scratch) AND SPL."LotteryChannelId" = 1002) , 0) AS "TotalRetailMoneyBocLe",																																		-- Bóc lẻ ??? thành tiền
+			COALESCE(SUM(SPL."TotalValue") FILTER (WHERE SPL."LotteryTypeId" IN (v_scratch) AND SPL."LotteryChannelId" = 1003) , 0) AS "TotalRetailMoneyXo5K",																																		-- XO 5K lẻ ??? thành tiền
+			COALESCE(SUM(SPL."TotalValue") FILTER (WHERE SPL."LotteryTypeId" IN (v_scratch) AND SPL."LotteryChannelId" = 1004) , 0) AS "TotalRetailMoneyXo2K",																																		-- XO 2K lẻ ??? thành tiền
+
+			COALESCE(SUM(SPL."Quantity") FILTER (WHERE SPL."LotteryTypeId" IN (v_scratch) AND SPL."LotteryChannelId" = 1000 AND SPL."LotteryPriceId" != 1) , 0) AS "TotalScratchWholesaleOfCity",																									-- Cào TP sỉ
+			COALESCE(SUM(SPL."Quantity") FILTER (WHERE SPL."LotteryTypeId" IN (v_scratch) AND SPL."LotteryChannelId" = 1001 AND SPL."LotteryPriceId" != 1) , 0) AS "TotalScratchWholesaleOfCaMau",																									-- Cào ĐN sỉ
+
+			COALESCE(SUM(SPL."TotalValue") FILTER (WHERE SPL."LotteryTypeId" IN (v_scratch) AND SPL."LotteryChannelId" = 1000 AND SPL."LotteryPriceId" != 1)  , 0) AS "TotalWholesaleMoneyOfCity",																									-- Cào TP sỉ thành tiền
+			COALESCE(SUM(SPL."TotalValue") FILTER (WHERE SPL."LotteryTypeId" IN (v_scratch) AND SPL."LotteryChannelId" = 1001 AND SPL."LotteryPriceId" != 1) , 0) AS "TotalWholesaleMoneyOfCaMau"																									-- Cào ĐN sỉ thành tiền
+
 		FROM "SalePointLog" SPL 
 		WHERE SPL."IsDeleted" IS FALSE
 			AND TO_CHAR(SPL."ActionDate", 'YYYY-MM') = p_month
@@ -78,18 +89,18 @@ BEGIN
 	tmp1 AS (
 		SELECT
 			(CASE WHEN W."FromSalePointId" = 0 THEN W."SalePointId" ELSE W."FromSalePointId" END)	AS "SalePointId",
-			SUM(W."WinningPrice") FILTER (WHERE W."WinningTypeId" = 1) AS "WinningLotteryPrice",									--Trúng vé thường
-			SUM(W."WinningPrice") FILTER (WHERE W."WinningTypeId" = 2) AS "ThreeSpecialPrice",										--Ba số đặc biệt
+			SUM(W."WinningPrice") FILTER (WHERE W."WinningTypeId" = 1) AS "WinningLotteryPrice",										--Trúng vé thường
+			SUM(W."WinningPrice") FILTER (WHERE W."WinningTypeId" = 2) AS "ThreeSpecialPrice",											--Ba số đặc biệt
 			SUM(W."WinningPrice") FILTER (WHERE W."WinningTypeId" = 3) AS "FourSpecialPrice",											--Bốn số đặc biệt
 			SUM(W."WinningPrice") FILTER (WHERE W."WinningTypeId" = 4) AS "TwoSpecialPrice",											--Hoàn vé
 			SUM(W."WinningPrice") FILTER (WHERE W."WinningTypeId" = 5) AS "VietlottPrice",												--Trả thưởng vietlott
-			SUM(W."WinningPrice") FILTER (WHERE W."WinningTypeId" = 6) AS "LotoPrice",														--Trả thưởng loto \\\\\
+			SUM(W."WinningPrice") FILTER (WHERE W."WinningTypeId" = 6) AS "LotoPrice",													--Trả thưởng loto
 			SUM(W."WinningPrice") FILTER (WHERE W."WinningTypeId" = 7) AS "PromotionPrice",
-			SUM(W."Quantity") FILTER (WHERE W."WinningTypeId" = 1) AS "WinningLottery",									--Trúng vé thường
-			SUM(W."Quantity") FILTER (WHERE W."WinningTypeId" = 2) AS "ThreeSpecial",										--Ba số đặc biệt
-			SUM(W."Quantity") FILTER (WHERE W."WinningTypeId" = 3) AS "FourSpecial",											--Bốn số đặc biệt
-			SUM(W."Quantity") FILTER (WHERE W."WinningTypeId" = 4) AS "TwoSpecial",											--Hoàn vé
-			SUM(W."Quantity") FILTER (WHERE W."WinningTypeId" = 5) AS "Vietlott",												--Trả thưởng vietlott
+			SUM(W."Quantity") FILTER (WHERE W."WinningTypeId" = 1) AS "WinningLottery",													--Trúng vé thường
+			SUM(W."Quantity") FILTER (WHERE W."WinningTypeId" = 2) AS "ThreeSpecial",													--Ba số đặc biệt
+			SUM(W."Quantity") FILTER (WHERE W."WinningTypeId" = 3) AS "FourSpecial",													--Bốn số đặc biệt
+			SUM(W."Quantity") FILTER (WHERE W."WinningTypeId" = 4) AS "TwoSpecial",														--Hoàn vé
+			SUM(W."Quantity") FILTER (WHERE W."WinningTypeId" = 5) AS "Vietlott",														--Trả thưởng vietlott
 			SUM(W."Quantity") FILTER (WHERE W."WinningTypeId" = 6) AS "Loto",
 			SUM(W."Quantity") FILTER (WHERE W."WinningTypeId" = 7) AS "Promotion"		
 		FROM "Winning" W
@@ -104,7 +115,7 @@ BEGIN
 			I."SalePointId",
 			I."LotteryChannelId",
 			I."LotteryDate",
-			SUM(I."TotalRemaining" + I."TotalDupRemaining") AS "TotalRemaining",
+			SUM(I."TotalRemaining" + I."TotalDupRemaining") AS "TotalRemaining",														-- Ôm ế
 			SUM(I."TotalReceived" + I."TotalDupReceived") AS "TotalReceived"
 		FROM "Inventory" I
 		WHERE 
@@ -213,14 +224,14 @@ BEGIN
 	tmp9 AS (
 		SELECT
 			T."SalePointId",
-			COALESCE(SUM(T."Price") FILTER (WHERE T."TransactionTypeId" = 1), 0) AS "FeeOutSite",					--Chi phí ngoài
-			COALESCE(SUM(T."Price") FILTER (WHERE T."TransactionTypeId" = 2), 0) AS "SaleOfVietlott",			--Doanh thu Vietlott
-			COALESCE(SUM(T."Price") FILTER (WHERE T."TransactionTypeId" = 3), 0) AS "SaleOfLoto",					--Doanh thu loto
-			COALESCE(SUM(T."Price") FILTER (WHERE T."TransactionTypeId" = 4), 0) AS "PunishUser",					--Phạt nhân viên
-			COALESCE(SUM(T."Price") FILTER (WHERE T."TransactionTypeId" = 6), 0) AS "OvertimeUser",				--Tăng ca nhân viên
+			COALESCE(SUM(T."Price") FILTER (WHERE T."TransactionTypeId" = 1), 0) AS "FeeOutSite",						--Chi phí ngoài
+			COALESCE(SUM(T."Price") FILTER (WHERE T."TransactionTypeId" = 2), 0) AS "SaleOfVietlott",					--Doanh thu Vietlott
+			COALESCE(SUM(T."Price") FILTER (WHERE T."TransactionTypeId" = 3), 0) AS "SaleOfLoto",						--Doanh thu loto
+			COALESCE(SUM(T."Price") FILTER (WHERE T."TransactionTypeId" = 4), 0) AS "PunishUser",						--Phạt nhân viên
+			COALESCE(SUM(T."Price") FILTER (WHERE T."TransactionTypeId" = 6), 0) AS "OvertimeUser",						--Tăng ca nhân viên
 			COALESCE(SUM(T."Price") FILTER (WHERE T."TransactionTypeId" = 7), 0) AS "AwardUser",						--Thưởng nhân viên
 			COALESCE(SUM(T."Price") FILTER (WHERE T."TransactionTypeId" = 8), 0) AS "DebtUser", 						--nợ nhân viên
-			COALESCE(SUM(T."Price") FILTER (WHERE T."TransactionTypeId" = 9), 0) AS "PriceVietlott" 				--chi phí vietlott
+			COALESCE(SUM(T."Price") FILTER (WHERE T."TransactionTypeId" = 9), 0) AS "PriceVietlott" 					--chi phí vietlott
 		FROM "Transaction" T
 		WHERE T."IsDeleted" IS FALSE
 			AND TO_CHAR(T."Date", 'YYYY-MM') = p_month
@@ -262,53 +273,65 @@ BEGIN
 	tmp13 AS (
 		SELECT 
 			SP.*,
-			COALESCE(SPL."TotalRetail", 0) AS "TotalRetail",
+			COALESCE(SPL."TotalRetail", 0) AS "TotalRetail",																						--Thường lẻ
 			COALESCE(SPL."TotalRetailMoney", 0) AS "TotalRetailMoney",
-			COALESCE(SPL."TotalWholesale", 0) AS "TotalWholesale",
+
+			COALESCE(SPL."TotalWholesale", 0) AS "TotalWholesale",																					--Thường sỉ
 			COALESCE(SPL."TotalWholesaleMoney", 0) AS "TotalWholesaleMoney",
-			COALESCE(SPL."TotalScratchRetail", 0) AS "TotalScratchRetail",
-			COALESCE(SPL."TotalScratchRetailOfCity", 0) AS "TotalScratchRetailOfCity",
-			COALESCE(SPL."TotalScratchRetailOfCaMau", 0) AS "TotalScratchRetailOfCaMau",
-			COALESCE(SPL."TotalScratchRetailOfCity" * 9100 + SPL."TotalScratchRetailOfCaMau" * 8700, 0) AS "TotalScratchRetailMoney",
--- 			COALESCE(SPL."TotalScratchWholesale", 0) AS "TotalScratchWholesale",
-			COALESCE(SPL."TotalScratchWholesaleOfCity", 0) AS "TotalScratchWholesaleOfCity",
-			COALESCE(SPL."TotalScratchWholesaleOfCaMau", 0) AS "TotalScratchWholesaleOfCaMau",
-			COALESCE(SPL."TotalScratchWholesaleOfCity" * 9100 + SPL."TotalScratchWholesaleOfCaMau" * 8700, 0) AS "TotalScratchWholesaleMoney",
-			COALESCE(W."WinningLotteryPrice", 0) AS "WinningLotteryPrice",
-			COALESCE(W."ThreeSpecialPrice", 0) AS "ThreeSpecialPrice",
-			COALESCE(W."FourSpecialPrice", 0) AS "FourSpecialPrice",
+
+			COALESCE(SPL."TotalScratchRetailOfCity", 0) AS "TotalScratchRetailOfCity",																--Cào TP lẻ
+			COALESCE(SPL."TotalRetailMoneyRetailOfCity", 0) AS "TotalRetailMoneyRetailOfCity",
+
+			COALESCE(SPL."TotalScratchWholesaleOfCity", 0) AS "TotalScratchWholesaleOfCity",														--Cào TP sỉ
+			COALESCE(SPL."TotalWholesaleMoneyOfCity", 0) AS "TotalWholesaleMoneyOfCity",
+
+			COALESCE(SPL."TotalScratchRetailOfCaMau", 0) AS "TotalScratchRetailOfCaMau",															--Cào ĐN lẻ
+			COALESCE(SPL."TotalRetailMoneyRetailOfCaMau", 0) AS "TotalRetailMoneyRetailOfCaMau",
+
+			COALESCE(SPL."TotalScratchWholesaleOfCaMau", 0) AS "TotalScratchWholesaleOfCaMau",														--Cào ĐN sỉ
+			COALESCE(SPL."TotalWholesaleMoneyOfCaMau", 0) AS "TotalWholesaleMoneyOfCaMau",
+
+			COALESCE(SPL."TotalOfBocLe", 0) AS "TotalOfBocLe",																						--Bóc lẻ
+			COALESCE(SPL."TotalRetailMoneyBocLe", 0) AS "TotalRetailMoneyBocLe",
+
+			COALESCE(SPL."TotalOfXo5K", 0) AS "TotalOfXo5K",																						--XO 5K lẻ
+			COALESCE(SPL."TotalRetailMoneyXo5K", 0) AS "TotalRetailMoneyXo5K",
+
+			COALESCE(SPL."TotalOfXo2K", 0) AS "TotalOfXo2K",																						--XO 2K lẻ
+			COALESCE(SPL."TotalRetailMoneyXo2K", 0) AS "TotalRetailMoneyXo2K",
+
+			COALESCE(K."TotalRemaining", 0) AS "TotalRemaining",																					--Ôm ế
+
+			COALESCE(W."TwoSpecial", 0) AS "TwoSpecial",																							--Hoàn vé
 			COALESCE(W."TwoSpecialPrice", 0) AS "TwoSpecialPrice",
-			COALESCE(W."VietlottPrice", 0) AS "VietlottPrice",
+
+			COALESCE(W."ThreeSpecial", 0) AS "ThreeSpecial",																						--3 số đặc biệt
+			COALESCE(W."ThreeSpecialPrice", 0) AS "ThreeSpecialPrice",
+
+			COALESCE(W."FourSpecial", 0) AS "FourSpecial",																							--4 số đặc biệt
+			COALESCE(W."FourSpecialPrice", 0) AS "FourSpecialPrice",
+
+			COALESCE(C."TotalCommission", 0) AS "TotalCommission",																					--Hoa hồng đổi số trúng
+
+			COALESCE(T."SaleOfVietlott", 0) AS "SaleOfVietlott",																					--Hoa hồng đổi số trúng
+
+			COALESCE(T."SaleOfVietlott" * 0.055 , 0) AS "HoaHong5_5",																				--Hoa hồng 5.5% = Doanh thu Vietlott * 5.5% 				(1)
+
+			COALESCE(((T."SaleOfVietlott" * 0.055) * 0.015) / 0.055 , 0) AS "HoaHong1_5",															--Hoa hồng 1.5% = ((Hoa hồng 5.5%)*1.5%)/5.5%				(2)
+
+			COALESCE(W."VietlottPrice" * 0.002, 0) AS "HoaHong0_2",																					--Hoa hồng trả thưởng 0.2% = Trả thưởng Vietlott * 0.2%		(3)
+
+			COALESCE(((T."SaleOfVietlott" * 0.055) + (((T."SaleOfVietlott" * 0.055) * 0.015) / 0.055) + (W."VietlottPrice" * 0.002)) * 0.05, 0) AS "ThueTNCN",				--Thuế TNCN= (1 + 2 + 3) * 5%
+
+			COALESCE(T."SaleOfLoto", 0) AS "SaleOfLoto",																							--Doanh thu Lotto
+
+			COALESCE(W."Loto", 0) AS "Loto",																										--Trả thưởng Lotto
 			COALESCE(W."LotoPrice", 0) AS "LotoPrice",
-			COALESCE(W."PromotionPrice", 0) AS "PromotionPrice",
-			COALESCE(W."WinningLottery", 0) AS "WinningLottery",
-			COALESCE(W."ThreeSpecial", 0) AS "ThreeSpecial",
-			COALESCE(W."FourSpecial", 0) AS "FourSpecial",
-			COALESCE(W."TwoSpecial", 0) AS "TwoSpecial",
-			COALESCE(W."Promotion", 0) AS "Promotion",
-			COALESCE(W."Vietlott", 0) AS "Vietlott",
-			COALESCE(W."Loto", 0) AS "Loto",
-			COALESCE(K."TotalRemaining", 0) AS "TotalRemaining",																--Tổng ôm ế
-			COALESCE(I."TotalReceived", 0) AS "TotalReceived",																	--Tổng vé nhận
-			COALESCE(I."PriceReceived", 0) AS "PriceReceived",																	--Tổng chi phí nhận vé														
-			COALESCE(T."FeeOutSite", 0) AS "FeeOutSite",																				--Chi phí ngoài
-			COALESCE(((T."SaleOfVietlott"*0.07)*0.95) , 0) AS "SaleOfVietlott",																--Doanh thu Vietlott
-			COALESCE(T."PriceVietlott", 0) AS "PriceVietlott",																  --Chi phí Vietlott
-			COALESCE((T."SaleOfLoto" - (T."SaleOfLoto" *0.02) - fn_total_winning_price(p_month,6,SP."SalePointId")) , 0) AS "SaleOfLoto",																				--Doanh thu loto
-			(COALESCE(T."SaleOfLoto", 0) * v_percent_loto) AS "ProfitOfLoto",										--Lợi nhuận loto
-			COALESCE(T."PunishUser", 0) AS "PunishUser",																				--Phạt nhân viên
-			COALESCE(T."OvertimeUser", 0) AS "OvertimeUser",																		--Tăng ca nhân viên
-			COALESCE(T."AwardUser", 0) AS "AwardUser",																					--Thưởng nhân viên
-			COALESCE(T."DebtUser", 0) AS "DebtUser", 																						--nợ nhân viên
-			COALESCE(S."TotalSalary", 0) AS "TotalSalary",																			--Tổng tiền trả lương thường
--- 			COALESCE(S."TotalSalarySub", 0) AS "TotalSalarySub",																--Tổng tiền trả lương tăng ca
--- 			COALESCE(S."TotalPriceForLunch", 0) AS "TotalPriceForLunch",												--Tổng tiền cơm trưa
--- 			COALESCE(S."TotalPriceTarget", 0) AS "TotalPriceTarget",														--Tổng tiền thưởng target
-			COALESCE(IFL."PriceReceiveItem", 0) AS "PriceReceiveItem",													--Tổng tiền nhận hàng hoá
-			COALESCE(IFL."PriceTransItem", 0) AS "PriceTransItem",															--Tổng tiền trả hàng hoá
-			COALESCE(IFL."PriceReceiveInstrument", 0) AS "PriceReceiveInstrument",							--Tổng tiền nhận máy móc
-			COALESCE(IFL."PriceTransInstrument", 0) AS "PriceTransInstrument", 									--Tổng tiền trả máy móc
-			COALESCE(C."TotalCommission", 0) AS "TotalCommission"																--Hoa hồng đổi số trúng	
+
+			COALESCE(S."TotalSalary", 0) AS "TotalSalary",																							--Tổng tiền trả lương thường
+
+			COALESCE(S."TotalSalary" , 0)::NUMERIC AS "TotalSale"																							
+
 		FROM tmp SP
 			LEFT JOIN tmp0 SPL ON SP."SalePointId" = SPL."SalePointId"
 			LEFT JOIN tmp1 W ON SP."SalePointId" = W."SalePointId"
@@ -362,103 +385,77 @@ BEGIN
 			T."SalePointName",
 			TRANSLATE(T."MainUserId"::TEXT,'{}', '[]') AS "MainUserId",
 			TRANSLATE(T."PercentMainUserId"::TEXT,'{}', '[]') AS "PercentMainUserId",
-			ROUND(T."TotalRetail", 0) AS "TotalRetail",																			--Tổng vé thường lẻ
+			ROUND(T."TotalRetail", 0) AS "TotalRetail",																									--Thường lẻ
  			ROUND(T."TotalRetailMoney", 0) AS "TotalRetailMoney",
-			ROUND(T."TotalWholesale", 0) AS "TotalWholesale",																--Tổng vé thường sỉ
+			
+			ROUND(T."TotalWholesale", 0) AS "TotalWholesale",																							--Thường sỉ
  			ROUND(T."TotalWholesaleMoney", 0) AS "TotalWholesaleMoney",
--- 			ROUND(T."TotalScratchRetail", 0) AS "TotalScratchRetail",												--Tổng vé cào lẻ
- 			ROUND(T."TotalScratchRetailMoney", 0) AS "TotalScratchRetailMoney",
--- 			ROUND(T."TotalScratchWholesale", 0) AS "TotalScratchWholesale",									--Tổng vé cào sỉ
- 			ROUND(T."TotalScratchWholesaleMoney", 0) AS "TotalScratchWholesaleMoney",
--- 			ROUND(T."WinningLotteryPrice", 0) AS "WinningLotteryPrice",
-			ROUND(T."ThreeSpecialPrice", 0) AS "ThreeSpecialPrice", -- Tổng tiền trúng 3 số 
-			ROUND(T."FourSpecialPrice", 0) AS "FourSpecialPrice", -- Tổng tiền trúng 4 số 
- 			ROUND(T."TwoSpecialPrice", 0) AS "TwoSpecialPrice",	-- Tổng tiền trúng 2 số 
-			ROUND(T."ThreeSpecial", 0)*300000 AS "ThreeSpecial",
-			ROUND(T."FourSpecial", 0)*750000 AS "FourSpecial",
-			ROUND(T."TwoSpecial", 0)*10000 AS "TwoSpecial",
-			ROUND(T."Promotion", 0)*T."PromotionPrice" AS "Promotion",
---  		ROUND(T."VietlottPrice", 0) AS "VietlottPrice",																	
--- 			ROUND(T."LotoPrice", 0) AS "LotoPrice",
- 			ROUND(T."TotalRemaining", 0) * 10000 AS "TotalRemaining",																--Tổng ôm ế 
- 			ROUND(T."TotalReceived", 0) AS "TotalReceived",																	--Tổng vé nhận
-			ROUND(T."PriceReceived", 0) AS "PriceReceived",																	--Tổng chi phí nhận vé														
--- 			ROUND(T."FeeOutSite", 0) AS "FeeOutSite",																				--Chi phí ngoài
- 			ROUND(T."SaleOfVietlott", 0) AS "SaleOfVietlott",																--Doanh thu Vietlott			
- 			ROUND(T."PriceVietlott", 0) AS "PriceVietlott",																	--Tiền nạp Vietlott
- 			ROUND(T."SaleOfLoto", 0) AS "SaleOfLoto",																				--Doanh thu loto
- 			ROUND(T."ProfitOfLoto", 0) AS "ProfitOfLoto",																		--lợi nhuận loto
--- 			ROUND(T."PunishUser", 0) AS "PunishUser",																				--Phạt nhân viên
--- 			ROUND(T."OvertimeUser", 0) AS "OvertimeUser",																		--Tăng ca nhân viên
--- 			ROUND(T."AwardUser", 0) AS "AwardUser",																					--Thưởng nhân viên
--- 			ROUND(T."DebtUser", 0) AS "DebtUser", 																					--nợ nhân viên
--- 			ROUND(T."TotalSalary", 0) AS "TotalSalary",																			--Tổng tiền trả lương thường
--- 			ROUND(T."TotalSalarySub", 0) AS "TotalSalarySub",																--Tổng tiền trả lương tăng ca
--- 			ROUND(T."TotalPriceForLunch", 0) AS "TotalPriceForLunch",												--Tổng tiền cơm trưa
--- 			ROUND(T."TotalPriceTarget", 0) AS "TotalPriceTarget",														--Tổng tiền thưởng target
--- 			ROUND(T."PriceReceiveItem", 0) AS "PriceReceiveItem",														--Tổng tiền nhận hàng hoá
--- 			ROUND(T."PriceTransItem", 0) AS "PriceTransItem",																--Tổng tiền trả hàng hoá
--- 			ROUND(T."PriceReceiveInstrument", 0) AS "PriceReceiveInstrument",								--Tổng tiền nhận máy móc
--- 			ROUND(T."PriceTransInstrument", 0) AS "PriceTransInstrument", 									--Tổng tiền trả máy móc
- 			ROUND(T."TotalCommission", 0) AS "TotalCommission",															--Hoa hồng đổi số trúng	
--- 			ROUND((SELECT S."InternetFee" FROM "SalePoint" S WHERE S."SalePointId" = T."SalePointId"),0) AS "InternetFee",
--- 			ROUND((SELECT S."RentHomeFee" FROM "SalePoint" S WHERE S."SalePointId" = T."SalePointId"),0) AS "RentHomeFee",
-			ROUND(
-				T."TotalRetailMoney"
-			+ T."TotalWholesaleMoney"
-			+ T."TotalScratchRetailMoney"
-			+ T."TotalScratchWholesaleMoney"
-			+ T."ProfitOfLoto"
-			+ COALESCE(T."TotalCommission",0)
-			+ COALESCE(T."SaleOfVietlott",0)
-			--- T."ThreeSpecialPrice"
-			--- T."FourSpecialPrice"
-			--- T."TwoSpecialPrice"
-			--- T."PriceReceived"
-			, 0) AS "Profit",
-			ROUND(T."SaleOfVietlott" - T."PriceVietlott", 0) AS "ProfitOfVietlott",					--Lợi nhuận vietlott
-			T."FeeOutSite",
-			T."PriceReceiveItem",
-			T."PriceTransItem",
-			fn_get_total_price_transaction_type(p_month,9, T."SalePointId") AS "VietLotFee",
-			ROUND(T."FeeOutSite" + T."PriceReceiveItem" - T."PriceTransItem" + fn_get_total_price_transaction_type(p_month,9, T."SalePointId") , 0) AS "TotalFee",
-			ROUND(T."TotalSalary", 0) AS "TotalAllSalary",																				--Tổng tiền lương																																	
-			ROUND(
-			COALESCE(T."TotalRetailMoney",0)
-			+ COALESCE(T."TotalWholesaleMoney",0)
-			- COALESCE((SELECT SUM(SF."Value") FROM "StaticFee" SF WHERE SF."SalePointId" = T."SalePointId" AND SF."StaticFeeTypeId" = 1),0)
-			- COALESCE((SELECT SUM(SF."Value") FROM "StaticFee" SF WHERE SF."SalePointId" = T."SalePointId" AND SF."StaticFeeTypeId" = 2),0)
-			- COALESCE((SELECT SUM(SF."Value") FROM "StaticFee" SF WHERE SF."SalePointId" = T."SalePointId" AND SF."StaticFeeTypeId" = 3),0)
-			- COALESCE((SELECT SUM(SF."Value") FROM "StaticFee" SF WHERE SF."SalePointId" = T."SalePointId" AND SF."StaticFeeTypeId" = 4),0)
-			+ COALESCE(T."TotalScratchRetailMoney",0)
-			- COALESCE(T."TotalScratchRetailOfCity" * 9100,0) - COALESCE(T."TotalScratchRetailOfCaMau" * 8700,0)
-			+ COALESCE(T."ProfitOfLoto",0)
-			+ COALESCE(T."TotalCommission",0)
-			+ COALESCE(T."SaleOfVietlott",0)
--- 			- fn_get_total_price_transaction_type(p_month,9, T."SalePointId") -- tien nap Vietlott
-			- COALESCE( T."ThreeSpecialPrice",0)
-			- COALESCE( T."FourSpecialPrice" ,0)
-			- COALESCE(T."TwoSpecialPrice",0)
-			- COALESCE(T."TotalRemaining",0)*8750
-			- COALESCE(T."FeeOutSite")
-			- COALESCE((SELECT SUM(I."TotalPrice") FROM "ItemFull" I WHERE TO_CHAR(I."CreateDate", 'YYYY-MM') = p_month),0)
-			- COALESCE((SELECT SUM(F."TotalReceived") FROM crm_get_inventory_inday_of_all_salepoint_v2(p_month,T."SalePointId") F) :: INT8 * 8750 ,0)
-			- (COALESCE(T."TotalSalary" , 0) ) , 0)::NUMERIC AS "TotalSale",
+
+			ROUND(T."TotalScratchRetailOfCity", 0) AS "TotalScratchRetailOfCity",																		--cào TP lẻ
+ 			ROUND(T."TotalRetailMoneyRetailOfCity", 0) AS "TotalRetailMoneyRetailOfCity",
+
+			ROUND(T."TotalScratchWholesaleOfCity", 0) AS "TotalScratchWholesaleOfCity",																	--cào TP sỉ
+ 			ROUND(T."TotalWholesaleMoneyOfCity", 0) AS "TotalWholesaleMoneyOfCity",
+
+			ROUND(T."TotalScratchRetailOfCaMau", 0) AS "TotalScratchRetailOfCaMau",																		--cào ĐN lẻ
+ 			ROUND(T."TotalRetailMoneyRetailOfCaMau", 0) AS "TotalRetailMoneyRetailOfCaMau",
+
+			ROUND(T."TotalScratchWholesaleOfCaMau", 0) AS "TotalScratchWholesaleOfCaMau",																--cào ĐN sỉ
+ 			ROUND(T."TotalWholesaleMoneyOfCaMau", 0) AS "TotalWholesaleMoneyOfCaMau",
+
+			ROUND(T."TotalOfBocLe", 0) AS "TotalOfBocLe",																								--Bóc lẻ
+ 			ROUND(T."TotalRetailMoneyBocLe", 0) AS "TotalRetailMoneyBocLe",
+
+			ROUND(T."TotalOfXo5K", 0) AS "TotalOfXo5K",																									--XO 5K lẻ
+ 			ROUND(T."TotalRetailMoneyXo5K", 0) AS "TotalRetailMoneyXo5K",
+
+			ROUND(T."TotalOfXo2K", 0) AS "TotalOfXo2K",																									--XO 2K lẻ
+ 			ROUND(T."TotalRetailMoneyXo2K", 0) AS "TotalRetailMoneyXo2K",
+
+			ROUND(T."TotalRemaining", 0) AS "TongOmE",																									--Ôm ế
+			ROUND(T."TotalRemaining", 0) * 10000 AS "TongOmEThanhTien",
+
+			ROUND(T."TwoSpecial", 0) AS "TwoSpecial",																									--Hoàn vé
+			ROUND(T."TwoSpecialPrice", 0) "TwoSpecialPrice",
+
+			ROUND(T."ThreeSpecial", 0) AS "ThreeSpecial",																								--3 số đặc biệt
+			ROUND(T."ThreeSpecialPrice", 0) "ThreeSpecialPrice",
+
+			ROUND(T."FourSpecial", 0) AS "FourSpecial",																									--4 số đặc biệt
+			ROUND(T."FourSpecialPrice", 0) "FourSpecialPrice",
+
+			ROUND(T."TotalCommission", 0) AS "TotalCommission",																							--Hoa hồng đổi số trúng
+
+			ROUND(T."SaleOfVietlott", 0) AS "SaleOfVietlott",																									--Sale of Vietlott
+			
+			ROUND(T."HoaHong5_5", 0) AS "HoaHong5_5",																									--Hoa hồng 5.5%
+
+			ROUND(T."HoaHong1_5", 0) AS "HoaHong1_5",																									--Hoa hồng 1.5%
+
+			ROUND(T."HoaHong0_2", 0) AS "HoaHong0_2",																									--Hoa hồng trả thưởng 0.2%
+
+			ROUND(T."ThueTNCN", 0) AS "ThueTNCN",																										--Thuế TNCN
+
+			ROUND(T."SaleOfLoto", 0) AS "SaleOfLoto",																									--Doanh so Lotto
+
+			ROUND(T."Loto", 0) AS "Loto",																												--Loto
+			ROUND(T."LotoPrice", 0) AS "LotoPrice",																										
+
+			ROUND(T."TotalSalary", 0) AS "TotalAllSalary",																								--Tổng tiền lương																																	
 			ROUND(COALESCE(T."TotalSalary" , 0),0)  AS "EmployeeSalary",
 			3000000 AS "ManagerSalary",
 			1500000 AS "DistributorSalary",
-			T."TotalScratchRetailOfCity" * 9100 + T."TotalScratchRetailOfCaMau" * 8700 + T."TotalScratchRetailMoney" AS "TongTienVeCao",
-			 T."TotalRetailMoney" + T."TotalWholesaleMoney" AS "TongTienVeThuong",
-			fn_get_total_price_transaction_type(p_month,9, T."SalePointId")  AS "ToUpVietlott",
-			(SELECT SUM(SF."Value") FROM "StaticFee" SF WHERE SF."SalePointId" = T."SalePointId" AND SF."StaticFeeTypeId" =  4 AND SF."Month" = p_month) AS "ElectronicFee",
-			(SELECT SUM(SF."Value") FROM "StaticFee" SF WHERE SF."SalePointId" = T."SalePointId" AND SF."StaticFeeTypeId" =  2 AND SF."Month" = p_month) AS "WaterFee",
-			(SELECT SUM(SF."Value") FROM "StaticFee" SF WHERE SF."SalePointId" = T."SalePointId" AND SF."StaticFeeTypeId" =  3 AND SF."Month" = p_month) AS "InternetFee",
-			(SELECT SUM(SF."Value") FROM "StaticFee" SF WHERE SF."SalePointId" = T."SalePointId" AND SF."StaticFeeTypeId" =  1 AND SF."Month" = p_month) AS "EstateFee",
-			(SELECT (A."Price" * B."TotalReceived") AS "TotalMoneyFromAgency" FROM tmp13_4 A LEFT JOIN tmp13_5 B ON B."SalePointId" = A."SalePointId"  WHERE T."SalePointId" = A."SalePointId"),
-			(SELECT (A."Price" * B."TotalReceived") AS "TotalScratchMoneyFromAgency"  FROM tmp14_4 A LEFT JOIN tmp14_5 B ON B."SalePointId" = A."SalePointId"  WHERE T."SalePointId" = A."SalePointId") 
--- 			(T."Profit" / F."TotalCommision" ) AS "SuperAdmin"
+			855000 AS "HRSalary",
+
+			ROUND(T."TotalSale", 0) AS "TotalSale",	
+			
+
+			(SELECT SUM(SF."ElectronicFee") FROM "StaticFee" SF WHERE SF."SalePointId" = T."SalePointId" AND SF."StaticFeeId" =  4 AND SF."Month" = p_month) AS "ElectronicFee",				--Tiền điện
+			(SELECT SUM(SF."WaterFee") FROM "StaticFee" SF WHERE SF."SalePointId" = T."SalePointId" AND SF."StaticFeeId" =  2 AND SF."Month" = p_month) AS "WaterFee",							--Tiền nước
+			(SELECT SUM(SF."InternetFee") FROM "StaticFee" SF WHERE SF."SalePointId" = T."SalePointId" AND SF."StaticFeeId" =  3 AND SF."Month" = p_month) AS "InternetFee",					--Tiền internet
+			(SELECT SUM(SF."EstateFee") FROM "StaticFee" SF WHERE SF."SalePointId" = T."SalePointId" AND SF."StaticFeeId" =  1 AND SF."Month" = p_month) AS "EstateFee"							--Tiền mặt bằng
+
 		FROM tmp13 T
--- 		LEFT JOIN crm_salepoint_get_commision_of_all_user_in_month(p_month) F ON F."SalePointId" = T."SalePointId"
 	),
 	tmp15 AS
 	(
@@ -483,42 +480,11 @@ BEGIN
 				T1."FourSpecialPrice",
 				'TwoSpecialPrice',
 				T1."TwoSpecialPrice",
-				'Promotion',
-				T1."Promotion",
 				'TotalPrice',
-				T1."ThreeSpecial" + T1."FourSpecialPrice" + T1."TwoSpecialPrice" +  T1."Promotion"
-		) AS "Prize",
-		json_build_object(
-				'StaffSalary',
-				T1."EmployeeSalary",
-				'ManagerSalary',
-				T1."ManagerSalary",
-				'DistributorSalary',
-				T1."DistributorSalary",
-				'TotalSalary',
-				T1."EmployeeSalary" + T1."ManagerSalary" + T1."DistributorSalary"
-		) AS "TotalSalary",
-		json_build_object(
-				'FeeOutSite',
-				T1."FeeOutSite",
-				'PriceReceiveItem',
-				T1."PriceReceiveItem",
-				'PriceTransItem',
-				T1."PriceTransItem",
-				'VietLotFee',
-				T1."VietLotFee",
-				'TotalFees',
-				T1."FeeOutSite" + T1."PriceReceiveItem" + T1."PriceTransItem"+  T1."VietLotFee"
-			) AS "Fees",
-			(SELECT json_agg(T.*) AS "FeeOutSide" FROM crm_salepoint_get_fee_outsite_in_month_in_total(p_month,T1."SalePointId") T),
-		(SELECT 
-					array_to_json(array_agg(jsonb_build_object('FullName',F."FullName", 'Percent', F."Percent", 'TotalCommisionUser', F."TotalCommisionUser")))::TEXT
-				FROM fn_total_commision_user(T1."SalePointId", p_month, T1."Profit") F
-			) AS "ListTotalComitsionUser"
+				T1."ThreeSpecial" + T1."FourSpecialPrice" + T1."TwoSpecialPrice"
+		) AS "Prize"
 		FROM tmp14 T1
--- 		GROUP BY T1."SalePointId",T1."SalePointName",T1."MainUserId",T1."PercentMainUserId",T1.Total
 	)
-	-- SELECT * FROM crm_report_sale_of_salepoint_in_month_v4('2023-02');
 	SELECT
 		TO_JSONB(T.*)::TEXT AS "DataSale",
 		(SELECT * FROM crm_get_sale_divide_for_user(T."MainUserId", T."PercentMainUserId", T."TotalSale"))::TEXT AS "DataSalePercent"
@@ -527,4 +493,3 @@ BEGIN
 END;
 $BODY$
 LANGUAGE plpgsql VOLATILE
-

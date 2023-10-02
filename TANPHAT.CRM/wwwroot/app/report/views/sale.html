@@ -1,157 +1,100 @@
 ﻿<div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
     <div class="container-fluid wh-bg mt-10">
-        <div class="row">
-            <div class="wh-bg ">
-                <div class="mx-3 mt20 w160px pt-10">
+        <div class="row" style="padding-left:15px">
+            <div class="wh-bg d-flex justify-content-start" style="gap: 16px">
+                <div class="mt20 w160px pt-10">
                     <label>Tháng</label>
                     <monthyearpicker my-class="input-sm datepicker-new" date-format="MM/YYYY" placeholder="All month"
                                      ng-model="$vm.month" on-select="$vm.loadData()" ng-change="$vm.loadData()" output-format="YYYY-MM"></monthyearpicker>
                 </div>
+                <div class="mt20 w160px pt-10" style="height:115px">
+                    <label>Điểm bán</label>
+                    <ui-select close-on-select="true" ng-model="$vm.selectedSalePoint" theme="select2"
+                               search-enabled="true">
+                        <ui-select-match placeholder="Chọn điểm bán" allow-clear="true">
+                            {{$select.selected.Name}}
+                        </ui-select-match>
+                        <ui-select-choices position="down" repeat="ele.Id.toString() as ele in listSalePoint">
+                            {{ele.Name}}
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+                <div class="mt20 w160px pt-10">
+                    <div style="height: 44px; margin-top: calc(115px - 24px - 44px - 0.5em)" class="btn btn-primary resizeSchedule" ng-click="$vm.onClickDoanhThu()"> Doanh thu </div>
+                </div>
             </div>
         </div>
-        <div class="table-responsive resize-tb">
-            <div id="calendar">
-                <table class="table w100p table-wrapper-scroll-y my-custom-scrollbar">
-                    <thead class="theader text-center fix-scroll ">
-                        <tr class="flex flex-wrap sticky-border-1">
-                            <th style="z-index: 51; left: 0;" class="text-center sticky theader">
-                            </th>
 
-                            <th class="text-center fix-scroll py-4 resizeSchedule " ng-repeat="data in $vm.listData">
-                                <div class=""> {{data.Data.SalePointName}}</div>
-                                <!--                                <div> {{data.DisplayPercent}} </div>-->
+        <!--New layout-->
+        <div class="table-responsive resize-tb" style="max-height:calc(100vh - 64px - 123px - 59px - 16px)">
+            <table class="table table-wrapper-scroll-y my-custom-scrollbar" style="width: unset">
+                <thead class="theader text-center bg-success fix-scroll ">
+                    <tr class="flex flex-wrap sticky-border-1">
+                        <th class="text-center bg-success sticky theader" colspan="2">
+                            {{$vm.selectedSalePointName}}
+                        </th>
+                        <th class="text-center bg-success sticky theader" colspan="3">
+                            Lợi nhuận {{$vm.loiNhuanThang}}
+                        </th>
+                    </tr>
+                    <tr class="flex flex-wrap sticky-border-1">
+                        <th class="text-center  sticky theader">
+                            STT
+                        </th>
+                        <th class="text-center sticky theader">
+                            Tên
+                        </th>
+                        <th class="text-center sticky theader">
+                            Chỉ tiêu
+                        </th>
+                        <th class="text-center sticky theader">
+                            Số lượng vé
+                        </th>
+                        <th class="text-center sticky theader">
+                            Thành tiền
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="chi in chiTieu track by $index">
+                        <td ng-if="chi.mainChiTieuId != 5">{{$index + 1}}</td>
+                        <td style="background: #D36B00;font-weight:bold" ng-if="chi.mainChiTieuId == 5">TC</td>
+                        <td class="text-left" rowspan="17" ng-if="$index == 0 && chi.mainChiTieuId == 1">
+                            Truyền thống
+                        </td>
+                        <td class="text-left" rowspan="6" ng-if="$index == 17 && chi.mainChiTieuId == 2">
+                            Vietlott
+                        </td>
+                        <td class="text-left" rowspan="3" ng-if="$index == 23  && chi.mainChiTieuId == 3">
+                            Lotto
+                        </td>
+                        <td class="text-left" rowspan="14" ng-if="$index == 26 && chi.mainChiTieuId == 4">
+                        </td>
+                        <td class="text-left" rowspan="14" ng-if="$index == 26 && chi.mainChiTieuId == 5">
+                        </td>
 
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="type in $vm.listDisplay">
-                            <td style="left: 0; position: sticky; " class="{{'w180 text-right '+ (type.BgCss? type.BgCss: 'td-none')}}">{{type.Name}} <span ng-if="!type.colorType == ''">(<span class="{{type.colorCss}}">{{type.colorType}}</span>)</span></td>
-                            <td class="{{'w180 text-right '+ type.Css + type.BgCss}}" ng-repeat="data in $vm.listData" ng-if="type.DisplayName == 'TotalSalary'">
-                                {{data.Data[type.DisplayName].TotalSalary | formatCurrency}}
-                                <svg ng-click="$vm.clickCheckShow()" ng-show="{{data.Data[type.DisplayName].TotalSalary > 0}}" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M5 7C5 6.44772 5.44772 6 6 6H18C18.5523 6 19 6.44772 19 7C19 7.55228 18.5523 8 18 8H6C5.44772 8 5 7.55228 5 7ZM5 12C5 11.4477 5.44772 11 6 11H18C18.5523 11 19 11.4477 19 12C19 12.5523 18.5523 13 18 13H6C5.44772 13 5 12.5523 5 12ZM5 17C5 16.4477 5.44772 16 6 16H18C18.5523 16 19 16.4477 19 17C19 17.5523 18.5523 18 18 18H6C5.44772 18 5 17.5523 5 17Z" fill="#0962f1"></path> </g></svg>
-                                <div ng-if="$vm.checkShowTableSalary">
-                                    <table class="table" ng-show="{{data.Data[type.DisplayName].TotalSalary > 0}}">
-                                        <tr>
-                                            <th class="noselect theader text-left" style="font-size: 14px; padding: 2px;">Quản lý: </th>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-right" style="padding: 2px; font-size: 17px;">{{data.Data[type.DisplayName].ManagerSalary > 0 ? (data.Data[type.DisplayName].ManagerSalary | formatCurrency) : 0}}</td>
-                                        </tr>
-                                        <tr>
-                                            <th class="noselect theader text-left" style="font-size: 14px; padding: 2px;">Nhân viên: </th>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-right" style="padding: 2px; font-size: 17px;">{{data.Data[type.DisplayName].StaffSalary > 0 ? (data.Data[type.DisplayName].StaffSalary | formatCurrency) : 0}}</td>
-                                        </tr>
-                                        <tr>
-                                            <th class="noselect theader text-left" style="font-size: 14px; padding: 2px;">Người chia vé: </th>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-right" style="padding: 2px; font-size: 17px;">{{ data.Data[type.DisplayName].DistributorSalary > 0 ? (data.Data[type.DisplayName].DistributorSalary | formatCurrency) : 0}}</td>
-                                        </tr>
-                                    </table>
-                                </div>
-                            </td>
+                        <td ng-if="chi.mainChiTieuId != 5" class="text-left" ng-style="{'background' : (chi.isTotal != undefined && chi.isTotal && chi.mainChiTieuId != 5) ? '#FFD95A' : '','font-weight' : (chi.isTotal != undefined && chi.isTotal) ? 'bold' : ''}">
+                            {{chi.name}}
+                        </td>
+                        <td ng-if="chi.mainChiTieuId != 5" class="text-right" ng-style="{'background' : (chi.isTotal != undefined && chi.isTotal && chi.mainChiTieuId != 5) ? '#FFD95A' : ''}">
+                            {{chi.soLuong | formatCurrency}}
+                        </td>
+                        <td ng-if="chi.mainChiTieuId != 5" class="text-right" ng-style="{'background' : (chi.isTotal != undefined && chi.isTotal && chi.mainChiTieuId != 5) ? '#FFD95A' : ''}">
+                            {{chi.thanhTien | formatCurrency}}
+                        </td>
 
-                            <td class="{{'w180 text-right '+ type.Css + type.BgCss}}" ng-repeat="data in $vm.listData" ng-if="type.DisplayName == 'Prize'">
-                                {{data.Data[type.DisplayName].TotalPrice | formatCurrency}}
-                                <svg ng-click="$vm.clickCheckShowReward()" ng-show="{{data.Data[type.DisplayName].TotalPrice > 0}}" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M5 7C5 6.44772 5.44772 6 6 6H18C18.5523 6 19 6.44772 19 7C19 7.55228 18.5523 8 18 8H6C5.44772 8 5 7.55228 5 7ZM5 12C5 11.4477 5.44772 11 6 11H18C18.5523 11 19 11.4477 19 12C19 12.5523 18.5523 13 18 13H6C5.44772 13 5 12.5523 5 12ZM5 17C5 16.4477 5.44772 16 6 16H18C18.5523 16 19 16.4477 19 17C19 17.5523 18.5523 18 18 18H6C5.44772 18 5 17.5523 5 17Z" fill="#0962f1"></path> </g></svg>
-                                <div ng-if="$vm.checkShowReward">
-                                    <table class="table" ng-show="{{data.Data[type.DisplayName].TotalPrice > 0}}">
-                                        <tr>
-                                            <th class="noselect theader text-left" style="font-size: 14px; padding: 2px;">Khuyến mãi: </th>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-right" style="padding: 2px; font-size: 17px;">{{data.Data[type.DisplayName].Promotion > 0 ? (data.Data[type.DisplayName].Promotion | formatCurrency) : 0}}</td>
-                                        </tr>
-                                        <tr>
-                                            <th class="noselect theader text-left" style="font-size: 14px; padding: 2px;">2 số cuối: </th>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-right" style="padding: 2px; font-size: 17px;">{{data.Data[type.DisplayName].TwoSpecialPrice > 0 ? (data.Data[type.DisplayName].TwoSpecialPrice | formatCurrency) : 0}}</td>
-                                        </tr>
-                                        <tr>
-                                            <th class="noselect theader text-left" style="font-size: 14px; padding: 2px;">3 số cuối: </th>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-right" style="padding: 2px; font-size: 17px;">{{ data.Data[type.DisplayName].ThreeSpecial > 0 ? (data.Data[type.DisplayName].ThreeSpecial | formatCurrency) : 0}}</td>
-                                        </tr>
-                                        <tr>
-                                            <th class="noselect theader text-left" style="font-size: 14px; padding: 2px;">4 số cuối: </th>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-right" style="padding: 2px; font-size: 17px;">{{ data.Data[type.DisplayName].FourSpecialPrice > 0 ? (data.Data[type.DisplayName].FourSpecialPrice | formatCurrency) : 0}}</td>
-                                        </tr>
-                                    </table>
-                                </div>
-                            </td>
-
-                            <td class="{{'w180 text-right '+ type.Css + type.BgCss}}" ng-repeat="data in $vm.listData" ng-if="type.DisplayName == 'StaticFee'">
-                                {{data.Data[type.DisplayName].TotalFee | formatCurrency}}
-                                <svg ng-click="$vm.clickCheckShowStaticFee()" ng-show="{{data.Data[type.DisplayName].TotalFee > 0}}" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M5 7C5 6.44772 5.44772 6 6 6H18C18.5523 6 19 6.44772 19 7C19 7.55228 18.5523 8 18 8H6C5.44772 8 5 7.55228 5 7ZM5 12C5 11.4477 5.44772 11 6 11H18C18.5523 11 19 11.4477 19 12C19 12.5523 18.5523 13 18 13H6C5.44772 13 5 12.5523 5 12ZM5 17C5 16.4477 5.44772 16 6 16H18C18.5523 16 19 16.4477 19 17C19 17.5523 18.5523 18 18 18H6C5.44772 18 5 17.5523 5 17Z" fill="#0962f1"></path> </g></svg>
-                                <div ng-if="$vm.checkShowStaticFee">
-                                    <table class="table" ng-show="{{data.Data[type.DisplayName].TotalFee > 0}}">
-                                        <tr>
-                                            <th class="noselect theader text-left" style="font-size: 14px; padding: 2px;">Tiền mặt bằng: </th>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-right" style="padding: 2px; font-size: 17px;">{{data.Data[type.DisplayName].EstateFee > 0 ? (data.Data[type.DisplayName].EstateFee | formatCurrency) : 0}}</td>
-                                        </tr>
-                                        <tr>
-                                            <th class="noselect theader text-left" style="font-size: 14px; padding: 2px;">Tiền điện: </th>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-right" style="padding: 2px; font-size: 17px;">{{data.Data[type.DisplayName].ElectronicFee > 0 ? (data.Data[type.DisplayName].ElectronicFee | formatCurrency) : 0}}</td>
-                                        </tr>
-                                        <tr>
-                                            <th class="noselect theader text-left" style="font-size: 14px; padding: 2px;">Tiền nước: </th>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-right" style="padding: 2px; font-size: 17px;">{{ data.Data[type.DisplayName].WaterFee > 0 ? (data.Data[type.DisplayName].WaterFee | formatCurrency) : 0}}</td>
-                                        </tr>
-                                        <tr>
-                                            <th class="noselect theader text-left" style="font-size: 14px; padding: 2px;">Tiền Internet: </th>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-right" style="padding: 2px; font-size: 17px;">{{ data.Data[type.DisplayName].InternetFee > 0 ? (data.Data[type.DisplayName].InternetFee | formatCurrency) : 0}}</td>
-                                        </tr>
-                                    </table>
-                                </div>
-                            </td>
-
-                            <td class="{{'w180 text-right '+ type.Css + type.BgCss}}" ng-repeat="data in $vm.listData" ng-if="type.DisplayName != 'TotalSalary' && type.DisplayName != 'Prize' && type.DisplayName != 'StaticFee'">
-                                {{data.Data[type.DisplayName] | formatCurrency}}
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td style="left: 0; position: sticky; z-index: 51; " class="{{'w180 text-right sticky '+ (type.BgCss? type.BgCss: 'td-none')}}">LN cuối <span ng-if="!type.colorType == ''">(<span class="{{type.colorCss}}">{{type.colorType}}</span>)</span></td>
-                            <td class="{{'w180 text-right '+ type.Css + type.BgCss}}" ng-repeat="dataPercent in $vm.listData">
-
-                                <div ng-repeat=" item in dataPercent.DataPercent">
-                                    <div class="row">
-                                        <div class="col-7">
-                                            <h6 class="text-left">{{item.FullName}}</h6>
-                                        </div>
-                                        <div class="col-5" style="color: #00FF00">
-                                            <h6 class="text-right">  {{item.Percent}}%</h6>
-                                        </div>
-                                    </div>
-
-
-                                    <h6>{{item.Sale|formatCurrency}}</h6>
-                                    <hr>
-                                </div>
-
-                            </td>
-                        </tr>
-                        <tr ng-if="!$vm.listData || $vm.listData.length == 0">
-                            <td colspan="99">Không có dữ liệu</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+                        <td ng-if="chi.mainChiTieuId == 5" class="text-left" style="background: #D36B00">
+                        </td>
+                        <td ng-if="chi.mainChiTieuId == 5" class="text-right" style="background: #D36B00">
+                        </td>
+                        <td ng-if="chi.mainChiTieuId == 5" class="text-right" style="background: #D36B00">
+                        </td>
+                        <td ng-if="chi.mainChiTieuId == 5" class="text-right" style="background: #D36B00">
+                            {{chi.thanhTien | formatCurrency}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
