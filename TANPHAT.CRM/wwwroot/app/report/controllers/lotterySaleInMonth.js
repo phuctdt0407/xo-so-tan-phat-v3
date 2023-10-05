@@ -177,8 +177,8 @@
                 '#836665', '#C68ECF', '#9EA640', '#cc00ff', '#95928A']
             var optionColunm = {
                 series: [{
-                    name: 'Total sold',
-                    data: vm.listSalePoint.map(item => item.TotalValue),
+                    name: 'Vé bán:',
+                    data: vm.listSUM,
                 }],
                 chart: {
                     height: 500,
@@ -199,7 +199,7 @@
                     }
                 },
                 dataLabels: {
-                    enabled: true,
+                    enabled: false,
                     style: {
                         fontSize: ['12px'],
                         fontWeight: ['bold'],
